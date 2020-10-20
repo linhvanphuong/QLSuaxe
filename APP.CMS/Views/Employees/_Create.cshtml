@@ -1,0 +1,82 @@
+﻿@using APP.MODELS
+<div id="frmCreate" class="form-horizontal">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên nhân viên</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên nhân viên">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label required class="col-sm-3 col-md-3 col-6">Vị trí công việc</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select required id="drJob" class="form-control">
+                    @{
+                        var listJobPos = ViewData["listJobPos"] as List<APP.MODELS.JobPositions>;
+                        if (listJobPos != null)
+                        {
+                            foreach (var i in listJobPos)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Ngày sinh</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="date" id="txtNS" class="form-control" placeholder="NN/TT/NNNN" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Giới tính</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="radio" name="radioSex" value="1">
+                <label for="male">Nam</label><br>
+                <input type="radio" name="radioSex" value="0">
+                <label for="female">Nữ</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Ngày vào làm</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="date" id="txtJoinedDate" class="form-control" placeholder="NN/TT/NNNN" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Số điện thoại</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" id="txtPhone" class="form-control" placeholder="Số điện thoại" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Địa chỉ</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" id="txtAddress" class="form-control" placeholder="Địa chỉ" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Ghi chú</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <textarea id="txtNote" class="form-control" placeholder="Ghi chú"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Employee/Create.js"></script>

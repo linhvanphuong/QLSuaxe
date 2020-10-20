@@ -1,0 +1,78 @@
+﻿@using APP.MODELS
+<div id="frmCreate" class="form-horizontal">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên tài khoản</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên tài khoản">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Mật khẩu</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required class="form-control" id="txtPassword">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label required class="col-sm-3 col-md-3 col-6">Tên nhân viên</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select class="form-control" required id="txtEmployee">
+                    @{
+                        var listEmploy = ViewData["listEmployee"] as List<APP.MODELS.Employees>;
+                        if (listEmploy != null)
+                        {
+                            foreach (var i in listEmploy)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
+            <div class="col-sm-4 col-md-4 col-6">
+                @*@{
+                    if ((int)ViewData[nameof(RolesEnum.Approval)] == 1)
+                    {
+                        <input id="ckbStatus" type="checkbox" class="custom-control">
+                    }
+                    else
+                    {
+                        <input id="ckbStatus" disabled type="checkbox" class="custom-control">
+                    }
+                }*@
+                <input id="ckbStatus" type="checkbox" class="custom-control">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Chọn nhóm quyền</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select class="form-control" multiple required id="txtRole">
+                    @{
+                        var listRole = ViewData["listRole"] as List<APP.MODELS.Roles>;
+                        if (listRole != null)
+                        {
+                            foreach (var i in listRole)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Account/Create.js"></script>

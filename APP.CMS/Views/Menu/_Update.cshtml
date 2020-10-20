@@ -1,0 +1,96 @@
+﻿@using APP.MODELS
+@using Portal.Utils
+@model APP.MODELS.Menus
+<div id="frmUpdate" class="form-horizontal">
+    <input hidden type="text" value="@Model.Id" id="txtId" />
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên menu</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" value="@Model.Name" required class="form-control" id="txtName" placeholder="Tên menu">
+            </div>
+        </div>
+    </div>
+     <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Đường dẫn</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required value="@Model.Url" class="form-control" id="txtUrl" placeholder="Tên menu">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Menu cha</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select id="drParentMenu" class="form-control">
+                    @{
+                        var listMenu = ViewData["listMenu"] as List<APP.MODELS.Menus>;
+                        if (listMenu != null)
+                        {
+                            if (Model.ParentId != 0)
+                            {
+                                <option value="0">Không có</option>
+                                foreach (var i in listMenu)
+                                {
+                                    if (i.ParentId == Model.ParentId)
+                                    {
+                                        <option value="@i.Id">@i.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i.Id">@i.Name</option>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <option value="0">Không có</option>
+                                foreach (var i in listMenu)
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Thứ tự</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="number" value="@Model.Order" min="0" id="txtOrder" class="form-control" placeholder="Thứ tự" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Ghi chú</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <textarea id="txtNote" class="form-control" placeholder="Ghi chú">@Model.Note</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
+            <div class="col-sm-4 col-md-4 col-6">
+                @{
+                    if (Model.Status == (byte)StatusEnum.Active)
+                    {
+                        <input id="ckbStatus" type="checkbox" checked class="custom-control">
+                    }
+                    else
+                    {
+                        <input id="ckbStatus" type="checkbox" class="custom-control">
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Menu/Update.js"></script>

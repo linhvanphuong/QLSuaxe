@@ -23,7 +23,11 @@ namespace APP.DependencyInjection
             services.AddTransient<IDbContextFactory<APPDbContext>, APPDbContextFactory>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserManager, UserManager>();
-
+            services.AddTransient<IJobPositionsManager, JobPositionsManager>();
+            services.AddTransient<IEmployeeManager, EmployeeManager>();
+            services.AddTransient<IAccountManager, AccountManager>();
+            services.AddTransient<IMenuManager, MenuManager>();
+            services.AddTransient<IRoleManager, RoleManager>();
         }
     }
 }

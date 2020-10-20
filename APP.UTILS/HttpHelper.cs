@@ -66,7 +66,6 @@ namespace Portal.Utils
             }
             catch (Exception ex)
             { throw ex; }
-            return default(T);
         }
         public static async Task<T> GetData<T>(string url, string request = "", string checktoken = "true")
         {

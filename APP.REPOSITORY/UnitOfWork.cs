@@ -11,6 +11,14 @@ namespace APP.REPOSITORY
     public interface IUnitOfWork : IDisposable
     {
         public IUserRepository UserRepository { get; }
+        public IAccountsRepository AccountsRepository { get; }
+        public IAccount_RolesRepository Account_RolesRepository { get; }
+        public IRolesRepository RolesRepository { get; }
+        public IPermissionsRepository PermissionsRepository { get; }
+        public IEmployeesRepository EmployeesRepository { get; }
+        public IMenusRepository MenusRepository { get; }
+        public IJobPositionsRepository JobPositionsRepository { get; }
+
         Task CreateTransaction();
         Task Commit();
         Task Rollback();
@@ -25,7 +33,13 @@ namespace APP.REPOSITORY
         {
             _dbContext = dbContextFactory.GetContext();
             UserRepository = new UserRepository(_dbContext);
-
+            AccountsRepository = new AccountsRepository(_dbContext);
+            Account_RolesRepository = new Account_RolesRepository(_dbContext);
+            RolesRepository = new RolesRepository(_dbContext);
+            PermissionsRepository = new PermissionsRepository(_dbContext);
+            EmployeesRepository = new EmployeesRepository(_dbContext);
+            MenusRepository = new MenusRepository(_dbContext);
+            JobPositionsRepository = new JobPositionsRepository(_dbContext);
         }
         #region Transaction
         public async Task CreateTransaction()
@@ -52,6 +66,13 @@ namespace APP.REPOSITORY
 
         private bool disposedValue = false; // To detect redundant calls
         public IUserRepository UserRepository { get; }
+        public IAccountsRepository AccountsRepository { get; }
+        public IAccount_RolesRepository Account_RolesRepository { get; }
+        public IRolesRepository RolesRepository { get; }
+        public IPermissionsRepository PermissionsRepository { get; }
+        public IEmployeesRepository EmployeesRepository { get; }
+        public IMenusRepository MenusRepository { get; }
+        public IJobPositionsRepository JobPositionsRepository { get; }
 
 
 

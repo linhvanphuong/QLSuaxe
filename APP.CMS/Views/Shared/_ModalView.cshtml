@@ -1,0 +1,155 @@
+﻿<div class="modal modal-info fade in" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal modal-warning fade" id="modal-warning">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                <button type="button" data-dismiss="modal" id="btnAccept" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--- Them modal view xoa--->
+<!--ModelView Delte-->
+<div class="modal" id="modal-delete">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="text-center mb-2">
+                <button type="button" class="btn btn-info btn-sm" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>
+                <button type="button" class="btn btn-danger btn-sm" id="btnDelete"><i class="fa fa-floppy-o" aria-hidden="true"></i>Xóa</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!------>
+<div class="modal" id="modal-form">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            @*sửa giao diện title *@
+            <div class="modal-header" style="background-color:cornflowerblue">
+                <h5 class="modal-title w-100 text-center" style="font-weight:bold;color:white"></h5>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSave"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</button>
+                <button type="button" class="btn btn-danger pull-left" id="btnClose"><i class="fa fa-sign-out" aria-hidden="true"></i> Thoát</button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--- Media modal vanlinh 17:30 24/08/2020-->
+<div class="modal" id="modal-Media">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @*sửa giao diện title *@
+            <div class="modal-header" style="background-color:cornflowerblue">
+                <h5 class="modal-title w-100 text-center" style="font-weight:bold;color:white"></h5>
+                <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*<button id="btnClose" href="javascript:;"><i class="fa fa-sign-out" aria-hidden="true"></i>Thoát</button>*@
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!---->
+<div class="modal modal-info fade in" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script>
+    $('#modal-form').find('#btnClose').click(function () {
+        $('#modal-form').hide();
+        $('#modal-form').find('#btnSave').show()
+    })
+    function showContentModal(content, title) {
+        var modal = $('#modal-form');
+        modal.find('.modal-title').html('')
+        modal.find('.modal-title').html(title)
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function showContentModal2(content, title) {
+        var modal = $('#modal-form');
+        modal.find('.modal-title').html('')
+        modal.find('.modal-title').html(title)
+        modal.find('.modal-body').html('')
+        modal.find('.modal-body').html(content)
+        modal.show();
+    }
+    function hideContentModal() {
+        $('#modal-form').hide();
+    }
+    // Script for Modal-Delete
+    $('#modal-delete').find('#btnClose').click(function () {
+        $('#modal-delete').hide();
+    })
+    function showDeleteModal(content) {
+        var deleteModal = $('#modal-delete');
+        deleteModal.find('.modal-body').html('')
+        deleteModal.find('.modal-body').html(content)
+        deleteModal.show();
+    }
+    function hideDeleteModal() {
+        $('#modal-delete').hide();
+    }
+    //Script for Model Media
+    $('#modal-Media').find('#btnClose').click(function () {
+        $('#modal-Media').hide();
+        $('#modal-Media').find('#btnDelete').show()
+    })
+    function showMediaModal(content,title) {
+        var MediaModal = $('#modal-Media');
+        MediaModal.find('.modal-title').html('')
+        MediaModal.find('.modal-title').html(title)
+        MediaModal.find('.modal-body').html('')
+        MediaModal.find('.modal-body').html(content)
+        MediaModal.find('.modal-body').css('height', '450px')
+        MediaModal.find('.modal-body').css('overflow-y', 'auto')
+        MediaModal.show();
+    }
+    function hideMediaModal() {
+        $('#modal-Media').hide();
+    }
+</script>

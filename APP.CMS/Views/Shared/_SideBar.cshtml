@@ -1,0 +1,105 @@
+﻿@using Portal.Utils
+@using APP.MODELS
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+    if (account == null)
+    {
+        return;
+    }
+
+    var data = account.ListMenu;
+
+    var parentMenu = data.Where(c => c.ParentId == 0 || c.ParentId == 0).ToList().OrderBy(x => x.Order);
+}
+
+<aside class="main-sidebar sidebar-dark-success elevation-4" style="background-color:#007bff;color:#fff">
+    <!-- Brand Logo -->
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            @*<div class="image">
+                    <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>*@
+            @*<div class="info">
+                    <a href="#" class="d-block">@dataAccount.FullName</a>
+                </div>*@
+        </div>
+
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+                <li class="nav-item">
+                    <a href="/" class="nav-link " style="border-bottom: 1px solid;">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>Màn hình chính</p>
+                    </a>
+                </li>
+                @{
+
+                    foreach (var item in parentMenu)
+                    {
+
+                        var menuChild = data.Where(c => c.ParentId == item.Id).ToList().OrderBy(x => x.Order).ToList();
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link" style="border-bottom: 1px solid;">
+                                @if (item.Url.Contains("he-thong"))
+                                {
+                                    <i class="nav-icon fas fa-users-cog"></i>
+                                }
+                                else if (item.Url.Contains("/nhan-vien"))
+                                {
+                                    <i class="nav-icon far fa-newspaper"></i>
+                                }
+                                else if (item.Url.Contains("/sua-xe"))
+                                {
+                                    <i class="nav-icon fas fa-folder-plus"></i>
+                                }
+                                else if (item.Url.Contains("van-ban"))
+                                {
+                                    <i class="nav-icon fas fa-file-alt"></i>
+                                }
+                                else
+                                {
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                }
+                                <p>
+                                    @item.Name
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            @{
+                                if (menuChild.Count() > 0)
+                                {
+                                    <ul class="nav nav-treeview">
+                                        @{
+                                            foreach (var itemChild in menuChild)
+                                            {
+
+                                                <li class="nav-item">
+
+                                                    <a href="@itemChild.Url" class="nav-link" style="border-bottom: 1px dashed;">
+                                                        <i class="nav-icon">-</i>
+                                                        <p>@itemChild.Name</p>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </li>
+
+                    }
+                }
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

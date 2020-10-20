@@ -1,0 +1,61 @@
+﻿
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="~/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
+    <link href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/plugins/toastr/toastr.min.css">
+    <link href="~/plugins/loading-modal/css/jquery.loadingModal.css" rel="stylesheet" />
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/loading-modal/js/jquery.loadingModal.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/dist/js/site.js"></script>
+    <script src="~/plugins/toastr/toastr.min.js"></script>
+    <style type="text/css">
+        .form-border-sign {
+            background-color: #fff;
+            box-shadow: 0 3px 10px 0 rgba(0,0,0,.14);
+            border-radius: .25rem;
+            overflow: hidden;
+            width: 60%;
+            position: absolute;
+            height: fit-content;
+            top: 5%;
+            left: 20%;
+            padding: 20px;
+        }
+    </style>
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+    <div class="container-fluid form-background">
+        <img src="~/images/bg/1.png" alt="">
+        <div class="container">
+            <div class="form-border-sign">
+                <h3>Đăng Nhập</h3>
+                <div class="form-group ">
+                    <strong>Tên đăng nhập</strong>
+                    <input type="text" class="form-control"
+                           placeholder="Tên đăng nhập" id="userName" required>
+                </div>
+                <div class="form-group">
+                    <strong>Mật khẩu:</strong>
+                    <div class="input-group password-group">
+                        <input type="password" id="password" class="form-control"
+                               placeholder="mật khẩu..." required>
+                    </div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginbtn" style="color: white"> Đăng Nhập</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/js/Account/Login.js"></script>

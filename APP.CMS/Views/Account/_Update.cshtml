@@ -1,0 +1,103 @@
+﻿@using APP.MODELS
+@using Portal.Utils
+@model APP.MODELS.Accounts
+<div id="frmUpdate" class="form-horizontal">
+    <input hidden value="@Model.Id" id="txtId" />
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên tài khoản</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" value="@Model.UserName" required class="form-control" id="txtName" placeholder="Tên tài khoản">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Mật khẩu</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" value="@Model.Password" required class="form-control" id="txtPassword">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên nhân viên</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select class="form-control" required id="txtEmployee">
+                    @{
+                        var listEmploy = ViewData["listEmployee"] as List<APP.MODELS.Employees>;
+                        if (listEmploy != null)
+                        {
+                            foreach (var i in listEmploy)
+                            {
+                                if (i.Id == Model.EmployeeId)
+                                {
+                                    <option selected value="@i.Id">@i.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            }
+
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
+            <div class="col-sm-4 col-md-4 col-6">
+                @{
+                    if (Model.Status == (byte)StatusEnum.Active)
+                    {
+                        <input id="ckbStatus" type="checkbox" checked class="custom-control">
+                    }
+                    else
+                    {
+                        <input id="ckbStatus" type="checkbox" class="custom-control">
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label required class="col-sm-3 col-md-3 col-6">Chọn nhóm quyền</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select class="form-control" multiple required id="txtRole">
+                    @{
+                        var listRole = ViewData["listRole"] as List<APP.MODELS.Roles>;
+                        if (listRole != null)
+                        {
+                            foreach (var i in listRole)
+                            {
+                                if (Model.ListRole != null)
+                                {
+                                    foreach (var item in Model.ListRole)
+                                    {
+                                        if (i.Id == item)
+                                        {
+                                            <option selected value="@i.Id">@i.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@i.Id">@i.Name</option>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@i.Id">@i.Name</option>
+                                }
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Account/Update.js"></script>
