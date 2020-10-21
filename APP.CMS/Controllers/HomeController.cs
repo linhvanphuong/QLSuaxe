@@ -11,32 +11,44 @@ using Microsoft.Extensions.Logging;
 using APP.MODELS;
 using Portal.Utils;
 using APP.CMS.Models;
+using APP.MANAGER;
 
 namespace APP.CMS.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IConfiguration _config;
+        private readonly IMotorLiftsManager _motorLiftsManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
 
-        public HomeController(IConfiguration config, ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor)
+        public HomeController(IConfiguration config, ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor,
+                              IMotorLiftsManager motorLiftsManager)
         {
             this._config = config;
+            this._motorLiftsManager = motorLiftsManager;
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
         }
 
         [CustomAuthen("NoCheck")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var account = Portal.Utils.SessionExtensions.Get<Accounts>(_session, Portal.Utils.SessionExtensions.SessionAccount);
-            if (account != null)
+            try
             {
-                return View();
+                var account = Portal.Utils.SessionExtensions.Get<Accounts>(_session, Portal.Utils.SessionExtensions.SessionAccount);
+                if (account != null)
+                {
+                    ViewData["listMotorLift"] = await _motorLiftsManager.Get_List();
+                    return View();
+                }
+                return RedirectToAction("dang-nhap", "tai-khoan");
             }
-            return RedirectToAction("dang-nhap", "tai-khoan");
+            catch(Exception ex)
+            {
+                return RedirectToAction("dang-nhap", "tai-khoan");
+            }      
         }
 
         public IActionResult Privacy()

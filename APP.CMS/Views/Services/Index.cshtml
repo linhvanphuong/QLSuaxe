@@ -1,0 +1,45 @@
+﻿@using Portal.Utils;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row" id="frmFilter">
+                    <div class="form-group col-sm-4 col-md-4 col-12">
+                        <input id="txtName" type="text" placeholder="Tên dịch vụ" class="form-control" />
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2 col-12">
+                        <select id="drStatus" class="form-control">
+                            @{
+                                foreach (int i in Enum.GetValues(typeof(StatusEnum)))
+                                {
+                                    <option value="@i">@Extensions.GetEnumDescription((StatusEnum)i)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-6">
+                        <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-6">
+                        @*@{
+                            if ((int)ViewData[nameof(RolesEnum.Create)] == 1)
+                            {*@
+                        <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
+                        @*}
+                            }*@
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div id="dtTable">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Common/Normal.js"></script>
+<script src="~/js/Service/Index.js"></script>
+

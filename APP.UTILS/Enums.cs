@@ -30,6 +30,24 @@ namespace Portal.Utils
         [Description("Xóa")]
         Delete
     }
+    public enum MotorLiftEnum
+    {
+        [Description("Chờ")]
+        Active = 1,
+        [Description("Đang sử dụng")]
+        Acting = 2,
+        [Description("Khóa")]
+        Unactive = 3,
+        [Description("Tất cả trạng thái")]
+        All = 4
+    }
+    public enum BillStatus
+    {
+        [Description("Phiếu tạm tính")]
+        Temporary = 1,
+        [Description("Hóa đơn")]
+        Bill = 2
+    }
 }
 
 

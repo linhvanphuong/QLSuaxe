@@ -20,6 +20,14 @@ namespace APP.REPOSITORY
         public IJobPositionsRepository JobPositionsRepository { get; }
         public IMotorManufactureRepository MotorManufactureRepository { get; }
         public IMotorTypesRepository MotorTypesRepository { get; }
+        public IServicesRepository ServicesRepository { get; }
+        public IMotorLiftsRepository MotorLiftsRepository { get; }
+        public ISupplierRepository SupplierRepository { get; }
+        public ICustomersRepository CustomersRepository { get; }
+        public IAccessoriesRepository AccessoriesRepository { get; set; }
+        public ITemporaryBill_ServiceRepository TemporaryBill_ServiceRepository { get; set; }
+        public ITemporaryBillRepository TemporaryBillRepository { get; set; }
+        public ITemporaryBill_AccesaryRepository TemporaryBill_AccesaryRepository { get; set; }
 
         Task CreateTransaction();
         Task Commit();
@@ -44,6 +52,14 @@ namespace APP.REPOSITORY
             JobPositionsRepository = new JobPositionsRepository(_dbContext);
             MotorManufactureRepository = new MotorManufactureRepository(_dbContext);
             MotorTypesRepository = new MotorTypesRepository(_dbContext);
+            ServicesRepository = new ServicesRepository(_dbContext);
+            MotorLiftsRepository = new MotorLiftsRepository(_dbContext);
+            SupplierRepository = new SupplierRepository(_dbContext);
+            CustomersRepository = new CustomersRepository(_dbContext);
+            AccessoriesRepository = new AccessoriesRepository(_dbContext);
+            TemporaryBill_ServiceRepository = new TemporaryBill_ServiceRepository(_dbContext);
+            TemporaryBillRepository = new TemporaryBillRepository(_dbContext);
+            TemporaryBill_AccesaryRepository = new TemporaryBill_AccesaryRepository(_dbContext);
         }
         #region Transaction
         public async Task CreateTransaction()
@@ -79,9 +95,14 @@ namespace APP.REPOSITORY
         public IJobPositionsRepository JobPositionsRepository { get; }
         public IMotorManufactureRepository MotorManufactureRepository { get; }
         public IMotorTypesRepository MotorTypesRepository { get; }
-
-
-
+        public IServicesRepository ServicesRepository { get; }
+        public IMotorLiftsRepository MotorLiftsRepository { get; }
+        public ISupplierRepository SupplierRepository { get; }
+        public ICustomersRepository CustomersRepository { get; }
+        public IAccessoriesRepository AccessoriesRepository { get; set; }
+        public ITemporaryBill_ServiceRepository TemporaryBill_ServiceRepository { get; set; }
+        public ITemporaryBillRepository TemporaryBillRepository { get; set; }
+        public ITemporaryBill_AccesaryRepository TemporaryBill_AccesaryRepository { get; set; }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

@@ -30,6 +30,12 @@ namespace APP.DependencyInjection
             services.AddTransient<IRoleManager, RoleManager>();
             services.AddTransient<IMotorManufactureManager, MotorManufactureManager>();
             services.AddTransient<IMotorTypesManager, MotorTypesManager>();
+            services.AddTransient<IServicesManager, ServicesManager>();
+            services.AddTransient<IMotorLiftsManager, MotorLiftsManager>();
+            services.AddTransient<ISupplierManager, SupplierManager>();
+            services.AddTransient<ICustomersManager, CustomersManager>();
+            services.AddTransient<IAccessoriesManager, AccessoriesManager>();
+            services.AddTransient<ITemporaryBillManager, TemporaryBillManager>();
         }
     }
 }

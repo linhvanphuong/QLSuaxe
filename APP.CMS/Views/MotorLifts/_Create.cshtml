@@ -1,0 +1,38 @@
+﻿@using Portal.Utils;
+<div id="frmCreate" class="form-horizontal">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên quầy sửa</label>
+            <div class="col-sm-7 col-md-7 col-12">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên quầy sửa">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Ghi chú</label>
+            <div class="col-sm-7 col-md-7 col-12">
+                <input type="text" class="form-control" id="txtNote" placeholder="Ghi chú">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
+            <div class="col-sm-4 col-md-4 col-6">
+                <select id="drStatus" class="form-control">
+                    @{
+                        foreach (int i in Enum.GetValues(typeof(MotorLiftEnum)))
+                        {
+                            if (i != (byte)MotorLiftEnum.All)
+                            {
+                                <option value="@i">@Extensions.GetEnumDescription((MotorLiftEnum)i)</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/MotorLift/Create.js"></script>

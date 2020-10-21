@@ -31,5 +31,13 @@ namespace APP.MODELS
         public DbSet<Account_Roles> Account_Roles { get; set; }
         public DbSet<MotorManufacture> MotorManufacture { get; set; }
         public DbSet<MotorTypes> MotorTypes { get; set; }
+        public DbSet<Services> Services { get; set; }
+        public DbSet<MotorLifts> MotorLifts { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Customers> Customers { get; set; }
+        public DbSet<Accessories> Accessories { get; set; }
+        public DbSet<TemporaryBill> TemporaryBill { get; set; }
+        public DbSet<TemporaryBill_Accesary> TemporaryBill_Accesary { get; set; }
+        public DbSet<TemporaryBill_Service> TemporaryBill_Service { get; set; }
     }
 }

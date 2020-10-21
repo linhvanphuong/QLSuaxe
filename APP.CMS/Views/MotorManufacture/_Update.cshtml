@@ -14,8 +14,8 @@
         <div class="row">
             <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
             <div class="col-sm-4 col-md-4 col-6">
-                @{ 
-                    if(Model.Status == (byte)StatusEnum.Active)
+                @{
+                    if (Model.Status == (byte)StatusEnum.Active)
                     {
                         <input id="ckbStatus" type="checkbox" checked class="custom-control">
                     }
@@ -25,15 +25,15 @@
                     }
                 }
                 @*@{
-                    if ((int)ViewData[nameof(RolesEnum.Approval)] == 1)
-                    {
-                        <input id="ckbStatus" type="checkbox" class="custom-control">
-                    }
-                    else
-                    {
-                        <input id="ckbStatus" disabled type="checkbox" class="custom-control">
-                    }
-                }*@
+                        if ((int)ViewData[nameof(RolesEnum.Approval)] == 1)
+                        {
+                            <input id="ckbStatus" type="checkbox" class="custom-control">
+                        }
+                        else
+                        {
+                            <input id="ckbStatus" disabled type="checkbox" class="custom-control">
+                        }
+                    }*@
             </div>
         </div>
     </div>

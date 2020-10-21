@@ -1,0 +1,45 @@
+﻿
+@model List<APP.MODELS.MotorLifts>
+@using Portal.Utils
+<table style="width:100%;height:100%;" id="tblDisplay" class=" table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:10%;">STT</th>
+            <th style="width:40%">Tên quầy sửa</th>
+            <th style="text-align:center;width:20%">Trạng thái</th>
+            <th style="text-align:center;width:10%">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        //@foreach (var item in Model)
+        {
+            var item = Model[i];
+        <tr id="row_@item.Id">
+            <td style="text-align:center;width:10%;">@(i+1)</td>
+            <td style="width:50%;">@item.Name</td>
+            <td style="text-align:center;width:20%;">
+                @{
+                    if (item.Status == (byte)MotorLiftEnum.Active)
+                    {
+                        <p>@Extensions.GetEnumDescription(MotorLiftEnum.Active)</p>
+                    }
+                    else if (item.Status == (byte)MotorLiftEnum.Acting)
+                    {
+                        <p>@Extensions.GetEnumDescription(MotorLiftEnum.Acting)</p>
+                    }
+                    else if (item.Status == (byte)MotorLiftEnum.Unactive)
+                    {
+                        <p>@Extensions.GetEnumDescription(MotorLiftEnum.Unactive)</p>
+                    }
+                }
+            </td>
+            <td style="text-align:center;width:10%;">
+                <a class="btn-update" href="javascript:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script src="~/js/MotorLift/List.js"></script>

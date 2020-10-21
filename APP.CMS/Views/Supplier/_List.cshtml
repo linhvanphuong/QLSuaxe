@@ -1,0 +1,64 @@
+﻿
+@model List<APP.MODELS.Supplier>
+@using Portal.Utils
+<table style="width:100%;height:100%;" id="tblDisplay" class=" table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:20%;">STT</th>
+            <th style="width:70%">Tên nhà cung cấp</th>
+            <th style="text-align:center;width:10%">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        //@foreach (var item in Model)
+        {
+            var item = Model[i];
+            <tr id="row_@item.Id">
+                <td style="text-align:center;width:10%;">@(i+1)</td>
+                <td style="width:50%;">@item.Name</td>
+                @*<td style="text-align:center;width:10%;">
+                    @{
+                        if ((int)ViewData[nameof(RolesEnum.Approval)] == 1)
+                        {
+                            @if (@item.Status == (byte)StatusEnum.Active)
+                            {
+                                <input class="checkStatus" value="@item.Id" type="checkbox" checked="checked" />
+                            }
+                            @if (@item.Status == (byte)StatusEnum.Unactive)
+                            {
+                                <input class="checkStatus" value="@item.Id" type="checkbox" />
+                            }
+                        }
+                        else
+                        {
+                            @if (@item.Status == (byte)StatusEnum.Active)
+                            {
+                                <input class="checkStatus" disabled value="@item.Id" type="checkbox" checked="checked" />
+                            }
+                            @if (@item.Status == (byte)StatusEnum.Unactive)
+                            {
+                                <input class="checkStatus" disabled value="@item.Id" type="checkbox" />
+                            }
+                        }
+                    }
+                </td>*@
+                <td style="text-align:center;width:10%;">
+                    @*@if (@item.Status == (byte)StatusEnum.Removed)
+                    {
+                        <a href="javascipt:;" class="btn-delete" onclick="restorn(@item.Id)"><i class="fas fa-trash-restore-alt"></i></a>
+                    }
+                    else
+                    {
+                        <a href="javascipt:;" class="btn-delete" onclick="deleteItem(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                        <a class="btn-update" href="javascipt:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                    }*@
+                    <a class="btn-update" href="javascript:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                    <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/js/Supplier/List.js"></script>

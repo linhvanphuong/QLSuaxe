@@ -1,0 +1,48 @@
+﻿@model APP.MODELS.MotorLifts
+@using Portal.Utils
+    <div id="frmUpdate" class="form-horizontal">
+        <input hidden value="@Model.Id" type="text" id="txtId" />
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6" required>Tên quầy sửa</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <input type="text" value="@Model.Name" required class="form-control" id="txtName" placeholder="Tên quầy sửa">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Ghi chú</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <input type="text" value="@Model.Note" class="form-control" id="txtNote" placeholder="Ghi chú">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
+                <div class="col-sm-4 col-md-4 col-6">
+                    <select id="drStatus" class="form-control">
+                        @{
+                            foreach (int i in Enum.GetValues(typeof(MotorLiftEnum)))
+                            {
+                                if (i == (int)Model.Status)
+                                {
+                                    <option selected value="@i">@Extensions.GetEnumDescription((MotorLiftEnum)i)</option>
+                                }
+                                else
+                                {
+                                    if (i != (byte)MotorLiftEnum.All)
+                                    {
+                                        <option value="@i">@Extensions.GetEnumDescription((MotorLiftEnum)i)</option>
+                                    }
+                                }
+
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="~/js/MotorLift/Update.js"></script>

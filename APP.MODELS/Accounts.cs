@@ -34,5 +34,7 @@ namespace APP.MODELS
         public List<Permissions> ListPermissions { get; set; }
         [NotMapped]
         public List<Menus> ListMenu { get; set; }
+        [NotMapped]
+        public string EmployeeName { get; set; }
     }
 }

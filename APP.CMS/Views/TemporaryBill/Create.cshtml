@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewData["Title"] = "Phiếu tạm tính";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APP.MODELS
+@using Portal.Utils;
+    <div id="frmCreate" class="form-horizontal">
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Quầy sửa</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <select id="drMotorLift" class="form-control">
+                        @{ 
+                            var listMotorLift = ViewData["listMotorLift"] as List<APP.MODELS.MotorLifts>;
+                            if (listMotorLift != null)
+                            {
+                                <option value="0">Chọn</option>
+                                foreach(var i in listMotorLift)
+                                {
+                                    <option value="@i.Id">
+                                        @i.Name
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Khách hàng</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <select id="drCustomer" class="form-control">
+                        @{
+                            var listCustomer = ViewData["listCustomer"] as List<APP.MODELS.Customers>;
+                            if (listCustomer != null)
+                            {
+                                <option value="0">Chọn</option>
+                                foreach (var i in listCustomer)
+                                {
+                                    <option value="@i.Id">
+                                        @i.Name
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Loại xe</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <select id="drMotorType" class="form-control">
+                        @{
+                            var listMotorType = ViewData["listMotorType"] as List<APP.MODELS.MotorTypes>;
+                            if (listMotorType != null)
+                            {
+                                <option value="0">Chọn</option>
+                                foreach (var i in listMotorType)
+                                {
+                                    <option value="@i.Id">
+                                        @i.Name
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Giờ vào</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    @{ 
+                        string txtTimeIn = ViewData["timeIn"] as string;
+                    }
+                    <input id="txtTimeIn" readonly value="@txtTimeIn" type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Loại phiếu</label>
+                <div class="col-sm-4 col-md-4 col-12">
+                    <input id="txtStatus" readonly value="@Extensions.GetEnumDescription(BillStatus.Temporary)" data-id="@((byte)BillStatus.Temporary)" type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Ghi chú</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <textarea id="txtNote" class="form-control" ></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Lễ tân</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    @{
+                        var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
+                    }
+                    <input id="txtCreatedBy" readonly value="@account.EmployeeName" data-id="@account.Id" type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Phụ tùng</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <select id="listAccessories" class="form-control">
+                        @{
+                            var listAccessories = ViewData["listAccessories"] as List<APP.MODELS.Accessories>;
+                            if (listAccessories != null)
+                            {
+                                <option value="0">Chọn</option>
+                                foreach (var i in listAccessories)
+                                {
+                                    <option value="@i.Id">
+                                        @i.Name
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="listAccesaries" class="col-sm-4 col-md-4 col-12">
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 col-md-3 col-6">Dịch vụ</label>
+                <div class="col-sm-7 col-md-7 col-12">
+                    <select id="listServices" class="form-control">
+                        @{
+                            var listServices = ViewData["listServices"] as List<APP.MODELS.Services>;
+                            if (listServices != null)
+                            {
+                                <option value="0">Chọn</option>
+                                foreach (var i in listServices)
+                                {
+                                    <option value="@i.Id">
+                                        @i.Name
+                                    </option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="listServices" class="col-sm-4 col-md-4 col-12">
+
+        </div>
+<div class="form-horizontal">
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-danger mr-1" id="btnExist">Trở về</button> <button class="btn btn-success" id="btnCreate">Lưu</button>
+    </div>
+</div>
+<script src="~/js/Bill/Create.js"></script>

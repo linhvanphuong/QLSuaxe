@@ -1,8 +1,68 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using APP.MODELS
+@using Portal.Utils 
+<div class="row">
+    @{ 
+        var listMotorLift = ViewData["listMotorLift"] as List<APP.MODELS.MotorLifts>;
+        if (listMotorLift != null)
+        {
+            @*foreach(var i in listMotorLift)
+            {
+                if(i.Status == (byte)MotorLiftEnum.Active)
+                {
+                    <div style="height:100px;border:1px solid #FFFF" class="col-sm-4 col-md-4 col-12 mr-1 mb-1 bg-secondary">
+                        <p>@i.Name</p>
+                    </div>
+                }
+                if (i.Status == (byte)MotorLiftEnum.Acting)
+                {
+                    <div style="height:100px;border:1px solid #FFFF" class="col-sm-4 col-md-4 col-12 mr-1 mb-1 bg-success">
+                        <p>@i.Name</p>
+                    </div>
+                }
+                if (i.Status == (byte)MotorLiftEnum.Unactive)
+                {
+                    <div style="height:100px;border:1px solid #FFFF" class="col-sm-4 col-md-4 col-12 mr-1 mb-1 bg-danger">
+                        <p>@i.Name</p>
+                    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+                }
+            }*@
+            foreach(var i in listMotorLift)
+            {
+               <div id="motorLift" class="col-sm-4 col-md-4 col-4 mb-1 mb-md-1 mr-1 mr-md-1 bg-white border-2 border-secondary">
+                   <div class="col-sm-12 col-md-12 col-12 border-bottom border-light">
+                       <b style="font-size:1.3em" class="text-primary">@i.Name</b>
+                   </div> 
+                   <div class="col-sm-12 col-md-12 col-12 border-bottom border-light">
+                       @{
+                           if (i.Status == (byte)MotorLiftEnum.Active)
+                           {
+                               <p id="mtStatus" class="bg-secondary">Trạng thái: @Extensions.GetEnumDescription((MotorLiftEnum.Active))</p>
+                           }
+                           else if (i.Status == (byte)MotorLiftEnum.Acting)
+                           {
+                               <p id="mtStatus" class="bg-success">Trạng thái: @Extensions.GetEnumDescription((MotorLiftEnum.Acting))</p>
+                           }
+                           else if (i.Status == (byte)MotorLiftEnum.Unactive)
+                           {
+                               <p id="mtStatus" class="bg-danger">Trạng thái: @Extensions.GetEnumDescription((MotorLiftEnum.Unactive))</p>
+                           }
+                       }
+                   </div>
+                   <div class="col-sm-12 col-md-12 col-12 border-bottom border-light">
+                       <p>Giờ vào : </p>
+                   </div>
+                   <div class="col-sm-12 col-md-12 col-12 border-bottom border-light">
+                       <p>Số phiếu : 15</p>
+                   </div>
+                   <div class="col-sm-12 col-md-12 col-12 border-bottom border-light">
+                       <p>Khách hàng : Phương Văn Linh </p>
+                   </div>
+               </div>
+            }
+        }
+    }   
 </div>
