@@ -33,9 +33,9 @@
                                 <option value="0">Không có</option>
                                 foreach (var i in listMenu)
                                 {
-                                    if (i.ParentId == Model.ParentId)
+                                    if (i.Id == Model.ParentId)
                                     {
-                                        <option value="@i.Id">@i.Name</option>
+                                        <option selected value="@i.Id">@i.Name</option>
                                     }
                                     else
                                     {
@@ -50,9 +50,7 @@
                                 {
                                     <option value="@i.Id">@i.Name</option>
                                 }
-
                             }
-
                         }
                     }
                 </select>

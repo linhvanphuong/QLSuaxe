@@ -1,0 +1,30 @@
+﻿
+<div id="frmCreate" class="form-horizontal">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên hãng xe</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên hãng xe">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label for="ckbStatus" class="col-sm-3 col-md-3 col-6">Trạng thái</label>
+            <div class="col-sm-4 col-md-4 col-6">
+                @*@{
+                    if ((int)ViewData[nameof(RolesEnum.Approval)] == 1)
+                    {
+                        <input id="ckbStatus" type="checkbox" class="custom-control">
+                    }
+                    else
+                    {
+                        <input id="ckbStatus" disabled type="checkbox" class="custom-control">
+                    }
+                }*@
+                <input id="ckbStatus" type="checkbox" class="custom-control">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/MotorManufac/Create.js"></script>

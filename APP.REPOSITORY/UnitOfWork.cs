@@ -18,6 +18,8 @@ namespace APP.REPOSITORY
         public IEmployeesRepository EmployeesRepository { get; }
         public IMenusRepository MenusRepository { get; }
         public IJobPositionsRepository JobPositionsRepository { get; }
+        public IMotorManufactureRepository MotorManufactureRepository { get; }
+        public IMotorTypesRepository MotorTypesRepository { get; }
 
         Task CreateTransaction();
         Task Commit();
@@ -40,6 +42,8 @@ namespace APP.REPOSITORY
             EmployeesRepository = new EmployeesRepository(_dbContext);
             MenusRepository = new MenusRepository(_dbContext);
             JobPositionsRepository = new JobPositionsRepository(_dbContext);
+            MotorManufactureRepository = new MotorManufactureRepository(_dbContext);
+            MotorTypesRepository = new MotorTypesRepository(_dbContext);
         }
         #region Transaction
         public async Task CreateTransaction()
@@ -73,6 +77,8 @@ namespace APP.REPOSITORY
         public IEmployeesRepository EmployeesRepository { get; }
         public IMenusRepository MenusRepository { get; }
         public IJobPositionsRepository JobPositionsRepository { get; }
+        public IMotorManufactureRepository MotorManufactureRepository { get; }
+        public IMotorTypesRepository MotorTypesRepository { get; }
 
 
 

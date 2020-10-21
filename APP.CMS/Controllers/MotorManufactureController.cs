@@ -10,16 +10,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace APP.CMS.Controllers
 {
-    [Route("vi-tri-cong-viec")]
-    public class JobPositionsController : Controller
+    [Route("hang-xe")]
+    public class MotorManufactureController : Controller
     {
-        private readonly IJobPositionsManager _jobPositionsManager;
+        private readonly IMotorManufactureManager _motorManufactureManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
-
-        public JobPositionsController(IJobPositionsManager jobPositionsManager, IHttpContextAccessor httpContextAccessor)
+        public MotorManufactureController(IMotorManufactureManager motorManufactureManager, IHttpContextAccessor httpContextAccessor)
         {
-            this._jobPositionsManager = jobPositionsManager;
+            this._motorManufactureManager = motorManufactureManager;
             this._httpContextAccessor = httpContextAccessor;
         }
         [CustomAuthen]
@@ -28,7 +27,7 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                var data = await _jobPositionsManager.Get_List(name, status);
+                var data = await _motorManufactureManager.Get_List(name, status);
                 return PartialView("_List", data);
             }
             catch (Exception ex)
@@ -48,17 +47,17 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                var data = await _jobPositionsManager.Find_By_Id(id);
-                return PartialView("_Update",data);
+                var data = await _motorManufactureManager.Find_By_Id(id);
+                return PartialView("_Update", data);
             }
             catch (Exception ex)
             {
                 return Json(new { Result = false, Message = ex.Message });
-            }  
+            }
         }
         [CustomAuthen]
         [HttpPost("create-or-update")]
-        public async Task<IActionResult> Create_Or_Update(JobPositions inputModel)
+        public async Task<IActionResult> Create_Or_Update(MotorManufacture inputModel)
         {
             try
             {
@@ -68,16 +67,16 @@ namespace APP.CMS.Controllers
                 }
                 if (inputModel.Id == 0)
                 {
-                    await _jobPositionsManager.Create(inputModel);
+                    await _motorManufactureManager.Create(inputModel);
                     return Json(new { Result = true, Message = "Thêm mới dữ liệu thành công" });
                 }
                 else
                 {
-                    await _jobPositionsManager.Update(inputModel);
+                    await _motorManufactureManager.Update(inputModel);
                     return Json(new { Result = true, Message = "Cập nhật dữ liệu thành công" });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new { Result = false, Message = ex.Message });
             }
@@ -88,7 +87,7 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                await _jobPositionsManager.Delete(id);
+                await _motorManufactureManager.Delete(id);
                 return Json(new { Result = true });
             }
             catch (Exception ex)

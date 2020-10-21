@@ -29,5 +29,7 @@ namespace APP.MODELS
         public DbSet<Permissions> Permissions { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Account_Roles> Account_Roles { get; set; }
+        public DbSet<MotorManufacture> MotorManufacture { get; set; }
+        public DbSet<MotorTypes> MotorTypes { get; set; }
     }
 }

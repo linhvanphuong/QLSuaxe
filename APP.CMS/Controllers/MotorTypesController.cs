@@ -10,25 +10,26 @@ using Microsoft.AspNetCore.Http;
 
 namespace APP.CMS.Controllers
 {
-    [Route("vi-tri-cong-viec")]
-    public class JobPositionsController : Controller
+    [Route("loai-xe")]
+    public class MotorTypesController : Controller
     {
-        private readonly IJobPositionsManager _jobPositionsManager;
+        private readonly IMotorTypesManager _motorTypesManager;
+        private readonly IMotorManufactureManager _motorManufactureManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
-
-        public JobPositionsController(IJobPositionsManager jobPositionsManager, IHttpContextAccessor httpContextAccessor)
+        public MotorTypesController(IMotorTypesManager motorTypesManager, IMotorManufactureManager motorManufactureManager, IHttpContextAccessor httpContextAccessor)
         {
-            this._jobPositionsManager = jobPositionsManager;
+            this._motorTypesManager = motorTypesManager;
+            this._motorManufactureManager = motorManufactureManager;
             this._httpContextAccessor = httpContextAccessor;
         }
         [CustomAuthen]
         [HttpGet("get-list")]
-        public async Task<IActionResult> Get_List(string name, byte status)
+        public async Task<IActionResult> Get_List(string name, byte status,long manufactureId)
         {
             try
             {
-                var data = await _jobPositionsManager.Get_List(name, status);
+                var data = await _motorTypesManager.Get_List(name, status, manufactureId);
                 return PartialView("_List", data);
             }
             catch (Exception ex)
@@ -40,7 +41,15 @@ namespace APP.CMS.Controllers
         [HttpGet("tao-moi")]
         public async Task<IActionResult> Create()
         {
-            return PartialView("_Create");
+            try
+            {
+                ViewData["listManufac"] = await _motorManufactureManager.Get_List("", (byte)StatusEnum.Active);
+                return PartialView("_Create");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = false, Message = ex.Message });
+            }
         }
         [CustomAuthen(nameof(PermissionEnum.Update))]
         [HttpGet("cap-nhat")]
@@ -48,17 +57,18 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                var data = await _jobPositionsManager.Find_By_Id(id);
-                return PartialView("_Update",data);
+                var data = await _motorTypesManager.Find_By_Id(id);
+                ViewData["listManufac"] = await _motorManufactureManager.Get_List("", (byte)StatusEnum.Active);
+                return PartialView("_Update", data);
             }
             catch (Exception ex)
             {
                 return Json(new { Result = false, Message = ex.Message });
-            }  
+            }
         }
         [CustomAuthen]
         [HttpPost("create-or-update")]
-        public async Task<IActionResult> Create_Or_Update(JobPositions inputModel)
+        public async Task<IActionResult> Create_Or_Update(MotorTypes inputModel)
         {
             try
             {
@@ -68,16 +78,16 @@ namespace APP.CMS.Controllers
                 }
                 if (inputModel.Id == 0)
                 {
-                    await _jobPositionsManager.Create(inputModel);
+                    await _motorTypesManager.Create(inputModel);
                     return Json(new { Result = true, Message = "Thêm mới dữ liệu thành công" });
                 }
                 else
                 {
-                    await _jobPositionsManager.Update(inputModel);
+                    await _motorTypesManager.Update(inputModel);
                     return Json(new { Result = true, Message = "Cập nhật dữ liệu thành công" });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new { Result = false, Message = ex.Message });
             }
@@ -88,7 +98,7 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                await _jobPositionsManager.Delete(id);
+                await _motorTypesManager.Delete(id);
                 return Json(new { Result = true });
             }
             catch (Exception ex)
@@ -106,6 +116,7 @@ namespace APP.CMS.Controllers
             //ViewData[nameof(RolesEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(RolesEnum.Create))) > 0 ? 1 : 0;
             //ViewData[nameof(RolesEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(RolesEnum.Update))) > 0 ? 1 : 0;
             //ViewData[nameof(RolesEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(RolesEnum.Delete))) > 0 ? 1 : 0;
+            ViewData["listManufac"] = await _motorManufactureManager.Get_List("", (byte)StatusEnum.Active);
             return View();
         }
     }
