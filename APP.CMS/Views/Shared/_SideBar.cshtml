@@ -46,32 +46,48 @@
 
                         var menuChild = data.Where(c => c.ParentId == item.Id).ToList().OrderBy(x => x.Order).ToList();
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link" style="border-bottom: 1px solid;">
+                            @{ 
                                 @if (item.Url.Contains("he-thong"))
                                 {
-                                    <i class="nav-icon fas fa-users-cog"></i>
+                                    <a href="#" class="nav-link" style="border-bottom: 1px solid;">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>@item.Name</p>
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
                                 }
-                                else if (item.Url.Contains("/nhan-vien"))
+                                else if (item.Url.Contains("danh-muc"))
                                 {
-                                    <i class="nav-icon far fa-newspaper"></i>
+                                    <a href="#" class="nav-link" style="border-bottom: 1px solid;">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>@item.Name</p>
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
                                 }
-                                else if (item.Url.Contains("/sua-xe"))
+                                else if (item.Url.Contains("hoa-don"))
                                 {
-                                    <i class="nav-icon fas fa-folder-plus"></i>
+                                    <a href="#" class="nav-link" style="border-bottom: 1px solid;">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>@item.Name</p>
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
                                 }
-                                else if (item.Url.Contains("van-ban"))
+                                else if (item.Url.Contains("bao-cao-thong-ke"))
                                 {
-                                    <i class="nav-icon fas fa-file-alt"></i>
+                                    <a href="#" class="nav-link" style="border-bottom: 1px solid;">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>@item.Name</p>
+                                        <i class="right fas fa-angle-left"></i>
+                                    </a>
                                 }
                                 else
                                 {
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <a href="@item.Url" class="nav-link" style="border-bottom: 1px solid;">
+                                        <i class="nav-icon fas fa-users-cog"></i>
+                                        <p>@item.Name</p>
+                                    </a>
                                 }
-                                <p>
-                                    @item.Name
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
+
+                            }
                             @{
                                 if (menuChild.Count() > 0)
                                 {

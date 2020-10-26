@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('select').select2();
-    $('select').val('');
+    //$('select').select2();
+    //$('select').val('');
 
 })
