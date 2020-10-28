@@ -1,0 +1,67 @@
+﻿@using APP.MODELS
+<div id="frmCreate_MotorType" class="form-horizontal">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên loại xe</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên loại xe">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label required class="col-sm-3 col-md-3 col-6">Hãng xe</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <select required id="txtManufac" class="form-control">
+                    @{
+                        var listManufac = ViewData["listManufac"] as List<APP.MODELS.MotorManufacture>;
+                        if (listManufac != null)
+                        {
+                            foreach (var i in listManufac)
+                            {
+                                <option value="@i.Id">@i.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        addRequired($('#frmCreate_MotorType'));
+    })
+    $('#modal-form').find('#btnSave').off('click').on('click', function (e) {
+        e.preventDefault();
+        if (ValidateForm($('#frmCreate_MotorType'))) {
+            return;
+        }
+        var model = {
+            Name: $('#frmCreate_MotorType').find('#txtName').val(),
+            MotorManufactureID: $('#frmCreate_MotorType').find('#txtManufac').val(),
+            Status:  1 
+        }
+        $.ajax({
+            url: "/loai-xe/create-or-update",
+            method: "POST",
+            data: model
+            , success: function (response) {
+                hideLoading()
+                if (response.result) {
+                    // datasource = response.data
+                    showAlert(response.message, 2)
+                    $('#frmCreate').find('#drMotorType').append($('<option>', {
+                        value: response.data.id,
+                        text: response.data.name
+                    })); 
+                    hideContentModal()
+
+                } else {
+                    showAlert(response.message)
+                }
+            }
+        });
+    })
+</script>
+

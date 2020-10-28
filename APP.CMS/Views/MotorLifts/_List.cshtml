@@ -35,8 +35,16 @@
                 }
             </td>
             <td style="text-align:center;width:10%;">
-                <a class="btn-update" href="javascript:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
-                <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                @{
+                    if ((int)ViewData[nameof(PermissionEnum.Update)] == 1)
+                    {
+                        <a class="btn-update" href="javascript:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                    }
+                    if ((int)ViewData[nameof(PermissionEnum.Delete)] == 1)
+                    {
+                        <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                    }
+                }               
             </td>
         </tr>
         }

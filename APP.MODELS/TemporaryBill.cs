@@ -35,9 +35,17 @@ namespace APP.MODELS
         [Column("UpdatedTime")]
         public DateTime? UpdatedTime { get; set; }
         [NotMapped]
+        public string CustomerName { get; set; }
+        [NotMapped]
+        public string CustomerPhone { get; set; }
+        [NotMapped]
         public List<long> ListServices { get; set; }
         [NotMapped]
         public List<long> ListAccessories { get; set; }
+        [NotMapped]
+        public List<TemporaryBill_Service> ListBill_Services { get; set; }
+        [NotMapped]
+        public List<TemporaryBill_Accesary> ListBill_Accessories { get; set; }
 
     }
 }

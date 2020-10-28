@@ -17,7 +17,7 @@ namespace APP.MODELS
         [Column("Price")]
         public decimal? Price { get; set; }
         [Column("Quantity")]
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
         [Column("Unit")]
         public string Unit { get; set; }
     }

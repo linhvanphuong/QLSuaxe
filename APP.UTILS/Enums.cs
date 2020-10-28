@@ -48,6 +48,13 @@ namespace Portal.Utils
         [Description("Hóa đơn")]
         Bill = 2
     }
+    public enum AccountStatusEnum
+    {
+        [Description("Rảnh")]
+        Active = 1,
+        [Description("Bận")]
+        Acting = 2,
+    }
 }
 
 

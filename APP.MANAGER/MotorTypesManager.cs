@@ -10,7 +10,7 @@ namespace APP.MANAGER
 {
     public interface IMotorTypesManager
     {
-        Task Create(MotorTypes inputModel);
+        Task<MotorTypes> Create(MotorTypes inputModel);
         Task Update(MotorTypes inputModel);
         Task Delete(long id);
         Task<List<MotorTypes>> Get_List(string name, byte status,long manufactureId);
@@ -23,12 +23,13 @@ namespace APP.MANAGER
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task Create(MotorTypes inputModel)
+        public async Task<MotorTypes> Create(MotorTypes inputModel)
         {
             try
             {
-                await _unitOfWork.MotorTypesRepository.Add(inputModel);
+                var data = await _unitOfWork.MotorTypesRepository.Add(inputModel);
                 await _unitOfWork.SaveChange();
+                return data;
             }
             catch (Exception ex)
             {

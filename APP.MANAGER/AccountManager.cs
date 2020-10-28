@@ -15,7 +15,9 @@ namespace APP.MANAGER
         Task Update(Accounts inputModel);
         Task Delete(long id);
         Task<List<Accounts>> Get_List(string name, byte status);
+        Task<List<Accounts>> Get_List_KTV();
         Task<Accounts> Find_By_Id(long id);
+        Task<Accounts> Find_By_Id_Ok(long id);
         Task<Accounts> Login(string userName, string password);
         Task<Accounts> UpdateToken(Accounts inputModel);
         Task<Accounts> CheckToken(string token);
@@ -117,6 +119,18 @@ namespace APP.MANAGER
                 throw ex;
             }
         }
+        public async Task<Accounts> Find_By_Id_Ok(long id)
+        {
+            try
+            {
+                var data = await _unitOfWork.AccountsRepository.Get(c => c.Id == id);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         public async Task<List<Accounts>> Get_List(string name, byte status)
         {
@@ -126,6 +140,38 @@ namespace APP.MANAGER
                                                                            && (status == (int)StatusEnum.All || x.Status == (byte)status)
                                                                            ))).ToList();
                 return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<List<Accounts>> Get_List_KTV()
+        {
+            try
+            {
+                var data = (await _unitOfWork.AccountsRepository.FindBy(x=>x.StatusActing == (byte)AccountStatusEnum.Active)).ToList();
+                //list account dang ranh
+                List<Accounts> result = new List<Accounts>();
+                foreach(var i in data)
+                {
+                    if (await _unitOfWork.EmployeesRepository.Get(c => c.Id == i.EmployeeId) != null)
+                    {
+                        i.JobPositionId = (await _unitOfWork.EmployeesRepository.Get(c => c.Id == i.EmployeeId)).JobPositionId;
+                        i.EmployeeName = (await _unitOfWork.EmployeesRepository.Get(c => c.Id == i.EmployeeId)).Name;
+                    }
+                    // list employee theo account
+                }
+                var jobKTV = await _unitOfWork.JobPositionsRepository.Get(c => c.Name.Trim().ToLower().Contains("kỹ thuật"));
+                foreach(var i in data)
+                {
+                     if(i.JobPositionId == jobKTV.Id)
+                     {
+                        var acc = i;
+                        result.Add(i);
+                     }
+                }
+                return result;
             }
             catch (Exception ex)
             {

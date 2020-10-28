@@ -1,0 +1,54 @@
+﻿@model List<APP.MODELS.TemporaryBill>
+@using Portal.Utils
+<table style="width:100%;height:100%;" id="tblDisplay" class=" table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align:center;width:10%;">Mã</th>
+            <th style="width:25%">Tên khách hàng</th>
+            <th style="text-align:center;width:20%">SĐT khách hàng</th>
+            <th style="text-align:center;width:20%">Giờ vào</th>
+            <th style="text-align:center;width:15%">Loại</th>
+            <th style="text-align:center;width:10%">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        //@foreach (var item in Model)
+        {
+            var item = Model[i];
+            <tr id="row_@item.Id">
+                <td style="text-align:center;width:10%;">@item.Id</td>
+                <td style="width:25%;">@item.CustomerName</td>
+                <td style="text-align:center;width:20%">@item.CustomerPhone</td>
+                <td style="text-align:center;width:20%">@item.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                <td style="text-align: center; width: 15%">
+                    @{
+                        if (item.Status == (byte)BillStatus.Temporary)
+                        {
+                            <p>@Extensions.GetEnumDescription(BillStatus.Temporary)</p>
+                        }
+                        else
+                        {
+                            <p>@Extensions.GetEnumDescription(BillStatus.Bill)</p>
+                        }
+                    }
+                </td>
+                <td style="text-align:center;width:10%;">
+                    @*@if (@item.Status == (byte)StatusEnum.Removed)
+                        {
+                            <a href="javascipt:;" class="btn-delete" onclick="restorn(@item.Id)"><i class="fas fa-trash-restore-alt"></i></a>
+                        }
+                        else
+                        {
+                            <a href="javascipt:;" class="btn-delete" onclick="deleteItem(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                            <a class="btn-update" href="javascipt:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                        }*@
+                    <a class="btn-update" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                    <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/js/Bill/List.js"></script>

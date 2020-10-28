@@ -11,7 +11,7 @@ namespace APP.MANAGER
 {
     public interface ICustomersManager
     {
-        Task Create(Customers inputModel);
+        Task<Customers> Create(Customers inputModel);
         Task Update(Customers inputModel);
         Task Delete(long id);
         Task<List<Customers>> Get_List(string name, string phone);
@@ -26,12 +26,13 @@ namespace APP.MANAGER
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Create(Customers inputModel)
+        public async Task<Customers> Create(Customers inputModel)
         {
             try
             {
-                await _unitOfWork.CustomersRepository.Add(inputModel);
+                var data = await _unitOfWork.CustomersRepository.Add(inputModel);
                 await _unitOfWork.SaveChange();
+                return data;
             }
             catch (Exception ex)
             {

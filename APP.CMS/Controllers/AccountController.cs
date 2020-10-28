@@ -16,15 +16,17 @@ namespace APP.CMS.Controllers
         private readonly IEmployeeManager _employeeManager;
         private readonly IAccountManager _accountManager;
         private readonly IRoleManager _roleManager;
+        private readonly IJobPositionsManager _jobPositionsManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
         public AccountController(IEmployeeManager employeeManager, IHttpContextAccessor httpContextAccessor,
-                                 IAccountManager accountManager, IRoleManager roleManager)
+                                 IAccountManager accountManager, IRoleManager roleManager, IJobPositionsManager jobPositionsManager)
         {
             this._employeeManager = employeeManager;
             this._httpContextAccessor = httpContextAccessor;
             this._accountManager = accountManager;
             this._roleManager = roleManager;
+            this._jobPositionsManager = jobPositionsManager;
         }
         [HttpGet("dang-nhap")]
         public async Task<IActionResult> Login()
@@ -54,9 +56,13 @@ namespace APP.CMS.Controllers
                     account.Token = CreateToken();
                     account.ExpiredToken = DateTime.Now.AddHours(12);
                     await _accountManager.UpdateToken(account);
+                    var employ = await _employeeManager.Find_By_Id(account.EmployeeId);
+                    var job = await _jobPositionsManager.Find_By_Id(employ.JobPositionId);
+                    account.EmployeeName = employ.Name;
+                    account.JobPositionName = job.Name;
                     Portal.Utils.SessionExtensions.Set<Accounts>(_session, Portal.Utils.SessionExtensions.SessionAccount, account);
                     Portal.Utils.SessionExtensions.Set<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission, account.ListPermissions);
-                    return Json(new { Result = true });
+                    return Json(new { Result = true, Message = "Đăng nhập thành công" });
                 }
                 return Json(new { Result = false, Message = "Đăng nhập không thành công" });
             }

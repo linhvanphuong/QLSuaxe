@@ -24,10 +24,14 @@ namespace APP.MODELS
         public DateTime? ExpiredToken { get; set; }
         [Column("Status")]
         public byte? Status { get; set; }
+        [Column("StatusActing")]
+        public byte? StatusActing { get; set; }
         [Column("CreatedDate")]
         public DateTime? CreatedDate { get; set; }
         [Column("UpdatedDate")]
         public DateTime? UpdatedDate { get; set; }
+        [NotMapped]
+        public long? JobPositionId { get; set; }
         [NotMapped]
         public List<long> ListRole { get; set; } 
         [NotMapped]
@@ -36,5 +40,7 @@ namespace APP.MODELS
         public List<Menus> ListMenu { get; set; }
         [NotMapped]
         public string EmployeeName { get; set; }
+        [NotMapped]
+        public string JobPositionName { get; set; }
     }
 }

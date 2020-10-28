@@ -1,15 +1,18 @@
 ﻿$(function () {
-    var frmCreate = $('#frmCreate');
+    var frmCreate = $('#frmUpdate');
     addRequired(frmCreate);
     $('select').select2();
     $('select').val('');
-    $('#btnCreate').on('click',function () {
+    $('#btnCreate').on('click', function () {
         createBill();
     })
     $('#btnExist').on('click', function () {
         location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
-    });
+    })
 });
+window.addEventListener('load', function () {
+    TinhTongTien();
+})
 var listSvSTT = 0;
 $('#drServices').on('change', function () {
     $.ajax({
@@ -18,6 +21,7 @@ $('#drServices').on('change', function () {
         success: function (response) {
             if (response.result) {
                 var option1 = response.data;
+                console.log(option1);
                 listSvSTT++;
                 var trAppend1 = '<tr><td style="width:10%;text-align:center;">' + '<a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:40%">' + option1.name + '</td>' +
                     '<td class="serviceId" style="width:10%">' + option1.id + '</td>' + '<td class="servicePrice" style="width:20%">' + option1.price + ' VNĐ </td>' +
@@ -30,7 +34,7 @@ $('#drServices').on('change', function () {
             }
         }
     }).then(function () {
-        TinhTongTien()
+        TinhTongTien();
     }) 
 });
 var listAssSTT = 0;
@@ -81,16 +85,7 @@ function changeThanhTien(id, price) {
 }
 function openCreateCustomer() {
     $.ajax({
-        url: "/hoa-don" +"/tao-moi-kh",
-        method: "Get",
-        success: function (response) {
-            showContentModal(response, "Tạo mới khách hàng")
-        }
-    });
-}
-function openCreateMTType() {
-    $.ajax({
-        url: "/hoa-don" + "/tao-moi-loai-xe",
+        url: "/hoa-don" + "/tao-moi-kh",
         method: "Get",
         success: function (response) {
             showContentModal(response, "Tạo mới khách hàng")
@@ -104,12 +99,21 @@ $("#listService").on('click', '.SerXoa', function (e) {
 });
 $("#listAccessories").on('click', '.AccXoa', function (e) {
     var whichtr = $(this).closest("tr");
-    check = 1;   
+    check = 1;
     whichtr.remove();
     TinhTongTien();
+});
+function openCreateMTType() {
+    $.ajax({
+        url: "/hoa-don" + "/tao-moi-loai-xe",
+        method: "Get",
+        success: function (response) {
+            showContentModal(response, "Tạo mới khách hàng")
+        }
     });
+}
 function createBill() {
-    if (ValidateForm($('#frmCreate'))) {
+    if (ValidateForm($('#frmUpdate'))) {
         return;
     }
     var listSv = []
@@ -141,19 +145,20 @@ function createBill() {
         })
         listAss.push(ass);
     });
-
     var model = {
-        MotorLiftId: $('#frmCreate').find('#drMotorLift').val(),
-        CustomerId: $('#frmCreate').find('#drCustomer').val(),
-        MotorTypeId: $('#frmCreate').find('#drMotorType').val(),
-        TimeIn: $('#frmCreate').find('#txtTimeIn').text(),
-        Status: 1,
-        Note: $('#frmCreate').find('#txtNote').val(),
+        Id: $('#frmUpdate').find('#txtId').val(),
+        MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
+        CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
+        MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
+        TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
+        Status: $('#txtStatushd').val(),
+        Note: $('#frmUpdate').find('#txtNote').val(),
         ListBill_Services: listSv,
         ListBill_Accessories: listAss,
-        UpdatedBy: $('#frmCreate').find('#drKTV').val()
+        CreatedBy: $('#frmUpdate').find('#txtCreatedBy').data('id'),
+        UpdatedBy: $('#frmUpdate').find('#txtUpdatedBy').data('id')
     }
-    showLoading()
+    showLoading();
     $.ajax({
         url: "/hoa-don/create-or-update",
         method: "POST",
@@ -163,7 +168,10 @@ function createBill() {
             if (response.result) {
                 // datasource = response.data
                 showAlert(response.message, 2)
-                location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+                if (model.Status == 2) {
+                    location.href = "/danh-sach-hoa-don/xem?id=" + model.id;
+                }
+                
 
             } else {
                 showAlert(response.message)
@@ -177,5 +185,5 @@ function TinhTongTien() {
         TongTien = TongTien + parseInt($(this).text().replace("VNĐ", "").trim());
     });
     $('#txtTongTien').text('');
-    $('#txtTongTien').text(TongTien +" VNĐ");
+    $('#txtTongTien').text(TongTien + " VNĐ");
 }

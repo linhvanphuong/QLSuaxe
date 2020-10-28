@@ -1,0 +1,91 @@
+﻿@using APP.MODELS
+<div id="frmCreate_Cus" class="form-horizontal">
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6" required>Tên khách hàng</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" required class="form-control" id="txtName" placeholder="Tên khách hàng">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Số điện thoại</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" id="txtPhone" class="form-control" placeholder="Số điện thoại" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Ngày sinh</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="date" id="txtNS" class="form-control" placeholder="NN/TT/NNNN" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Giới tính</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="radio" name="radioSex" value="1">
+                <label for="male">Nam</label><br>
+                <input type="radio" name="radioSex" value="0">
+                <label for="female">Nữ</label><br>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="col-sm-3 col-md-3 col-6">Địa chỉ</label>
+            <div class="col-sm-4 col-md-4 col-12">
+                <input type="text" id="txtAddress" class="form-control" placeholder="Địa chỉ" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        addRequired($('#frmCreate_Cus'));
+    })
+    $('#modal-form').find('#btnSave').off('click').on('click', function (e) {
+        e.preventDefault();
+        if (ValidateForm($('#frmCreate_Cus'))) {
+            return;
+        }
+        var sex = 0;
+        $('#frmCreate_Cus').find("[name='radioSex']").each(function (index) {
+            if ($(this.checked)) {
+                sex = $(this).val();
+            }
+        });
+        var model = {
+            Name: $('#frmCreate_Cus').find('#txtName').val(),
+            Birth: $('#frmCreate_Cus').find('#txtNS').val(),
+            Sex: sex == 1 ? true : false,
+            Phone: $('#frmCreate_Cus').find('#txtPhone').val(),
+            Address: $('#frmCreate_Cus').find('#txtAddress').val(),
+            Status: 1
+        }
+        $.ajax({
+            url: "/khach-hang/create-or-update",
+            method: "POST",
+            data: model
+            , success: function (response) {
+                hideLoading()
+                if (response.result) {
+                    // datasource = response.data
+                    showAlert(response.message, 2)
+                    $('#frmCreate').find('#drCustomer').append($('<option>', {
+                        value: response.data.id,
+                        text: response.data.name
+                    }));  
+                    hideContentModal()
+
+                } else {
+                    showAlert(response.message)
+                }
+            }
+        });
+    })
+</script>

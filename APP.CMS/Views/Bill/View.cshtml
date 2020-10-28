@@ -1,0 +1,270 @@
+﻿
+@{
+    ViewData["Title"] = "Hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using APP.MODELS
+@using Portal.Utils;
+@model APP.MODELS.TemporaryBill
+@{
+    if ((int)ViewData[nameof(PermissionEnum.Update)] == 0)
+    {
+        Url.Action("Index", "Home");
+    }
+}
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+}
+<link href="~/css/Billcss.css" rel="stylesheet" />
+<div id="frmUpdate" class="form-horizontal border border-dark">
+    <input type="text" value="@Model.Id" hidden id="txtId" />
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Khách hàng: </label>
+                    @{
+                        var customer = ViewData["Customer"] as APP.MODELS.Customers;
+                    }
+                    <input readonly id="txtCustomer" data-id="@customer.Id" type="text" value="@customer.Name" />
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label required class="mr-1">Loại xe: </label>
+                    @{
+                        var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
+                    }
+                    <input readonly id="txtMotorType" data-id="@motorType.Id" type="text" value="@motorType.Name" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                <div class="row align-items-center p-2">
+                    <label required class="col-md-3">Quầy sửa: </label>
+                    @{
+                        var motorLift = ViewData["MotorLift"] as APP.MODELS.MotorLifts;
+                    }
+                    <input readonly id="txtMotorLift" data-id="@motorLift.Id" type="text" value="@motorLift.Name" />
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="mr-1">Giờ vào: </label>
+                    <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Dịch vụ: </label>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table id="listService" class="table table-bordered table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:10%">#</th>
+                        <th style="width:40%">Tên dịch vụ</th>
+                        <th style="width:10%">Mã dịch vụ</th>
+                        <th style="width:20%">Đơn giá</th>
+                        <th style="width:20%">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var listServicesCreated = ViewData["listServicesCreated"] as List<APP.MODELS.TemporaryBill_Service>;
+                        if (listServicesCreated != null)
+                        {
+                            foreach (var i in listServicesCreated)
+                            {
+                                <tr>
+                                    <td style="width:10%;text-align:center;">
+                                        <a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                    <td style="width:40%">
+                                        @i.ServiceName
+                                    </td>
+                                    <td class="serviceId" style="width:10%">
+                                        @i.ServiceId
+                                    </td>
+                                    <td class="servicePrice" style="width:20%">
+                                        @decimal.Truncate(i.ServicePrice.Value) VNĐ
+                                    </td>
+                                    <td class="TongTien" style="width:20%">
+                                        @decimal.Truncate(i.ServicePrice.Value) VNĐ
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Phụ tùng: </label>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table id="listAccessories" class="table table-bordered table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:10%">#</th>
+                        <th style="width:30%">Tên phụ tùng</th>
+                        <th style="width:10%">Mã dịch vụ</th>
+                        <th style="width:10%">Đơn giá</th>
+                        <th style="width:10%">Số lượng</th>
+                        <th style="width:10%">ĐVT</th>
+                        <th style="width:20%">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var listAccessoriesCreated = ViewData["listAccessoriesCreated"] as List<APP.MODELS.TemporaryBill_Accesary>;
+                        if (listAccessoriesCreated.Count() > 0)
+                        {
+                            foreach (var i in listAccessoriesCreated)
+                            {
+                                <tr>
+                                    <td style="width:10%;text-align:center;">
+                                        <a class="AccXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                    <td style="width:30%">
+                                        @i.AccesaryName
+                                    </td>
+                                    <td class="AssId" style="width:10%">
+                                        @i.AccesaryId
+                                    </td>
+                                    <td class="AssPrice" style="width:10%">
+                                        @decimal.Truncate(i.AccesaryPrice) VNĐ
+                                    </td>
+                                    <td class="AssQuantity" style="width:10%">
+                                        <input type="number" data-max="@i.MaxQuantity" max="@i.MaxQuantity" value="@i.Quantity" min="1" step="1" id="row2number_@i.AccesaryId" onblur="changeThanhTien(@i.AccesaryId,@i.AccesaryPrice)" />
+                                    </td>
+                                    <td style="width: 10% ">
+                                        @i.Unit
+                                    </td>
+                                    <td style="width:20%">
+                                        <p class="TongTien" id="TT_@i.AccesaryId">@decimal.Truncate(i.ThanhTien) VNĐ</p>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-12 col-md-12 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-1">Ghi chú: </label>
+                    <input type="text" value="@Model.Note" id="txtNote" class="form-control col-md-11" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Lễ tân: </label>
+                    @{
+                        var createdBy = ViewData["CreatedBy"] as APP.MODELS.Accounts;
+                    }
+                    <input readonly id="txtCreatedBy" data-id="@createdBy.Id" type="text" value="@createdBy.EmployeeName" />
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                        @{
+                            var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
+                        }
+                        <input readonly id="txtUpdatedBy" data-id="@updatedBy.Id" type="text" value="@updatedBy.EmployeeName" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                @*<div class="row align-items-center p-2">
+                        <label class="col-md-3">Lễ tân: </label>
+                        @{
+                            var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
+                        }
+                        <input readonly type="text" value="@account.EmployeeName" />
+                    </div>*@
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                @*<div class="row align-items-center p-2">
+                        <label required class="mr-1">Kỹ thuật viên: </label>
+                        <select required id="drKTV" class="form-control col-md-6">
+                            @{
+                                var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
+                                if (listKTVien != null)
+                                {
+                                    <option value="0">Chọn</option>
+                                    foreach (var i in listKTVien)
+                                    {
+                                        <option value="@i.Id">
+                                            @i.EmployeeName
+                                        </option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>*@
+                <div class="float-right">
+                    <label>Tổng tiền: </label>
+                    <label id="txtTongTien" class="mr-1"> 0 VNĐ </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-horizontal mt-2">
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-danger mr-1" id="btnExist">Trở về</button> <button class="btn btn-success" id="btnCreate">In</button>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#btnExist').click(function () {
+            location.href = "/danh-sach-hoa-don/danh-sach-hoa-don";
+        })
+    })
+    window.addEventListener('load', function () {
+        TinhTongTien();
+    })
+    function TinhTongTien() {
+        var TongTien = 0;
+        $('.TongTien').each(function () {
+            TongTien = TongTien + parseInt($(this).text().replace("VNĐ", "").trim());
+        });
+        $('#txtTongTien').text('');
+        $('#txtTongTien').text(TongTien + " VNĐ");
+    }
+</script>
+
+

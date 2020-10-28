@@ -15,6 +15,18 @@ namespace APP.MODELS
         [Column("TemporaryBillId")]
         public long? TemporaryBillId { get; set; }
         [Column("AccesaryId")]
-        public long? AccesaryId { get; set; }
+        public long AccesaryId { get; set; }
+        [Column("Quantity")]
+        public int Quantity { get; set; }
+        [Column("AccesaryPrice")]
+        public decimal AccesaryPrice { get; set; }
+        [NotMapped]
+        public string AccesaryName { get; set; }
+        [NotMapped]
+        public int MaxQuantity { get; set; }
+        [NotMapped]
+        public string Unit { get; set; }
+        [NotMapped]
+        public decimal ThanhTien { get; set; }
     }
 }

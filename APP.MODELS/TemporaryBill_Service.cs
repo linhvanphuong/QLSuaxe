@@ -15,6 +15,10 @@ namespace APP.MODELS
         [Column("TemporaryBillId")]
         public long? TemporaryBillId { get; set; }
         [Column("ServiceId")]
-        public long? ServiceId { get; set; }
+        public long ServiceId { get; set; }
+        [Column("ServicePrice")]
+        public decimal? ServicePrice { get; set; }
+        [NotMapped]
+        public string ServiceName { get; set; }
     }
 }

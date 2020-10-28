@@ -75,8 +75,8 @@ namespace APP.CMS.Controllers
                 }
                 if (inputModel.Id == 0)
                 {
-                    await _customersManager.Create(inputModel);
-                    return Json(new { Result = true, Message = "Thêm mới dữ liệu thành công" });
+                    var data = await _customersManager.Create(inputModel);
+                    return Json(new { Result = true, Message = "Thêm mới dữ liệu thành công", data = data });
                 }
                 else
                 {
