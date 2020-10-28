@@ -28,6 +28,10 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _supplierManager.Get_List(name);
+                if (data != null)
+                {
+                    data = data.OrderByDescending(c => c.Id).ToList();
+                }
                 return PartialView("_List", data);
             }
             catch (Exception ex)

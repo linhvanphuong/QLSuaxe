@@ -31,6 +31,10 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _employeeManager.Get_List(name, jobPositionId);
+                if (data != null)
+                {
+                    data = data.OrderByDescending(c => c.Id).ToList();
+                }
                 return PartialView("_List", data);
             }
             catch (Exception ex)

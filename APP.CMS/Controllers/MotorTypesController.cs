@@ -30,6 +30,10 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _motorTypesManager.Get_List(name, status, manufactureId);
+                if (data != null)
+                {
+                    data = data.OrderByDescending(c => c.Id).ToList();
+                }
                 return PartialView("_List", data);
             }
             catch (Exception ex)
