@@ -15,7 +15,8 @@
         },
         table: $('#dtTable')
     });
-    normal.getData = function (time = "", status = 1) {
+    var stt =  $('#txtStatushd').val();
+    normal.getData = function (time = "", status) {
         showLoading();
         $.ajax({
             url: normal.domain + normal.url.get_list + "time=" + time + "&status=" + status,
@@ -30,7 +31,7 @@
             }
         })
     },
-    normal.getData();
+    normal.getData("",stt);
     normal.frm.find(normal.button.search).on('click', function () {
         var time = normal.frm.find('#txtDate').val();
         var status = normal.frm.find('#drStatus').val();

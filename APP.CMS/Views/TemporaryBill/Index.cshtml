@@ -3,7 +3,27 @@
     ViewData["Title"] = "Danh sách phiếu tạm tính";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@using APP.MODELS
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+}
+@{
+    if (account.JobPositionName.ToLower().Trim().Contains("thu ngân"))
+    {
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryKTV)" />
+    }
+    else if (account.JobPositionName.ToLower().Trim().Contains("lễ tân"))
+    {
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryLT)" />
+    }
+    else if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
+    {
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryLT)" />
+    }
+}
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -19,9 +39,9 @@
                         @{
                             if ((int)ViewData[nameof(PermissionEnum.Create)] == 1)
                             {
-                              <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
+                                <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
                             }
-                       }
+                        }
                     </div>
                 </div>
             </div>

@@ -23,13 +23,13 @@
                 <td style="text-align:center;width:20%">@item.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</td>
                 <td style="text-align: center; width: 15%">
                     @{
-                        if (item.Status == (byte)BillStatus.Temporary)
+                        if (item.Status == (byte)BillStatus.Bill)
                         {
-                            <p>@Extensions.GetEnumDescription(BillStatus.Temporary)</p>
+                            <p>@Extensions.GetEnumDescription(BillStatus.Bill)</p>
                         }
                         else
                         {
-                            <p>@Extensions.GetEnumDescription(BillStatus.Bill)</p>
+                            <p>@Extensions.GetEnumDescription(BillStatus.TemporaryLT)</p>
                         }
                     }
                 </td>

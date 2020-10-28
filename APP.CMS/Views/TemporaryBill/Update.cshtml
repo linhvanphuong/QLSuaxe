@@ -326,11 +326,17 @@
     {
         <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.Bill)" />
     }
-    else
+    else if (account.JobPositionName.ToLower().Trim().Contains("lễ tân"))
     {
-        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.Temporary)" />
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryLT)" />
+    }
+    else if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
+    {
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryKTV)" />
     }
 }
+
+
 <div class="form-horizontal mt-2">
     <div class="d-flex justify-content-center">
         <button class="btn btn-danger mr-1" id="btnExist">Trở về</button> <button class="btn btn-success" id="btnCreate">Lưu</button>

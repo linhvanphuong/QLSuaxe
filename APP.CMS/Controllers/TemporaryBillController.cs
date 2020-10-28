@@ -211,7 +211,14 @@ namespace APP.CMS.Controllers
                 }
                 else
                 {
-                    inputModel.UpdatedTime = DateTime.Now;
+                    if(inputModel.Status == 3)
+                    {
+                        inputModel.TimeOut = DateTime.Now;
+                    }
+                    else
+                    {
+                        inputModel.UpdatedTime = DateTime.Now;
+                    }
                     await _temporaryBillManager.Update(inputModel);
                     return Json(new { Result = true, Message = "Cập nhật dữ liệu thành công" });
                 }

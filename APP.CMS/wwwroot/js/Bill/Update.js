@@ -168,8 +168,8 @@ function createBill() {
             if (response.result) {
                 // datasource = response.data
                 showAlert(response.message, 2)
-                if (model.Status == 2) {
-                    location.href = "/danh-sach-hoa-don/xem?id=" + model.id;
+                if (model.Status == 3) {
+                    location.href = "/danh-sach-hoa-don/xem?id=" + model.Id;
                 }
                 
 

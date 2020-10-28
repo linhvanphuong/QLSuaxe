@@ -40,6 +40,7 @@ namespace APP.CMS.Controllers
             this._motorManufactureManager = motorManufactureManager;
             this._accountManager = accountManager;
         }
+        [CustomAuthen]
         [HttpGet("danh-sach-hoa-don")]
         public async Task<IActionResult> Index()
         {
@@ -57,7 +58,7 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                var data = await _temporaryBillManager.Get_List_Bill(time, 2);
+                var data = await _temporaryBillManager.Get_List_Bill(time, 3);
                 return PartialView("_List", data);
             }
             catch (Exception ex)
@@ -65,6 +66,7 @@ namespace APP.CMS.Controllers
                 return Json(new { Result = false, Message = ex.Message });
             }
         }
+        [CustomAuthen]
         [HttpGet("xem")]
         public async Task<IActionResult> View(long id)
         {
