@@ -17,6 +17,7 @@ namespace APP.MANAGER
         Task<List<Accounts>> Get_List(string name, byte status);
         Task<List<Accounts>> Get_List_KTV();
         Task<Accounts> Find_By_Id(long id);
+        Task<Accounts> Find_By_UserName(string userName);
         Task<Accounts> Find_By_Id_Ok(long id);
         Task<Accounts> Login(string userName, string password);
         Task<Accounts> UpdateToken(Accounts inputModel);
@@ -112,6 +113,18 @@ namespace APP.MANAGER
                         data.ListRole.Add(i.RoleId);
                     }
                 }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<Accounts> Find_By_UserName(string userName)
+        {
+            try
+            {
+                var data = await _unitOfWork.AccountsRepository.Get(c => c.UserName.Trim().ToLower() == userName.Trim().ToLower());
                 return data;
             }
             catch (Exception ex)

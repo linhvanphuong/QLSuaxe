@@ -141,8 +141,17 @@ namespace APP.CMS.Controllers
                 {
                     throw new Exception($"Mật khẩu {MessageConst.NOT_EMPTY_INPUT}");
                 }
+                if (inputModel.Password.Length < 6)
+                {
+                    throw new Exception($"Mật khẩu phải trên 6 ký tự");
+                }
                 if (inputModel.Id == 0)
                 {
+                    var data = _accountManager.Find_By_UserName(inputModel.UserName);
+                    if(data != null)
+                    {
+                        throw new Exception($"Tên tài khoản đã tồn tại");
+                    }
                     inputModel.CreatedDate = DateTime.Now;
                     await _accountManager.Create(inputModel);
                     return Json(new { Result = true, Message = "Thêm mới dữ liệu thành công" });
