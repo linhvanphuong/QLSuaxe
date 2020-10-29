@@ -34,7 +34,7 @@
     normal.getData("",stt);
     normal.frm.find(normal.button.search).on('click', function () {
         var time = normal.frm.find('#txtDate').val();
-        var status = normal.frm.find('#drStatus').val();
+        var status = $('#txtStatushd').val();
         normal.getData(time, status);
     })
     normal.frm.find(normal.button.create).on('click', function () {

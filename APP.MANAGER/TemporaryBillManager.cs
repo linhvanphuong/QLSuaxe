@@ -203,6 +203,9 @@ namespace APP.MANAGER
                     var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
                     ktv.StatusActing = (byte)AccountStatusEnum.Active;
                     await _unitOfWork.AccountsRepository.Update(ktv);
+                    var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
+                    motorLift.Status = (byte)MotorLiftEnum.Active;
+                    await _unitOfWork.MotorLiftsRepository.Update(motorLift);
                 }
                 await _unitOfWork.SaveChange();
             }

@@ -51,7 +51,10 @@ namespace APP.CMS.Controllers
                 {
                     var session = _httpContextAccessor.HttpContext.Session;
                     var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
-                    data = data.Where(c => c.UpdatedBy == account.Id).ToList();
+                    if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
+                    {
+                        data = data.Where(c => c.UpdatedBy == account.Id).ToList();
+                    }     
                 }
                 return PartialView("_List", data);
             }
@@ -220,6 +223,9 @@ namespace APP.CMS.Controllers
                     if(inputModel.Status == 3)
                     {
                         inputModel.TimeOut = DateTime.Now;
+                        var session = _httpContextAccessor.HttpContext.Session;
+                        var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+                        inputModel.PrintedBy = account.Id;
                     }
                     else
                     {
