@@ -171,7 +171,10 @@ function createBill() {
                 if (model.Status == 3) {
                     location.href = "/danh-sach-hoa-don/xem?id=" + model.Id;
                 }
-                location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+                else {
+                    location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+                }
+                
                 
 
             } else {
