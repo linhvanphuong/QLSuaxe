@@ -56,6 +56,8 @@ namespace Portal.Utils
         Active = 1,
         [Description("Bận")]
         Acting = 2,
+        [Description("Off")]
+        Off = 3
     }
 }
 

@@ -86,6 +86,12 @@ namespace APP.MANAGER
                 var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
                 motorLift.Status = (byte)MotorLiftEnum.Acting;
                 await _unitOfWork.MotorLiftsRepository.Update(motorLift);
+                if(inputModel.UpdatedBy > 0)
+                {
+                    var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
+                    ktv.StatusActing = (byte)AccountStatusEnum.Acting;
+                    await _unitOfWork.AccountsRepository.Update(ktv);
+                }
                 await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
@@ -187,6 +193,16 @@ namespace APP.MANAGER
                 else
                 {
                     await DeleteBill_Accessories(inputModel.Id);
+                }
+                if(inputModel.Status == 2)
+                {
+                    inputModel.UpdatedTime = DateTime.Now;
+                }
+                if(inputModel.Status == 3)
+                {
+                    var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
+                    ktv.StatusActing = (byte)AccountStatusEnum.Active;
+                    await _unitOfWork.AccountsRepository.Update(ktv);
                 }
                 await _unitOfWork.SaveChange();
             }

@@ -36,6 +36,10 @@ namespace APP.CMS.Controllers
         [HttpGet("dang-xuat")]
         public async Task<IActionResult> Logout()
         {
+            var session = _httpContextAccessor.HttpContext.Session;
+            var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+            account.StatusActing = 3;
+            await _accountManager.Update(account);
             Portal.Utils.SessionExtensions.Set<Accounts>(_session, Portal.Utils.SessionExtensions.SessionAccount, null);
             Portal.Utils.SessionExtensions.Set<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission, null);
             return View("Login");
@@ -58,8 +62,10 @@ namespace APP.CMS.Controllers
                     await _accountManager.UpdateToken(account);
                     var employ = await _employeeManager.Find_By_Id(account.EmployeeId);
                     var job = await _jobPositionsManager.Find_By_Id(employ.JobPositionId);
+                    account.StatusActing = (byte)AccountStatusEnum.Active;
                     account.EmployeeName = employ.Name;
                     account.JobPositionName = job.Name;
+                    await _accountManager.Update(account);
                     Portal.Utils.SessionExtensions.Set<Accounts>(_session, Portal.Utils.SessionExtensions.SessionAccount, account);
                     Portal.Utils.SessionExtensions.Set<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission, account.ListPermissions);
                     return Json(new { Result = true, Message = "Đăng nhập thành công" });
@@ -147,7 +153,7 @@ namespace APP.CMS.Controllers
                 }
                 if (inputModel.Id == 0)
                 {
-                    var data = _accountManager.Find_By_UserName(inputModel.UserName);
+                    var data = await _accountManager.Find_By_UserName(inputModel.UserName);
                     if(data != null)
                     {
                         throw new Exception($"Tên tài khoản đã tồn tại");
