@@ -19,7 +19,7 @@
                                 var listParent = ViewData["listParentMenu"] as List<APP.MODELS.Menus>;
                                 if (listParent != null)
                                 {
-                                    <option value="0">Tất cả</option>
+                                    <option value="-1">Tất cả</option>
                                     foreach (var i in listParent)
                                     {
                                         <option value="@i.Id">@i.Name</option>
