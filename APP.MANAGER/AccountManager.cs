@@ -13,6 +13,7 @@ namespace APP.MANAGER
     {
         Task Create(Accounts inputModel);
         Task Update(Accounts inputModel);
+        Task Update_Login_Logout(Accounts inputModel);
         Task Delete(long id);
         Task<List<Accounts>> Get_List(string name, byte status);
         Task<List<Accounts>> Get_List_KTV();
@@ -210,6 +211,18 @@ namespace APP.MANAGER
                         await Create_Account_Role(inputAccRole);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task Update_Login_Logout(Accounts inputModel)
+        {
+            try
+            {
+                await _unitOfWork.AccountsRepository.Update(inputModel);
+                await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
             {
