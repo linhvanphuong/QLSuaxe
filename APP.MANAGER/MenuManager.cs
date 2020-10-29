@@ -47,6 +47,14 @@ namespace APP.MANAGER
             {
                 var inputModel = await Find_By_Id(id);
                 await _unitOfWork.MenusRepository.Delete(inputModel);
+                var per = (await _unitOfWork.PermissionsRepository.FindBy(c => c.MenuId == id)).ToList();
+                if (per != null)
+                {
+                    foreach (var i in per)
+                    {
+                        await _unitOfWork.PermissionsRepository.Delete(i);
+                    }
+                }
                 await _unitOfWork.SaveChange();
             }
             catch (Exception ex)

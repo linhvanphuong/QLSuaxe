@@ -93,9 +93,30 @@ namespace APP.MANAGER
                 throw ex;
             }
         }
-        public Task Delete(long id)
+        public async Task Delete(long id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var item = await Find_By_Id(id);
+                await _unitOfWork.RolesRepository.Delete(item);
+                var acc_role = (await _unitOfWork.Account_RolesRepository.FindBy(c => c.RoleId == id)).ToList();
+                if(acc_role != null)
+                {
+                    foreach (var i in acc_role)
+                    {
+                        await _unitOfWork.Account_RolesRepository.Delete(i);
+                    }
+                }
+                await _unitOfWork.SaveChange();
+                if (item.Permissions != null)
+                {
+                    await DeletePermission(item.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<Roles> Find_By_Id(long id)

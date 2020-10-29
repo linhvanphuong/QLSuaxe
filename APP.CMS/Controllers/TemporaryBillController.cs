@@ -47,6 +47,12 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _temporaryBillManager.Get_List_Bill(time, status);
+                if (status == 2)
+                {
+                    var session = _httpContextAccessor.HttpContext.Session;
+                    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+                    data = data.Where(c => c.UpdatedBy == account.Id).ToList();
+                }
                 return PartialView("_List", data);
             }
             catch (Exception ex)

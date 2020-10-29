@@ -29,7 +29,7 @@
                     @{
                         var customer = ViewData["Customer"] as APP.MODELS.Customers;
                     }
-                    <input readonly id="txtCustomer" data-id="@customer.Id" type="text" value="@customer.Name" />
+                    <label readonly id="txtCustomer" data-id="@customer.Id">@customer.Name</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
@@ -38,7 +38,7 @@
                     @{
                         var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
                     }
-                    <input readonly id="txtMotorType" data-id="@motorType.Id" type="text" value="@motorType.Name" />
+                    <label readonly id="txtMotorType" data-id="@motorType.Id">@motorType.Name</label>
                 </div>
             </div>
         </div>
@@ -51,13 +51,16 @@
                     @{
                         var motorLift = ViewData["MotorLift"] as APP.MODELS.MotorLifts;
                     }
-                    <input readonly id="txtMotorLift" data-id="@motorLift.Id" type="text" value="@motorLift.Name" />
+                <label readonly id="txtMotorLift" data-id="@motorLift.Id">@motorLift.Name</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
                     <label class="mr-1">Giờ vào: </label>
                     <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
+                    <label class="ml-2 mr-2">   -   </label>
+                    <label class="ml-1">Giờ ra: </label>
+                    <label id="txtTimeIn">@Model.TimeOut?.ToString("dd/MM/yyyy HH:mm:ss")</label>
                 </div>
             </div>
         </div>
@@ -75,7 +78,7 @@
             <table id="listService" class="table table-bordered table-hover mb-0">
                 <thead>
                     <tr>
-                        <th style="width:10%">STT</th>
+                        <th style="text-align: center; width: 10%">STT</th>
                         <th style="width:40%">Tên dịch vụ</th>
                         <th style="width:10%">Mã dịch vụ</th>
                         <th style="width:20%">Đơn giá</th>
@@ -129,7 +132,7 @@
             <table id="listAccessories" class="table table-bordered table-hover mb-0">
                 <thead>
                     <tr>
-                        <th style="width:10%">#</th>
+                        <th style="text-align: center; width: 10%">STT</th>
                         <th style="width:30%">Tên phụ tùng</th>
                         <th style="width:10%">Mã dịch vụ</th>
                         <th style="width:10%">Đơn giá</th>
@@ -160,7 +163,7 @@
                                         @decimal.Truncate(i.AccesaryPrice) VNĐ
                                     </td>
                                     <td class="AssQuantity" style="width:10%">
-                                        <input type="number" data-max="@i.MaxQuantity" max="@i.MaxQuantity" value="@i.Quantity" min="1" step="1" id="row2number_@i.AccesaryId" onblur="changeThanhTien(@i.AccesaryId,@i.AccesaryPrice)" />
+                                        @i.Quantity
                                     </td>
                                     <td style="width: 10% ">
                                         @i.Unit
@@ -181,7 +184,7 @@
             <div class="col-sm-12 col-md-12 col-12 pl-4">
                 <div class="row align-items-center p-2">
                     <label class="col-md-1">Ghi chú: </label>
-                    <input type="text" value="@Model.Note" id="txtNote" class="form-control col-md-11" />
+                    <p class="col-md-11">@Model.Note</p>
                 </div>
             </div>
         </div>
@@ -194,15 +197,16 @@
                     @{
                         var createdBy = ViewData["CreatedBy"] as APP.MODELS.Accounts;
                     }
-                    <input readonly id="txtCreatedBy" data-id="@createdBy.Id" type="text" value="@createdBy.EmployeeName" />
+                <label readonly id="txtCreatedBy" data-id="@createdBy.Id">@createdBy.EmployeeName</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                        @{
-                            var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
-                        }
-                        <input readonly id="txtUpdatedBy" data-id="@updatedBy.Id" type="text" value="@updatedBy.EmployeeName" />
+                    <label class="col-md-3">Kỹ thuật viên: </label>
+                    @{
+                        var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
+                    }
+                    <label readonly id="txtUpdatedBy" data-id="@updatedBy.Id">@updatedBy.EmployeeName</label>
 
                 </div>
             </div>
