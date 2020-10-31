@@ -92,7 +92,7 @@ namespace APP.CMS.Controllers
                 var createdBy = await _accountManager.Find_By_Id_Ok(data.CreatedBy);
                 createdBy.EmployeeName = (await _employeeManager.Find_By_Id(createdBy.EmployeeId)).Name;
                 ViewData["CreatedBy"] = createdBy;
-                var updatedBy = await _accountManager.Find_By_Id_Ok(data.UpdatedBy);
+                var updatedBy = await _accountManager.Find_By_Id_Ok(data.UpdatedBy);  
                 if (updatedBy != null)
                 {
                     updatedBy.EmployeeName = (await _employeeManager.Find_By_Id(updatedBy.EmployeeId)).Name;
@@ -101,6 +101,16 @@ namespace APP.CMS.Controllers
                 else
                 {
                     ViewData["UpdatedBy"] = null;
+                }
+                var printedBy = await _accountManager.Find_By_Id_Ok(data.PrintedBy);
+                if (printedBy != null)
+                {
+                    printedBy.EmployeeName = (await _employeeManager.Find_By_Id(printedBy.EmployeeId)).Name;
+                    ViewData["PrintedBy"] = printedBy;
+                }
+                else
+                {
+                    ViewData["PrintedBy"] = null;
                 }
                 var listServicesCreated = await _temporaryBillManager.Get_List_TemporaryBill_Service(data.Id);
                 if (listServicesCreated != null)

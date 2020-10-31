@@ -57,6 +57,21 @@ $('#drAccessories').on('change', function () {
         TinhTongTien();
     }) 
 });
+$('#frmCreate').find('#drCustomer').on('change', function () {
+    var phone = $(this).find(':selected').data('phone');
+    $('#frmCreate').find('#txtPhone').val('');
+    $('#frmCreate').find('#txtPhone').val(phone);
+})
+$('#frmCreate').find('#txtPhone').on('blur', function () {
+    var phone = $(this).val();
+    if (phone != ""){
+        $('#frmCreate').find('#drCustomer').find('option').each(function () {
+            if ($(this).data('phone') == phone) {
+                $('#frmCreate').find('#drCustomer').val($(this).val()).trigger('change');
+            }
+        })
+    } 
+});
 function changeThanhTien(id, price) {
     console.log(id);
     var sl = $('#row2number_' + id).val();

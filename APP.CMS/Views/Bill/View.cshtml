@@ -34,11 +34,31 @@
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
+                    <label class="col-md-3">Số điện thoại: </label>
+                    <label>@customer.Phone</label>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                <div class="row align-items-center p-2">
                     <label required class="mr-1">Loại xe: </label>
                     @{
                         var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
                     }
                     <label readonly id="txtMotorType" data-id="@motorType.Id">@motorType.Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label required class="col-md-3">Quầy sửa: </label>
+                    @{
+                        var motorLift = ViewData["MotorLift"] as APP.MODELS.MotorLifts;
+                    }
+                    <label readonly id="txtMotorLift" data-id="@motorLift.Id">@motorLift.Name</label>
                 </div>
             </div>
         </div>
@@ -47,19 +67,13 @@
         <div class="row d-flex justify-content-center">
             <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
                 <div class="row align-items-center p-2">
-                    <label required class="col-md-3">Quầy sửa: </label>
-                    @{
-                        var motorLift = ViewData["MotorLift"] as APP.MODELS.MotorLifts;
-                    }
-                <label readonly id="txtMotorLift" data-id="@motorLift.Id">@motorLift.Name</label>
+                    <label class="col-md-3">Giờ vào: </label>
+                    <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                    <label class="mr-1">Giờ vào: </label>
-                    <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
-                    <label class="ml-2 mr-2">   -   </label>
-                    <label class="ml-1">Giờ ra: </label>
+                    <label class="col-md-3">Giờ ra: </label>
                     <label id="txtTimeIn">@Model.TimeOut?.ToString("dd/MM/yyyy HH:mm:ss")</label>
                 </div>
             </div>
@@ -207,7 +221,6 @@
                         var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
                     }
                     <label readonly id="txtUpdatedBy" data-id="@updatedBy.Id">@updatedBy.EmployeeName</label>
-
                 </div>
             </div>
         </div>
@@ -215,13 +228,10 @@
     <div class="border-bottom border-dark">
         <div class="row d-flex justify-content-center">
             <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
-                @*<div class="row align-items-center p-2">
-                        <label class="col-md-3">Lễ tân: </label>
-                        @{
-                            var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
-                        }
-                        <input readonly type="text" value="@account.EmployeeName" />
-                    </div>*@
+                @{
+                    var printedBy = ViewData["PrintedBy"] as APP.MODELS.Accounts;
+                }
+                <label readonly id="txtPrintedBy" data-id="@printedBy.Id">@printedBy.EmployeeName</label>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 @*<div class="row align-items-center p-2">

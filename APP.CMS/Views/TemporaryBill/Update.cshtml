@@ -29,16 +29,15 @@
                     @{
                         var customer = ViewData["Customer"] as APP.MODELS.Customers;
                     }
-                    <input readonly id="txtCustomer" data-id="@customer.Id" type="text" value="@customer.Name" />
+                    <label id="txtCustomer" data-id="@customer.Id">@customer.Name</label>
+                    @*<input readonly id="txtCustomer" data-id="@customer.Id" type="text" value="@customer.Name" />*@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                    <label required class="mr-1">Loại xe: </label>
-                    @{
-                        var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
-                    }
-                    <input readonly id="txtMotorType" data-id="@motorType.Id" type="text" value="@motorType.Name" />
+                    <label class="col-md-3">Số điện thoại: </label>
+                    <label>@customer.Phone</label>
+                    @*<input type="text" readonly id="txtPhone" value="@customer.Phone" class="form-control col-md-6" />*@
                 </div>
             </div>
         </div>
@@ -47,17 +46,36 @@
         <div class="row d-flex justify-content-center">
             <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
                 <div class="row align-items-center p-2">
-                    <label required class="col-md-3">Quầy sửa: </label>
+                    <label  class="col-md-3">Loại xe: </label>
+                    @{
+                        var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
+                    }
+                    <label id="txtMotorType" data-id="@motorType.Id">@motorType.Name</label>
+                    @*<input readonly id="txtMotorType" data-id="@motorType.Id" type="text" value="@motorType.Name" />*@
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Quầy sửa: </label>
                     @{
                         var motorLift = ViewData["MotorLift"] as APP.MODELS.MotorLifts;
                     }
                     <input readonly id="txtMotorLift" data-id="@motorLift.Id" type="text" value="@motorLift.Name" />
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Giờ vào: </label>
+                    <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
+                </div>
+            </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                    <label class="mr-1">Giờ vào: </label>
-                    <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
+                    <label class="col-md-3">Giờ ra: </label>
                 </div>
             </div>
         </div>
@@ -219,57 +237,65 @@
                     @{
                         var createdBy = ViewData["CreatedBy"] as APP.MODELS.Accounts;
                     }
-                    <input readonly id="txtCreatedBy" data-id="@createdBy.Id" type="text" value="@createdBy.EmployeeName" />
+                    <label id="txtCreatedBy" data-id="@createdBy.Id">@createdBy.EmployeeName</label>
+                    @*<input readonly id="txtCreatedBy" data-id="@createdBy.Id" type="text" value="@createdBy.EmployeeName" />*@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                    @{
+                    @*@{
                         var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
                         if (account.JobPositionName.Trim().ToLower().Contains("lễ tân"))
                         {
                             <label required class="mr-1">Kỹ thuật viên: </label>
-                            <select required id="txtUpdatedBy" class="form-control col-md-6">
-                                @{
-                                    var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
-                                    if (listKTVien != null)
-                                    {
-                                        <option value="0">Chọn</option>
-                                        if (updatedBy != null)
-                                        {
-                                            foreach (var i in listKTVien)
+                            @{
+                                if (updatedBy == null)
+                                {
+                                    <select disabled required id="txtUpdatedBy" class="form-control col-md-6">
+                                        @{
+                                            var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
+
+                                            if (listKTVien != null)
                                             {
-                                                if (i.Id == updatedBy.Id)
+                                                <option value="0">Chọn</option>
+                                                if (updatedBy != null)
                                                 {
-                                                    <option selected value="@i.Id">@i.EmployeeName</option>
+                                                    foreach (var i in listKTVien)
+                                                    {
+                                                        if (i.Id == updatedBy.Id)
+                                                        {
+                                                            <option selected value="@i.Id">@i.EmployeeName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@i.Id">
+                                                                @i.EmployeeName
+                                                            </option>
+                                                        }
+
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    <option value="@i.Id">
-                                                        @i.EmployeeName
-                                                    </option>
+                                                    foreach (var i in listKTVien)
+                                                    {
+                                                        <option value="@i.Id">
+                                                            @i.EmployeeName
+                                                        </option>
+                                                    }
                                                 }
-
                                             }
                                         }
-                                        else
-                                        {
-                                            foreach (var i in listKTVien)
-                                            {
-                                                <option value="@i.Id">
-                                                    @i.EmployeeName
-                                                </option>
-                                            }
-                                        }
-                                    }
-                                }
-                            </select>
-                        }
-                        else
+                                    </select>
+                                } 
+                            }
+                        }*@
+                        @*else
                         {
                             <label required class="mr-1">Kỹ thuật viên: </label>
                             if (updatedBy != null)
                             {
+                                <label id="txtUpdatedBy" data-id="@updatedBy.Id">@updatedBy.EmployeeName</label>
                                 <input readonly id="txtUpdatedBy" data-id="@updatedBy.Id" type="text" value="@updatedBy.EmployeeName" />
                             }
                             else
@@ -277,7 +303,12 @@
                                 <input readonly id="txtUpdatedBy" data-id="" type="text" value="" />
                             }
                         }
+                    }*@
+                    @{ 
+                        var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
                     }
+                    <label required class="mr-1">Kỹ thuật viên: </label>
+                    <label id="txtUpdatedBy" data-id="@updatedBy.Id">@updatedBy.EmployeeName</label>
 
                 </div>
             </div>

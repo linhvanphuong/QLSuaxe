@@ -79,7 +79,8 @@
                     $('#frmCreate').find('#drCustomer').append($('<option>', {
                         value: response.data.id,
                         text: response.data.name
-                    }));  
+                    }));
+                    $('#frmCreate').find('#drCustomer').val(response.data.id).trigger('change');
                     hideContentModal()
 
                 } else {

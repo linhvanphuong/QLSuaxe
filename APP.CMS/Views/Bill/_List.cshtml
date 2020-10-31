@@ -35,15 +35,6 @@
                     }
                 </td>
                 <td style="text-align:center;width:10%;">
-                    @*@if (@item.Status == (byte)StatusEnum.Removed)
-                        {
-                            <a href="javascipt:;" class="btn-delete" onclick="restorn(@item.Id)"><i class="fas fa-trash-restore-alt"></i></a>
-                        }
-                        else
-                        {
-                            <a href="javascipt:;" class="btn-delete" onclick="deleteItem(@item.Id)"><i class="fas fa-trash-alt"></i></a>
-                            <a class="btn-update" href="javascipt:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
-                        }*@
                     <a class="btn-update" href="/danh-sach-hoa-don/xem?id=@item.Id"><i class="fas fa-eye"></i></a>
                 </td>
             </tr>

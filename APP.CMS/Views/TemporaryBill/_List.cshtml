@@ -34,18 +34,16 @@
                     }
                 </td>
                 <td style="text-align:center;width:10%;">
-                    @*@if (@item.Status == (byte)StatusEnum.Removed)
+                    @{
+                        if (((int)ViewData[nameof(PermissionEnum.Update)]) == 1)
                         {
-                            <a href="javascipt:;" class="btn-delete" onclick="restorn(@item.Id)"><i class="fas fa-trash-restore-alt"></i></a>
+                            <a class="btn-update" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
                         }
-                        else
+                        if (((int)ViewData[nameof(PermissionEnum.Delete)]) == 1)
                         {
-                            <a href="javascipt:;" class="btn-delete" onclick="deleteItem(@item.Id)"><i class="fas fa-trash-alt"></i></a>
-                            <a class="btn-update" href="javascipt:;" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
-                        }*@
-                    <a class="btn-update" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
-                    <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
-
+                            <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                        }
+                    }
                 </td>
             </tr>
         }

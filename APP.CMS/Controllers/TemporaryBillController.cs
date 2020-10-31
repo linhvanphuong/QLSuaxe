@@ -47,6 +47,12 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _temporaryBillManager.Get_List_Bill(time, status);
+                var permission = Portal.Utils.SessionExtensions.Get<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission);
+                var path = _httpContextAccessor.HttpContext.Request.Path.Value;
+                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower() == path.ToLower()).ToList();
+                ViewData[nameof(PermissionEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Create))) > 0 ? 1 : 0;
+                ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
+                ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
                 if (status == 2)
                 {
                     var session = _httpContextAccessor.HttpContext.Session;
@@ -156,7 +162,7 @@ namespace APP.CMS.Controllers
                 ViewData["MotorType"] = await _motorTypesManager.Find_By_Id(data.MotorTypeId);
                 ViewData["listServices"] = await _servicesManager.Get_List("", (byte)StatusEnum.Active);
                 ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
-                ViewData["listKTVien"] = await _accountManager.Get_List_KTV();
+                var listKtv = await _accountManager.Get_List_KTV();
                 ViewData["timeIn"] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                 var session = _httpContextAccessor.HttpContext.Session;
                 var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
@@ -168,10 +174,13 @@ namespace APP.CMS.Controllers
                 if (updatedBy != null)
                 {
                     updatedBy.EmployeeName = (await _employeeManager.Find_By_Id(updatedBy.EmployeeId)).Name;
+                    listKtv.Add(updatedBy);
+                    ViewData["listKTVien"] = listKtv;
                     ViewData["UpdatedBy"] = updatedBy;
                 }
                 else
                 {
+                    ViewData["listKTVien"] = listKtv;
                     ViewData["UpdatedBy"] = null;
                 }
                 var listServicesCreated = await _temporaryBillManager.Get_List_TemporaryBill_Service(data.Id);

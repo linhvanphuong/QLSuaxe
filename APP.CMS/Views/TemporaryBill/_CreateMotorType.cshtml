@@ -54,7 +54,8 @@
                     $('#frmCreate').find('#drMotorType').append($('<option>', {
                         value: response.data.id,
                         text: response.data.name
-                    })); 
+                    }));
+                    $('#frmCreate').find('#drMotorType').val(response.data.id).trigger('change');
                     hideContentModal()
 
                 } else {

@@ -20,7 +20,10 @@
             if ($(this).val() === null) {
                 $(this).addClass('error');
                 error = true;
-
+            }
+            if ($(this).val() == 0) {
+                $(this).addClass('error');
+                error = true;
             }
         }
     });
@@ -32,7 +35,10 @@
             if ($(this).val() === null) {
                 $(this).addClass('error');
                 error = true;
-
+            }
+            if ($(this).val() == 0) {
+                $(this).addClass('error');
+                error = true;
             }
         }
     });

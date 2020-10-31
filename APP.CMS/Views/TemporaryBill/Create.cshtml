@@ -26,7 +26,7 @@
                                 <option value="0">Chọn</option>
                                 foreach (var i in listCustomer)
                                 {
-                                    <option value="@i.Id">
+                                    <option data-phone="@i.Phone" value="@i.Id">
                                         @i.Name
                                     </option>
                                 }
@@ -38,7 +38,17 @@
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                    <label required class="mr-1">Loại xe: </label>
+                    <label class="col-md-3">Số điện thoại: </label>
+                    <input type="text" id="txtPhone" class="form-control col-md-6" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+                <div class="row align-items-center p-2">
+                    <label required class="col-md-3">Loại xe: </label>
                     <select required id="drMotorType" class="form-control col-md-6">
                         @{
                             var listMotorType = ViewData["listMotorType"] as List<APP.MODELS.MotorTypes>;
@@ -57,11 +67,7 @@
                     <a class="h-100 ml-2" onclick="openCreateMTType()" href="javascript:;"><i class="fas fa-plus-circle"></i></a>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="border-bottom border-dark">
-        <div class="row d-flex justify-content-center">
-            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
                     <label required class="col-md-3">Quầy sửa: </label>
                     <select required id="drMotorLift" class="form-control col-md-6">
@@ -81,13 +87,22 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-6 col-12 pl-4">
+        </div>
+    </div>
+    <div class="border-bottom border-dark">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
                 <div class="row align-items-center p-2">
                     <label class="mr-1">Giờ vào: </label>
                     @{
                         string txtTimeIn = ViewData["timeIn"] as string;
                     }
                     <label id="txtTimeIn">@txtTimeIn</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="mr-1">Giờ ra: </label>
                 </div>
             </div>
         </div>
@@ -191,7 +206,8 @@
                     @{
                         var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
                     }
-                    <input readonly type="text" value="@account.EmployeeName" />
+                    <label>@account.EmployeeName</label>
+                    @*<input readonly type="text" value="@account.EmployeeName" />*@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
@@ -220,37 +236,37 @@
         <div class="row d-flex justify-content-center">
             <div class="col-sm-6 col-md-6 col-12 pl-4 border-right border-dark">
                 @*<div class="row align-items-center p-2">
-                    <label class="col-md-3">Lễ tân: </label>
-                    @{
-                        var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
-                    }
-                    <input readonly type="text" value="@account.EmployeeName" />
-                </div>*@
+                        <label class="col-md-3">Lễ tân: </label>
+                        @{
+                            var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
+                        }
+                        <input readonly type="text" value="@account.EmployeeName" />
+                    </div>*@
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 @*<div class="row align-items-center p-2">
-                    <label required class="mr-1">Kỹ thuật viên: </label>
-                    <select required id="drKTV" class="form-control col-md-6">
-                        @{
-                            var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
-                            if (listKTVien != null)
-                            {
-                                <option value="0">Chọn</option>
-                                foreach (var i in listKTVien)
+                        <label required class="mr-1">Kỹ thuật viên: </label>
+                        <select required id="drKTV" class="form-control col-md-6">
+                            @{
+                                var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
+                                if (listKTVien != null)
                                 {
-                                    <option value="@i.Id">
-                                        @i.EmployeeName
-                                    </option>
+                                    <option value="0">Chọn</option>
+                                    foreach (var i in listKTVien)
+                                    {
+                                        <option value="@i.Id">
+                                            @i.EmployeeName
+                                        </option>
+                                    }
                                 }
                             }
-                        }
-                    </select>
-                </div>*@
+                        </select>
+                    </div>*@
                 <div class="float-right">
                     <label>Tổng tiền: </label>
-                    <label id="txtTongTien" class="mr-1" > 0 VNĐ </label>
+                    <label id="txtTongTien" class="mr-1"> 0 VNĐ </label>
                 </div>
-                 
+
             </div>
         </div>
     </div>
