@@ -46,10 +46,11 @@ namespace APP.CMS.Controllers
         {
             try
             {
+                string controllerName = this.ControllerContext.ActionDescriptor.ControllerTypeInfo.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString();
                 var data = await _temporaryBillManager.Get_List_Bill(time, status);
                 var permission = Portal.Utils.SessionExtensions.Get<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission);
                 var path = _httpContextAccessor.HttpContext.Request.Path.Value;
-                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower() == path.ToLower()).ToList();
+                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower().Contains(controllerName.ToLower())).ToList();
                 ViewData[nameof(PermissionEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Create))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
@@ -145,6 +146,7 @@ namespace APP.CMS.Controllers
                 return Json(new { Result = false, Message = ex.Message });
             } 
         }
+        [CustomAuthen(nameof(PermissionEnum.Update))]
         [HttpGet("cap-nhat")]
         public async Task<IActionResult> Update(long id)
         {
