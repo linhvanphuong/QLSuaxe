@@ -219,6 +219,28 @@ namespace APP.MANAGER
             try
             {
                 var inputModel = await Find_By_Id(id);
+                var listBill_Sv = (await _unitOfWork.TemporaryBill_ServiceRepository.FindBy(c => c.TemporaryBillId == id)).ToList();
+                if(listBill_Sv != null)
+                {
+                    await DeleteBill_Service(inputModel.Id);
+                }
+                var listBill_Acc = (await _unitOfWork.TemporaryBill_AccesaryRepository.FindBy(c => c.TemporaryBillId == id)).ToList();
+                if (listBill_Sv != null)
+                {
+                    await DeleteBill_Accessories(inputModel.Id);
+                }
+                if(inputModel.UpdatedBy > 0)
+                {
+                    var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
+                    ktv.StatusActing = (byte)AccountStatusEnum.Active;
+                    await _unitOfWork.AccountsRepository.Update(ktv);
+                }
+                if(inputModel.MotorLiftId > 0)
+                {
+                    var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
+                    motorLift.Status = (byte)MotorLiftEnum.Active;
+                    await _unitOfWork.MotorLiftsRepository.Update(motorLift);
+                }
                 await _unitOfWork.TemporaryBillRepository.Delete(inputModel);
                 await _unitOfWork.SaveChange();
             }
