@@ -28,6 +28,8 @@ namespace APP.REPOSITORY
         public ITemporaryBill_ServiceRepository TemporaryBill_ServiceRepository { get; set; }
         public ITemporaryBillRepository TemporaryBillRepository { get; set; }
         public ITemporaryBill_AccesaryRepository TemporaryBill_AccesaryRepository { get; set; }
+        public IImportReceiptRepository ImportReceiptRepository { get; set; }
+        public IImportReceipt_AccessoryRepository ImportReceipt_AccessoryRepository { get; set; }
 
         Task CreateTransaction();
         Task Commit();
@@ -60,6 +62,9 @@ namespace APP.REPOSITORY
             TemporaryBill_ServiceRepository = new TemporaryBill_ServiceRepository(_dbContext);
             TemporaryBillRepository = new TemporaryBillRepository(_dbContext);
             TemporaryBill_AccesaryRepository = new TemporaryBill_AccesaryRepository(_dbContext);
+            ImportReceiptRepository = new ImportReceiptRepository(_dbContext);
+            ImportReceipt_AccessoryRepository = new ImportReceipt_AccessoryRepository(_dbContext);
+            
         }
         #region Transaction
         public async Task CreateTransaction()
@@ -103,6 +108,8 @@ namespace APP.REPOSITORY
         public ITemporaryBill_ServiceRepository TemporaryBill_ServiceRepository { get; set; }
         public ITemporaryBillRepository TemporaryBillRepository { get; set; }
         public ITemporaryBill_AccesaryRepository TemporaryBill_AccesaryRepository { get; set; }
+        public IImportReceiptRepository ImportReceiptRepository { get; set; }
+        public IImportReceipt_AccessoryRepository ImportReceipt_AccessoryRepository { get; set; }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

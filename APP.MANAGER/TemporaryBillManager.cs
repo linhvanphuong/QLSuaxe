@@ -33,11 +33,14 @@ namespace APP.MANAGER
             {
                 var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == status) && (x.TimeIn.Date.ToString() == time || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x=>x.TimeIn).ToList();
-                foreach(var i in data)
+                if(data != null)
                 {
-                    var cus = await _unitOfWork.CustomersRepository.Get(c => c.Id == i.CustomerId);
-                    i.CustomerName = cus.Name;
-                    i.CustomerPhone = cus.Phone;
+                    foreach (var i in data)
+                    {
+                        var cus = await _unitOfWork.CustomersRepository.Get(c => c.Id == i.CustomerId);
+                        i.CustomerName = cus.Name;
+                        i.CustomerPhone = cus.Phone;
+                    }
                 }
                 return data;
             }

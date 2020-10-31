@@ -36,6 +36,7 @@ namespace APP.DependencyInjection
             services.AddTransient<ICustomersManager, CustomersManager>();
             services.AddTransient<IAccessoriesManager, AccessoriesManager>();
             services.AddTransient<ITemporaryBillManager, TemporaryBillManager>();
+            services.AddTransient<IImportReceiptManager, ImportReceiptManager>();
         }
     }
 }

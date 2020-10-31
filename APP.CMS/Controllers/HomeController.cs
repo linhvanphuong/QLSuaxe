@@ -41,6 +41,7 @@ namespace APP.CMS.Controllers
                 if (account != null)
                 {
                     ViewData["listMotorLift"] = await _motorLiftsManager.Get_List();
+                    ViewData["account"] = account;
                     return View();
                 }
                 return RedirectToAction("dang-nhap", "tai-khoan");

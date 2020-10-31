@@ -39,5 +39,7 @@ namespace APP.MODELS
         public DbSet<TemporaryBill> TemporaryBill { get; set; }
         public DbSet<TemporaryBill_Accesary> TemporaryBill_Accesary { get; set; }
         public DbSet<TemporaryBill_Service> TemporaryBill_Service { get; set; }
+        public DbSet<ImportReceipt> ImportReceipt { get; set; }
+        public DbSet<ImportReceipt_Accessory> ImportReceipt_Accessory { get; set; }
     }
 }

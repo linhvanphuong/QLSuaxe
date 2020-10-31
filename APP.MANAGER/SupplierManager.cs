@@ -10,7 +10,7 @@ namespace APP.MANAGER
 {
     public interface ISupplierManager
     {
-        Task Create(Supplier inputModel);
+        Task<Supplier> Create(Supplier inputModel);
         Task Update(Supplier inputModel);
         Task Delete(long id);
         Task<List<Supplier>> Get_List(string name);
@@ -23,12 +23,13 @@ namespace APP.MANAGER
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task Create(Supplier inputModel)
+        public async Task<Supplier> Create(Supplier inputModel)
         {
             try
             {
-                await _unitOfWork.SupplierRepository.Add(inputModel);
+                var data = await _unitOfWork.SupplierRepository.Add(inputModel);
                 await _unitOfWork.SaveChange();
+                return data;
             }
             catch (Exception ex)
             {

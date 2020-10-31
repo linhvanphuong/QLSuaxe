@@ -1,0 +1,36 @@
+﻿@using Portal.Utils;
+@{
+    ViewData["Title"] = "Danh sách phiếu nhập phụ tùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APP.MODELS
+@using Microsoft.AspNetCore.Http
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row" id="frmFilter">
+                    <div class="form-group col-sm-4 col-md-4 col-12">
+                        <input id="txtDate" type="date" class="form-control" />
+                    </div>
+                    <div class="col-sm-2 col-md-2 col-6">
+                        <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-6">
+                        @{
+                            if ((int)ViewData[nameof(PermissionEnum.Create)] == 1)
+                            {
+                                <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div id="dtTable">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/ImportReceipt/Index.js"></script>

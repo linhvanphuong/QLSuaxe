@@ -3,12 +3,16 @@
 }
 @using APP.MODELS
 @using Portal.Utils 
-<div class="row">
+<div class="row d-flex justify-content-center">
     @{ 
+        var account = ViewData["account"] as APP.MODELS.Accounts;
+    }
+    <h3 class="text-primary">CHÀO MỪNG @account.EmployeeName.ToUpper() ĐẾN VỚI HỆ THỐNG </h3>
+    @*@{ 
         var listMotorLift = ViewData["listMotorLift"] as List<APP.MODELS.MotorLifts>;
         if (listMotorLift != null)
         {
-            @*foreach(var i in listMotorLift)
+            foreach(var i in listMotorLift)
             {
                 if(i.Status == (byte)MotorLiftEnum.Active)
                 {
@@ -29,7 +33,7 @@
                     </div>
 
                 }
-            }*@
+            }
             foreach(var i in listMotorLift)
             {
                <div id="motorLift" class="col-sm-4 col-md-4 col-12 mb-1 mb-md-1 mr-1 mr-md-1 bg-white border-2 border-secondary">
@@ -64,5 +68,5 @@
                </div>
             }
         }
-    }   
+    }*@   
 </div>
