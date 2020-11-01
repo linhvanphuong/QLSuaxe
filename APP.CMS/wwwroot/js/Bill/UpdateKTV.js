@@ -2,18 +2,14 @@
     var frmCreate = $('#frmUpdate');
     addRequired(frmCreate);
     $('select').select2();
-    $('select').val('');
     $('#btnCreate').on('click', function () {
         updateBill();
-    })
-    $('#btnSentToKTV').on('click', function () {
-        sentToKTV();
     })
     $('#btnSentToTN').on('click', function () {
         sentToTN();
     })
     $('#btnExist').on('click', function () {
-        location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+        location.href = "/hoa-don/danh-sach"
     })
 });
 window.addEventListener('load', function () {
@@ -26,7 +22,6 @@ $('#drServices').on('change', function () {
         success: function (response) {
             if (response.result) {
                 var option1 = response.data;
-                console.log(option1);
                 var trAppend1 = '<tr><td style="width:10%;text-align:center;">' + '<a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:40%">' + option1.name + '</td>' +
                     '<td class="serviceId" style="width:10%">' + option1.id + '</td>' + '<td class="servicePrice" style="width:20%">' + option1.price + ' VNĐ </td>' +
                     '<td class="TongTien" style="width:20%">' + option1.price + ' VNĐ</td>';
@@ -39,7 +34,7 @@ $('#drServices').on('change', function () {
         }
     }).then(function () {
         TinhTongTien();
-    }) 
+    })
 });
 $('#drAccessories').on('change', function () {
     $.ajax({
@@ -61,7 +56,7 @@ $('#drAccessories').on('change', function () {
         }
     }).then(function () {
         TinhTongTien();
-    }) 
+    })
 });
 function changeThanhTien(id, price) {
     console.log(id);
@@ -85,15 +80,6 @@ function changeThanhTien(id, price) {
     $('#TT_' + id).text(TT);
     TinhTongTien();
 }
-function openCreateCustomer() {
-    $.ajax({
-        url: "/hoa-don" + "/tao-moi-kh",
-        method: "Get",
-        success: function (response) {
-            showContentModal(response, "Tạo mới khách hàng")
-        }
-    });
-}
 $("#listService").on('click', '.SerXoa', function (e) {
     var whichtr = $(this).closest("tr");
     whichtr.remove()
@@ -105,15 +91,6 @@ $("#listAccessories").on('click', '.AccXoa', function (e) {
     whichtr.remove();
     TinhTongTien();
 });
-function openCreateMTType() {
-    $.ajax({
-        url: "/hoa-don" + "/tao-moi-loai-xe",
-        method: "Get",
-        success: function (response) {
-            showContentModal(response, "Tạo mới khách hàng")
-        }
-    });
-}
 function updateBill() {
     if (ValidateForm($('#frmUpdate'))) {
         return;
@@ -148,7 +125,7 @@ function updateBill() {
         listAss.push(ass);
     });
     var model = {
-        Id: $('#frmUpdate').find('#txtId').val(),
+        Id: $('#frmUpdate').find('#txtId').text(),
         MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
         CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
         MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
@@ -172,69 +149,6 @@ function updateBill() {
                 showAlert(response.message, 2)
                 location.href = "/hoa-don/danh-sach"
 
-            } else {
-                showAlert(response.message)
-            }
-        }
-    });
-}
-function sentToKTV() {
-    if (ValidateForm($('#frmUpdate'))) {
-        return;
-    }
-    var listSv = []
-    $('#listService tbody tr').each(function () {
-        var sv = {};
-        $(this).find('td').each(function () {
-            if ($(this).hasClass('serviceId')) {
-                sv.ServiceId = $(this).text();
-            }
-            if ($(this).hasClass('servicePrice')) {
-                sv.ServicePrice = $(this).text().replace("VNĐ", "").trim();
-            }
-        })
-        listSv.push(sv);
-    });
-    var listAss = []
-    $('#listAccessories tbody tr').each(function () {
-        var ass = {};
-        $(this).find('td').each(function () {
-            if ($(this).hasClass('AssId')) {
-                ass.AccesaryId = $(this).text();
-            }
-            if ($(this).hasClass('AssPrice')) {
-                ass.AccesaryPrice = $(this).text().replace("VNĐ", "").trim();
-            }
-            if ($(this).hasClass('AssQuantity')) {
-                ass.Quantity = $(this).find('input').val();
-            }
-        })
-        listAss.push(ass);
-    });
-    var model = {
-        Id: $('#frmUpdate').find('#txtId').val(),
-        MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
-        CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
-        MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
-        TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
-        Status: $('#btnSentToTN').data('stt'),
-        Note: $('#frmUpdate').find('#txtNote').val(),
-        ListBill_Services: listSv,
-        ListBill_Accessories: listAss,
-        CreatedBy: $('#frmUpdate').find('#txtCreatedBy').data('id'),
-        UpdatedBy: $('#frmUpdate').find('#txtUpdatedBy').data('id')
-    }
-    showLoading();
-    $.ajax({
-        url: "/hoa-don/create-or-update",
-        method: "POST",
-        data: model
-        , success: function (response) {
-            hideLoading()
-            if (response.result) {
-                // datasource = response.data
-                showAlert(response.message, 2)
-                location.href = "/hoa-don/danh-sach"
             } else {
                 showAlert(response.message)
             }
@@ -275,12 +189,12 @@ function sentToTN() {
         listAss.push(ass);
     });
     var model = {
-        Id: $('#frmUpdate').find('#txtId').val(),
+        Id: $('#frmUpdate').find('#txtId').text(),
         MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
         CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
         MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
         TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
-        Status: $('#btnSentToKTV').data('stt'),
+        Status: $('#btnSentToTN').data('stt'),
         Note: $('#frmUpdate').find('#txtNote').val(),
         ListBill_Services: listSv,
         ListBill_Accessories: listAss,

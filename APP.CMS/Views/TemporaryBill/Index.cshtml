@@ -13,7 +13,7 @@
 @{
     if (account.JobPositionName.ToLower().Trim().Contains("thu ngân"))
     {
-        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryKTV)" />
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryTN)" />
     }
     else if (account.JobPositionName.ToLower().Trim().Contains("lễ tân"))
     {
@@ -21,35 +21,130 @@
     }
     else if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
     {
-        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryLT)" />
+        <input hidden type="text" id="txtStatushd" value="@((int)BillStatus.TemporaryKTV)" />
     }
 }
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header border-0">
-                <div class="row" id="frmFilter">
-                    <div class="form-group col-sm-4 col-md-4 col-12">
-                        <input id="txtDate" type="date" class="form-control" />
+@{
+    if (account.JobPositionName.ToLower().Trim().Contains("thu ngân"))
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="row" id="frmFilter">
+                            <div class="form-group col-sm-4 col-md-4 col-12">
+                                <input id="txtDate" type="date" class="form-control" />
+                            </div>
+                            <div class="form-group col-sm-2 col-md-2 col-12">
+                                <select id="drStatus" class="form-control">
+                                    <option value="3">Phiếu tạm tính</option>
+                                    <option value="4">Hóa đơn</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-6">
+                                <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-6">
+                                @{
+                                    if ((int)ViewData[nameof(PermissionEnum.Create)] == 1)
+                                    {
+                                        <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
+                                    }
+                                }
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-2 col-md-2 col-6">
-                        <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
-                    </div>
-                    <div class="col-sm-6 col-md-6 col-6">
-                        @{
-                            if ((int)ViewData[nameof(PermissionEnum.Create)] == 1)
-                            {
-                                <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
-                            }
-                        }
+                    <!-- /.card-header -->
+                    <div id="dtTable">
                     </div>
                 </div>
             </div>
-            <!-- /.card-header -->
-            <div id="dtTable">
+        </div>
+    }
+    if (account.JobPositionName.ToLower().Trim().Contains("lễ tân"))
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="row" id="frmFilter">
+                            <div class="form-group col-sm-4 col-md-4 col-12">
+                                @*<input id="txtDate" type="date" class="form-control" />*@
+                            </div>
+                            <div class="form-group col-sm-2 col-md-2 col-12">
+                                @*<select id="drStatus" class="form-control">
+                                    @{
+                                        foreach (int i in Enum.GetValues(typeof(BillStatusView)))
+                                        {
+                                            <option value="@i">@Extensions.GetEnumDescription((BillStatusView)i)</option>
+                                        }
+                                    }
+                                </select>*@
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-6">
+                                @*<button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>*@
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-6">
+                                @{
+                                    if ((int)ViewData[nameof(PermissionEnum.Create)] == 1)
+                                    {
+                                        <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div id="dtTable">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    }
+    if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <div class="row" id="frmFilter">
+                            <div class="form-group col-sm-4 col-md-4 col-12">
+                                @*<input id="txtDate" type="date" class="form-control" />*@
+                            </div>
+                            <div class="form-group col-sm-2 col-md-2 col-12">
+                                @*<select id="drStatus" class="form-control">
+                                    @{
+                                        foreach (int i in Enum.GetValues(typeof(BillStatusView)))
+                                        {
+                                            <option value="@i">@Extensions.GetEnumDescription((BillStatusView)i)</option>
+                                        }
+                                    }
+                                </select>*@
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-6">
+                                @*<button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>*@
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-6">
+                                @{
+                                    if ((int)ViewData[nameof(PermissionEnum.Create)] == 1)
+                                    {
+                                        <button id="btnCreate" class="btn btn-success float-right">Thêm mới</button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div id="dtTable">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+}
+
 <script src="~/js/Common/Normal.js"></script>
 <script src="~/js/Bill/Index.js"></script>

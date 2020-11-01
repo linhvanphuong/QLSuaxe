@@ -40,6 +40,82 @@ namespace APP.CMS.Controllers
             this._motorManufactureManager = motorManufactureManager;
             this._accountManager = accountManager;
         }
+        [CustomAuthen(nameof(PermissionEnum.Update))]
+        [HttpGet("xem")]
+        public async Task<IActionResult> View(long id)
+        {
+            try
+            {
+                var permission = Portal.Utils.SessionExtensions.Get<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission);
+                var path = _httpContextAccessor.HttpContext.Request.Path.Value;
+                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower() == path.ToLower()).ToList();
+                ViewData[nameof(PermissionEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Create))) > 0 ? 1 : 0;
+                ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
+                ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
+                var data = await _temporaryBillManager.Find_By_Id(id);
+                ViewData["MotorLift"] = await _motorLiftsManager.Find_By_Id(data.MotorLiftId);
+                ViewData["Customer"] = await _customersManager.Find_By_Id(data.CustomerId);
+                ViewData["MotorType"] = await _motorTypesManager.Find_By_Id(data.MotorTypeId);
+                ViewData["listServices"] = await _servicesManager.Get_List("", (byte)StatusEnum.Active);
+                ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
+                ViewData["listKTVien"] = await _accountManager.Get_List_KTV();
+                ViewData["timeIn"] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                var session = _httpContextAccessor.HttpContext.Session;
+                var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+                account.EmployeeName = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
+                var createdBy = await _accountManager.Find_By_Id_Ok(data.CreatedBy);
+                createdBy.EmployeeName = (await _employeeManager.Find_By_Id(createdBy.EmployeeId)).Name;
+                ViewData["CreatedBy"] = createdBy;
+                var updatedBy = await _accountManager.Find_By_Id_Ok(data.UpdatedBy);
+                if (updatedBy != null)
+                {
+                    updatedBy.EmployeeName = (await _employeeManager.Find_By_Id(updatedBy.EmployeeId)).Name;
+                    ViewData["UpdatedBy"] = updatedBy;
+                }
+                else
+                {
+                    ViewData["UpdatedBy"] = null;
+                }
+                var printedBy = await _accountManager.Find_By_Id_Ok(data.PrintedBy);
+                if (printedBy != null)
+                {
+                    printedBy.EmployeeName = (await _employeeManager.Find_By_Id(printedBy.EmployeeId)).Name;
+                    ViewData["PrintedBy"] = printedBy;
+                }
+                else
+                {
+                    ViewData["PrintedBy"] = null;
+                }
+                var listServicesCreated = await _temporaryBillManager.Get_List_TemporaryBill_Service(data.Id);
+                if (listServicesCreated != null)
+                {
+                    foreach (var i in listServicesCreated)
+                    {
+                        i.ServiceName = (await _servicesManager.Find_By_Id(i.ServiceId)).Name;
+                    }
+                }
+                ViewData["listServicesCreated"] = listServicesCreated;
+                var listAccessoriesCreated = await _temporaryBillManager.Get_List_TemporaryBill_Accesary(data.Id);
+                if (listAccessoriesCreated != null)
+                {
+                    foreach (var i in listAccessoriesCreated)
+                    {
+                        var acc = (await _accessoriesManager.Find_By_Id(i.AccesaryId));
+                        i.AccesaryName = acc.Name;
+                        i.MaxQuantity = acc.Quantity + i.Quantity;
+                        i.Unit = acc.Unit;
+                        i.ThanhTien = i.Quantity * i.AccesaryPrice;
+                    }
+
+                }
+                ViewData["listAccessoriesCreated"] = listAccessoriesCreated;
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = false, Message = ex.Message });
+            }
+        }
         [CustomAuthen]
         [HttpGet("get-list")]
         public async Task<IActionResult> Get_List(string time, byte status)
@@ -54,7 +130,7 @@ namespace APP.CMS.Controllers
                 ViewData[nameof(PermissionEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Create))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
-                if (status == 2)
+                if (status == (byte)BillStatus.TemporaryKTV)
                 {
                     var session = _httpContextAccessor.HttpContext.Session;
                     var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
@@ -79,9 +155,10 @@ namespace APP.CMS.Controllers
                 var session = _httpContextAccessor.HttpContext.Session;
                 var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
                 account.EmployeeName = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
+                string controllerName = this.ControllerContext.ActionDescriptor.ControllerTypeInfo.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString();
                 var permission = Portal.Utils.SessionExtensions.Get<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission);
                 var path = _httpContextAccessor.HttpContext.Request.Path.Value;
-                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower() == path.ToLower()).ToList();
+                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower().Contains(controllerName.ToLower())).ToList();
                 ViewData[nameof(PermissionEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Create))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
@@ -128,6 +205,28 @@ namespace APP.CMS.Controllers
                 return Json(new { Result = false, Message = ex.Message });
             }
         }
+        [HttpGet("update-status")]
+        public async Task<IActionResult> Update_Status(long id,byte status)
+        {
+            try
+            {
+                var data = await _temporaryBillManager.Find_By_Id(id);
+                if(status == (byte)BillStatus.Bill)
+                {
+                    var session = _httpContextAccessor.HttpContext.Session;
+                    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+                    data.TimeOut = DateTime.Now;
+                    data.PrintedBy = account.Id;
+                }
+                data.Status = status;
+                await _temporaryBillManager.Update_Status(data);
+                return Json(new { Result = true });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { Result = false, Message = ex.Message });
+            }
+        }
         [HttpGet("tao-moi-kh")]
         public async Task<IActionResult> Tao_Moi_KH()
         {
@@ -152,20 +251,29 @@ namespace APP.CMS.Controllers
         {
             try
             {
+                string controllerName = this.ControllerContext.ActionDescriptor.ControllerTypeInfo.CustomAttributes.FirstOrDefault().ConstructorArguments[0].Value.ToString();
                 var permission = Portal.Utils.SessionExtensions.Get<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission);
                 var path = _httpContextAccessor.HttpContext.Request.Path.Value;
-                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower() == path.ToLower()).ToList();
+                var currentPagePermission = permission.Where(c => c.MenuUrl.ToLower().Contains(controllerName.ToLower())).ToList();
                 ViewData[nameof(PermissionEnum.Create)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Create))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
                 ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
+                var listMotorLift = await _motorLiftsManager.Get_List("", (byte)MotorLiftEnum.Active);
+                var listKtv = await _accountManager.Get_List_KTV();
+                //ViewData["listMotorLift"] = await _motorLiftsManager.Get_List("", (byte)MotorLiftEnum.Active);
+                ViewData["listCustomer"] = await _customersManager.Get_List();
+                ViewData["listMotorType"] = await _motorTypesManager.Get_List("", (byte)StatusEnum.All, 0);
                 var data = await _temporaryBillManager.Find_By_Id(id);
-                ViewData["MotorLift"] = await _motorLiftsManager.Find_By_Id(data.MotorLiftId);
+                //ViewData["MotorLift"] = await _motorLiftsManager.Find_By_Id(data.MotorLiftId);
                 ViewData["Customer"] = await _customersManager.Find_By_Id(data.CustomerId);
                 ViewData["MotorType"] = await _motorTypesManager.Find_By_Id(data.MotorTypeId);
                 ViewData["listServices"] = await _servicesManager.Get_List("", (byte)StatusEnum.Active);
                 ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
-                var listKtv = await _accountManager.Get_List_KTV();
                 ViewData["timeIn"] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                var motorLift = await _motorLiftsManager.Find_By_Id(data.MotorLiftId);
+                ViewData["MotorLift"] = motorLift;
+                listMotorLift.Add(motorLift);
+                ViewData["listMotorLift"] = listMotorLift;
                 var session = _httpContextAccessor.HttpContext.Session;
                 var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
                 account.EmployeeName = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
@@ -231,17 +339,17 @@ namespace APP.CMS.Controllers
                 }
                 else
                 {
-                    if(inputModel.Status == 3)
-                    {
-                        inputModel.TimeOut = DateTime.Now;
-                        var session = _httpContextAccessor.HttpContext.Session;
-                        var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
-                        inputModel.PrintedBy = account.Id;
-                    }
-                    else
-                    {
-                        inputModel.UpdatedTime = DateTime.Now;
-                    }
+                    //if(inputModel.Status == (byte)BillStatus.TemporaryTN)
+                    //{
+                    //    inputModel.TimeOut = DateTime.Now;
+                    //    var session = _httpContextAccessor.HttpContext.Session;
+                    //    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+                    //    inputModel.PrintedBy = account.Id;
+                    //}
+                    //else
+                    //{
+                    //    inputModel.UpdatedTime = DateTime.Now;
+                    //}
                     await _temporaryBillManager.Update(inputModel);
                     return Json(new { Result = true, Message = "Cập nhật dữ liệu thành công" });
                 }
@@ -266,7 +374,7 @@ namespace APP.CMS.Controllers
             }
         }
         [CustomAuthen]
-        [HttpGet("danh-sach-phieu-tam-tinh")]
+        [HttpGet("danh-sach")]
         public async Task<IActionResult> Index()
         {
             var permission = Portal.Utils.SessionExtensions.Get<List<Permissions>>(_session, Portal.Utils.SessionExtensions.SesscionPermission);
@@ -276,6 +384,18 @@ namespace APP.CMS.Controllers
             ViewData[nameof(PermissionEnum.Update)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Update))) > 0 ? 1 : 0;
             ViewData[nameof(PermissionEnum.Delete)] = currentPagePermission.Count(c => c.ActionCode == (nameof(PermissionEnum.Delete))) > 0 ? 1 : 0;
             return View();
+        }
+        [HttpPost("export-word")]
+        public async Task<IActionResult> CreateFileWord(string html)
+        {
+            try
+            {
+                return File(HtmlToWord.HtmlToWordMethod(html), "application/force-download", "hoadon.docx");
+            }
+            catch (Exception ex)
+            {
+                return Json("");
+            }
         }
     }
 }

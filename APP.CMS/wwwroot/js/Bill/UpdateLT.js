@@ -2,23 +2,35 @@
     var frmCreate = $('#frmUpdate');
     addRequired(frmCreate);
     $('select').select2();
-    $('select').val('');
     $('#btnCreate').on('click', function () {
         updateBill();
     })
     $('#btnSentToKTV').on('click', function () {
         sentToKTV();
     })
-    $('#btnSentToTN').on('click', function () {
-        sentToTN();
-    })
     $('#btnExist').on('click', function () {
-        location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+        location.href = "/hoa-don/danh-sach"
     })
 });
 window.addEventListener('load', function () {
     TinhTongTien();
 })
+$('#frmUpdate').find('#drCustomer').on('change', function () {
+    var phone = $(this).find(':selected').data('phone');
+    $('#frmUpdate').find('#txtPhone').val('');
+    $('#frmUpdate').find('#txtPhone').val(phone);
+})
+$('#frmUpdate').find('#txtPhone').on('blur', function () {
+    var phone = $(this).val();
+    if (phone != "") {
+        $('#frmUpdate').find('#drCustomer').find('option').each(function () {
+            if ($(this).data('phone') == phone) {
+                $('#frmUpdate').find('#drCustomer').val($(this).val()).trigger('change');
+            }
+        })
+    }
+});
+var listSvSTT = 0;
 $('#drServices').on('change', function () {
     $.ajax({
         url: "/hoa-don" + "/service-info?id=" + this.value,
@@ -27,6 +39,7 @@ $('#drServices').on('change', function () {
             if (response.result) {
                 var option1 = response.data;
                 console.log(option1);
+                listSvSTT++;
                 var trAppend1 = '<tr><td style="width:10%;text-align:center;">' + '<a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:40%">' + option1.name + '</td>' +
                     '<td class="serviceId" style="width:10%">' + option1.id + '</td>' + '<td class="servicePrice" style="width:20%">' + option1.price + ' VNĐ </td>' +
                     '<td class="TongTien" style="width:20%">' + option1.price + ' VNĐ</td>';
@@ -39,8 +52,9 @@ $('#drServices').on('change', function () {
         }
     }).then(function () {
         TinhTongTien();
-    }) 
+    })
 });
+var listAssSTT = 0;
 $('#drAccessories').on('change', function () {
     $.ajax({
         url: "/hoa-don" + "/accessory-info?id=" + this.value,
@@ -48,6 +62,7 @@ $('#drAccessories').on('change', function () {
         success: function (response) {
             if (response.result) {
                 var option2 = response.data;
+                listAssSTT++;
                 var trAppend2 = '<tr ><td style="width:10%;text-align:center;">' + '<a class="AccXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:30%">' + option2.name + '</td>' +
                     '<td class="AssId" style="width:10%">' + option2.id + '</td>' + '<td class="AssPrice" style="width:10%">' + option2.price + ' VNĐ </td>' +
                     '<td class="AssQuantity" style="width:10%">' + '<input type="number" data-max="' + option2.quantity + '" onblur="changeThanhTien(' + option2.id + ',' + option2.price + ')" min="1" step="1"  value="1" max="' + option2.quantity + '" id="row2number_' + option2.id + '">' + '</td>' + '<td style="width: 10% ">' + option2.unit + '</td>' +
@@ -61,7 +76,7 @@ $('#drAccessories').on('change', function () {
         }
     }).then(function () {
         TinhTongTien();
-    }) 
+    })
 });
 function changeThanhTien(id, price) {
     console.log(id);
@@ -148,17 +163,17 @@ function updateBill() {
         listAss.push(ass);
     });
     var model = {
-        Id: $('#frmUpdate').find('#txtId').val(),
-        MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
-        CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
-        MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
+        Id: $('#frmUpdate').find('#txtId').text(),
+        MotorLiftId: $('#frmUpdate').find('#drMotorLift').val(),
+        CustomerId: $('#frmUpdate').find('#drCustomer').val(),
+        MotorTypeId: $('#frmUpdate').find('#drMotorType').val(),
         TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
         Status: $('#txtStatus').val(),
         Note: $('#frmUpdate').find('#txtNote').val(),
         ListBill_Services: listSv,
         ListBill_Accessories: listAss,
         CreatedBy: $('#frmUpdate').find('#txtCreatedBy').data('id'),
-        UpdatedBy: $('#frmUpdate').find('#txtUpdatedBy').data('id')
+        UpdatedBy: $('#frmUpdate').find('#drKTV').val()
     }
     showLoading();
     $.ajax({
@@ -212,80 +227,17 @@ function sentToKTV() {
         listAss.push(ass);
     });
     var model = {
-        Id: $('#frmUpdate').find('#txtId').val(),
-        MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
-        CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
-        MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
-        TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
-        Status: $('#btnSentToTN').data('stt'),
-        Note: $('#frmUpdate').find('#txtNote').val(),
-        ListBill_Services: listSv,
-        ListBill_Accessories: listAss,
-        CreatedBy: $('#frmUpdate').find('#txtCreatedBy').data('id'),
-        UpdatedBy: $('#frmUpdate').find('#txtUpdatedBy').data('id')
-    }
-    showLoading();
-    $.ajax({
-        url: "/hoa-don/create-or-update",
-        method: "POST",
-        data: model
-        , success: function (response) {
-            hideLoading()
-            if (response.result) {
-                // datasource = response.data
-                showAlert(response.message, 2)
-                location.href = "/hoa-don/danh-sach"
-            } else {
-                showAlert(response.message)
-            }
-        }
-    });
-}
-function sentToTN() {
-    if (ValidateForm($('#frmUpdate'))) {
-        return;
-    }
-    var listSv = []
-    $('#listService tbody tr').each(function () {
-        var sv = {};
-        $(this).find('td').each(function () {
-            if ($(this).hasClass('serviceId')) {
-                sv.ServiceId = $(this).text();
-            }
-            if ($(this).hasClass('servicePrice')) {
-                sv.ServicePrice = $(this).text().replace("VNĐ", "").trim();
-            }
-        })
-        listSv.push(sv);
-    });
-    var listAss = []
-    $('#listAccessories tbody tr').each(function () {
-        var ass = {};
-        $(this).find('td').each(function () {
-            if ($(this).hasClass('AssId')) {
-                ass.AccesaryId = $(this).text();
-            }
-            if ($(this).hasClass('AssPrice')) {
-                ass.AccesaryPrice = $(this).text().replace("VNĐ", "").trim();
-            }
-            if ($(this).hasClass('AssQuantity')) {
-                ass.Quantity = $(this).find('input').val();
-            }
-        })
-        listAss.push(ass);
-    });
-    var model = {
-        Id: $('#frmUpdate').find('#txtId').val(),
-        MotorLiftId: $('#frmUpdate').find('#txtMotorLift').data('id'),
-        CustomerId: $('#frmUpdate').find('#txtCustomer').data('id'),
-        MotorTypeId: $('#frmUpdate').find('#txtMotorType').data('id'),
+        Id: $('#frmUpdate').find('#txtId').text(),
+        MotorLiftId: $('#frmUpdate').find('#drMotorLift').val(),
+        CustomerId: $('#frmUpdate').find('#drCustomer').val(),
+        MotorTypeId: $('#frmUpdate').find('#drMotorType').val(),
         TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
         Status: $('#btnSentToKTV').data('stt'),
         Note: $('#frmUpdate').find('#txtNote').val(),
         ListBill_Services: listSv,
         ListBill_Accessories: listAss,
         CreatedBy: $('#frmUpdate').find('#txtCreatedBy').data('id'),
-        UpdatedBy: $('#frmUpdate').find('#txtUpdatedBy').data('id')
+        UpdatedBy: $('#frmUpdate').find('#drKTV').val()
     }
     showLoading();
     $.ajax({

@@ -45,10 +45,19 @@ namespace Portal.Utils
     {
         [Description("Phiếu tạm tính")]
         TemporaryLT = 1,
-        [Description("Phiếu tạm tính - ktv")]
+        [Description("Phiếu tạm tính")]
         TemporaryKTV = 2,
+        [Description("Phiếu tạm tính")]
+        TemporaryTN = 3,
         [Description("Hóa đơn")]
-        Bill = 3
+        Bill = 4
+    }
+    public enum BillStatusView
+    {
+        [Description("Phiếu tạm tính")]
+        TemporaryTN = 3,
+        [Description("Hóa đơn")]
+        Bill = 4
     }
     public enum AccountStatusEnum
     {
@@ -56,8 +65,6 @@ namespace Portal.Utils
         Active = 1,
         [Description("Bận")]
         Acting = 2,
-        [Description("Off")]
-        Off = 3
     }
 }
 

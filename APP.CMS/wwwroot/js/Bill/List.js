@@ -31,3 +31,16 @@ function openUpdate(id) {
 function openDelete(id) {
     normal.openDelete(id);
 }
+function updateStatus(id, status) {
+    $.ajax({
+        url: "/hoa-don/update-status?id=" + id + "&status=" + status,
+        method: "Get",
+        success: function (response) {
+            if (response.result) {
+                showAlert("Thành công", 2);
+                var stt = $('#txtStatushd').val();
+                normal.getData("",stt);
+            }
+        }
+    })
+}

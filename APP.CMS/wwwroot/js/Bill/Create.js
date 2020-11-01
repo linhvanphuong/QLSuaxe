@@ -7,10 +7,9 @@
         createBill();
     })
     $('#btnExist').on('click', function () {
-        location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+        location.href = "/hoa-don/danh-sach"
     });
 });
-var listSvSTT = 0;
 $('#drServices').on('change', function () {
     $.ajax({
         url: "/hoa-don" + "/service-info?id=" + this.value,
@@ -18,7 +17,6 @@ $('#drServices').on('change', function () {
         success: function (response) {
             if (response.result) {
                 var option1 = response.data;
-                listSvSTT++;
                 var trAppend1 = '<tr><td style="width:10%;text-align:center;">' + '<a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:40%">' + option1.name + '</td>' +
                     '<td class="serviceId" style="width:10%">' + option1.id + '</td>' + '<td class="servicePrice" style="width:20%">' + option1.price + ' VNĐ </td>' +
                     '<td class="TongTien" style="width:20%">' + option1.price + ' VNĐ</td>';
@@ -33,7 +31,6 @@ $('#drServices').on('change', function () {
         TinhTongTien()
     }) 
 });
-var listAssSTT = 0;
 $('#drAccessories').on('change', function () {
     $.ajax({
         url: "/hoa-don" + "/accessory-info?id=" + this.value,
@@ -41,7 +38,6 @@ $('#drAccessories').on('change', function () {
         success: function (response) {
             if (response.result) {
                 var option2 = response.data;
-                listAssSTT++;
                 var trAppend2 = '<tr ><td style="width:10%;text-align:center;">' + '<a class="AccXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:30%">' + option2.name + '</td>' +
                     '<td class="AssId" style="width:10%">' + option2.id + '</td>' + '<td class="AssPrice" style="width:10%">' + option2.price + ' VNĐ </td>' +
                     '<td class="AssQuantity" style="width:10%">' + '<input type="number" data-max="' + option2.quantity + '" onblur="changeThanhTien(' + option2.id + ',' + option2.price + ')" min="1" step="1"  value="1" max="' + option2.quantity + '" id="row2number_' + option2.id + '">' + '</td>' + '<td style="width: 10% ">' + option2.unit + '</td>' +
@@ -162,7 +158,7 @@ function createBill() {
         CustomerId: $('#frmCreate').find('#drCustomer').val(),
         MotorTypeId: $('#frmCreate').find('#drMotorType').val(),
         TimeIn: $('#frmCreate').find('#txtTimeIn').text(),
-        Status: 1,
+        Status: $('#txtStatus').val(),
         Note: $('#frmCreate').find('#txtNote').val(),
         ListBill_Services: listSv,
         ListBill_Accessories: listAss,
@@ -178,7 +174,7 @@ function createBill() {
             if (response.result) {
                 // datasource = response.data
                 showAlert(response.message, 2)
-                location.href = "/hoa-don/danh-sach-phieu-tam-tinh"
+                location.href = "/hoa-don/danh-sach"
 
             } else {
                 showAlert(response.message)

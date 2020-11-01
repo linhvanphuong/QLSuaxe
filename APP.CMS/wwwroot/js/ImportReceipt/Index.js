@@ -1,10 +1,10 @@
 ﻿$(function(){
     getData();
-    $('#frmCreate').find('#btnSearch').on('click', function () {
+    $('#frmFilter').find('#btnSearch').on('click', function () {
         var time = $('#frmCreate').find('#txtDate').val();
-        normal.getData(time);
+        getData(time);
     });
-    $('#frmCreate').find('#btnCreate').on('click', function () {
+    $('#frmFilter').find('#btnCreate').on('click', function () {
         location.href = "/don-hang-nhap" + '/tao-moi';
     });
 });

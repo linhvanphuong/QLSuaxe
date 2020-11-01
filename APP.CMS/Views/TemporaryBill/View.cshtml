@@ -1,0 +1,343 @@
+﻿
+@{
+    ViewData["Title"] = "Hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using APP.MODELS
+@using Portal.Utils;
+@model APP.MODELS.TemporaryBill
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
+}
+<link href="~/css/Billcss.css" rel="stylesheet" />
+<div id="frmUpdate" class="form-horizontal border border-dark">
+    <div class="row d-flex justify-content-center">
+        <label class="mr-1">Mã phiếu: </label>
+        <label id="txtId">@Model.Id</label>
+    </div>
+    <div class="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Khách hàng: </label>
+                    @{
+                        var customer = ViewData["Customer"] as APP.MODELS.Customers;
+                    }
+                    <label readonly id="txtCustomer" data-id="@customer.Id">@customer.Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Số điện thoại: </label>
+                    <label>@customer.Phone</label>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label required class="mr-1">Loại xe: </label>
+                    @{
+                        var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
+                    }
+                    <label readonly id="txtMotorType" data-id="@motorType.Id">@motorType.Name</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label required class="col-md-3">Quầy sửa: </label>
+                    @{
+                        var motorLift = ViewData["MotorLift"] as APP.MODELS.MotorLifts;
+                    }
+                    <label readonly id="txtMotorLift" data-id="@motorLift.Id">@motorLift.Name</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Giờ vào: </label>
+                    <label id="txtTimeIn">@Model.TimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Giờ ra: </label>
+                    <label id="txtTimeOut">@Model.UpdatedTime?.ToString("dd/MM/yyyy HH:mm:ss")</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Dịch vụ: </label>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table id="listService" class="table table-bordered table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="text-align: center; width: 10%">STT</th>
+                        <th style="width:40%">Tên dịch vụ</th>
+                        <th style="width:10%">Mã dịch vụ</th>
+                        <th style="width:20%">Đơn giá</th>
+                        <th style="width:20%">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var listServicesCreated = ViewData["listServicesCreated"] as List<APP.MODELS.TemporaryBill_Service>;
+                        if (listServicesCreated != null)
+                        {
+
+                            for (int i = 0; i < listServicesCreated.Count(); i++)
+                            {
+                                var item = listServicesCreated[i];
+                                <tr>
+                                    <td style="width:10%;text-align:center;">
+                                        @(i+1)
+                                    </td>
+                                    <td style="width:40%">
+                                        @item.ServiceName
+                                    </td>
+                                    <td class="serviceId" style="width:10%">
+                                        @item.ServiceId
+                                    </td>
+                                    <td class="servicePrice" style="width:20%">
+                                        @decimal.Truncate(item.ServicePrice.Value) VNĐ
+                                    </td>
+                                    <td class="TongTien" style="width:20%">
+                                        @decimal.Truncate(item.ServicePrice.Value) VNĐ
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <div class="">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Phụ tùng: </label>
+                    <div class="col-md-6"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table id="listAccessories" class="table table-bordered table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="text-align: center; width: 10%">STT</th>
+                        <th style="width:30%">Tên phụ tùng</th>
+                        <th style="width:10%">Mã dịch vụ</th>
+                        <th style="width:10%">Đơn giá</th>
+                        <th style="width:10%">Số lượng</th>
+                        <th style="width:10%">ĐVT</th>
+                        <th style="width:20%">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var listAccessoriesCreated = ViewData["listAccessoriesCreated"] as List<APP.MODELS.TemporaryBill_Accesary>;
+                        if (listAccessoriesCreated.Count() > 0)
+                        {
+                            for (int item = 0; item < listAccessoriesCreated.Count(); item++)
+                            {
+                                var i = listAccessoriesCreated[item];
+                                <tr>
+                                    <td style="width:10%;text-align:center;">
+                                        @(item+1)
+                                    </td>
+                                    <td style="width:30%">
+                                        @i.AccesaryName
+                                    </td>
+                                    <td class="AssId" style="width:10%">
+                                        @i.AccesaryId
+                                    </td>
+                                    <td class="AssPrice" style="width:10%">
+                                        @decimal.Truncate(i.AccesaryPrice) VNĐ
+                                    </td>
+                                    <td class="AssQuantity" style="width:10%">
+                                        @i.Quantity
+                                    </td>
+                                    <td style="width: 10% ">
+                                        @i.Unit
+                                    </td>
+                                    <td style="width:20%">
+                                        <p class="TongTien" id="TT_@i.AccesaryId">@decimal.Truncate(i.ThanhTien) VNĐ</p>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-12 col-md-12 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-1">Ghi chú: </label>
+                    <p class="col-md-11">@Model.Note</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Lễ tân: </label>
+                    @{
+                        var createdBy = ViewData["CreatedBy"] as APP.MODELS.Accounts;
+                    }
+                <label readonly id="txtCreatedBy" data-id="@createdBy.Id">@createdBy.EmployeeName</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="row align-items-center p-2">
+                    <label class="col-md-3">Kỹ thuật viên: </label>
+                    @{
+                        var updatedBy = ViewData["UpdatedBy"] as APP.MODELS.Accounts;
+                    }
+                    <label readonly id="txtUpdatedBy" data-id="@updatedBy.Id">@updatedBy.EmployeeName</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                @*@{
+                    var printedBy = ViewData["PrintedBy"] as APP.MODELS.Accounts;
+                }
+                <label readonly id="txtPrintedBy" data-id="@printedBy.Id">@printedBy.EmployeeName</label>*@
+            </div>
+            <div class="col-sm-6 col-md-6 col-12 pl-4">
+                <div class="float-right">
+                    <label>Tổng tiền: </label>
+                    <label id="txtTongTien" class="mr-1"> 0 VNĐ </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-horizontal mt-2">
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-danger mr-1" id="btnExist">Trở về</button> <button class="btn btn-success" id="btnCreate">In</button>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#btnExist').click(function () {
+            location.href = "/hoa-don/danh-sach";
+        })
+    })
+    window.addEventListener('load', function () {
+        TinhTongTien();
+    })
+    function TinhTongTien() {
+        var TongTien = 0;
+        $('.TongTien').each(function () {
+            TongTien = TongTien + parseInt($(this).text().replace("VNĐ", "").trim());
+        });
+        TongTien = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(TongTien).replace("₫", "").trim();
+        $('#txtTongTien').text('');
+        $('#txtTongTien').text(TongTien+" VNĐ");
+    }
+    $('#btnCreate').on('click', function () {
+        updateStatus($('#txtId').text(), 4);
+        exportWord();
+    })
+    function updateStatus(id, status) {
+        $.ajax({
+            url: "/hoa-don/update-status?id=" + id + "&status=" + status,
+            method: "Get",
+        });
+    }
+    function exportWord() {
+        var html = '<div>';
+        var d = new Date();
+        var day = d.getDate();
+        var month = d.getMonth() + 1;
+        var year = d.getFullYear();
+        html += '<div style="text-align:center"> Mã phiếu' + $('#txtId').text() + '</div>'
+        html += '<div style="text-align:center"> Khách hàng' + $('#txtCustomer').text() + '</div>'
+        html += $("#frmUpdate").html();
+        html += '<div style="border:none;text-align:right">'
+        html += '<p>';
+        html += '<i>Ngày ' + day + ' tháng ' + month + ' năm ' + year + '</i><br>';
+        html += '<b>Thu ngân</b><br>';
+        html += '<i>(Ký ghi rõ họ tên)</i><br><br><br></div>';
+        @{
+    var name = Html.Raw(Json.Serialize(account.EmployeeName));
+    }
+        html += '<b>' + @name+'</b></p></div>';
+
+        $.ajax({
+            url: "/hoa-don/export-word",
+            method: "POST",
+            data: { html: html }
+            ,
+            xhrFields: {
+                responseType: 'blob' // to avoid binary data being mangled on charset conversion
+            },
+            success: function (blob, status, xhr) {
+                // check for a filename
+                var filename = "";
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                }
+
+                if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                    window.navigator.msSaveBlob(blob, filename);
+                } else {
+                    var URL = window.URL || window.webkitURL;
+                    var downloadUrl = URL.createObjectURL(blob);
+
+                    if (filename) {
+                        // use HTML5 a[download] attribute to specify filename
+                        var a = document.createElement("a");
+                        // safari doesn't support this yet
+                        if (typeof a.download === 'undefined') {
+                            window.location.href = downloadUrl;
+                        } else {
+                            a.href = downloadUrl;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                        }
+                    } else {
+                        window.location.href = downloadUrl;
+                    }
+
+                    setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                }
+            }
+        });
+
+    }
+</script>
+
+

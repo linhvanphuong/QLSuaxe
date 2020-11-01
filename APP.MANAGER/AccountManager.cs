@@ -91,6 +91,14 @@ namespace APP.MANAGER
             {
                 var inputModel = await Find_By_Id(id);
                 await _unitOfWork.AccountsRepository.Delete(inputModel);
+                var data = (await _unitOfWork.Account_RolesRepository.FindBy(c => c.AccountId == id)).ToList();
+                if(data != null)
+                {
+                    foreach (var i in data)
+                    {
+                        await _unitOfWork.Account_RolesRepository.Delete(i);
+                    }
+                }
                 await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
