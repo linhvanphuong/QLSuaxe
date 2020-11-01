@@ -63,7 +63,7 @@ namespace APP.CMS.Controllers
                 account.EmployeeName = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
                 ViewData["listSuplier"] = await _supplierManager.Get_List("");
                 ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
-                ViewData["createdDate"] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                ViewData["createdDate"] = DateTime.Now.ToString("dd/MM/yyyy");
                 ViewData["txtCreatedBy"] = account;
                 return View();
             }
