@@ -241,7 +241,14 @@
 </div>
 <div class="form-horizontal mt-2">
     <div class="d-flex justify-content-center">
-        <button class="btn btn-danger mr-1" id="btnExist">Trở về</button> <button class="btn btn-success" id="btnCreate">In</button>
+        <button class="btn btn-danger mr-1" id="btnExist">Trở về</button>
+        @{
+            if (Model.Status == (byte)BillStatus.TemporaryTN)
+            {
+                <button class="btn btn-success" id="btnCreate">In</button>
+            }
+        }
+
     </div>
 </div>
 <script>
