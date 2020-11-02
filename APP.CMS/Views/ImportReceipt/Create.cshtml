@@ -106,10 +106,7 @@
                 
                 <div class="row align-items-center p-2">
                     <label class="col-md-3">Ngày lập phiếu: </label>
-                    @{
-                        string txtCreatedDate = ViewData["createdDate"] as string;
-                    }
-                    <input id="txtCreatedDate" class="form-control col-md-6" value="@txtCreatedDate" />
+                    <input id="txtCreatedDate" class="form-control col-md-6" value="@DateTime.Now.ToString("dd/MM/yyyy")"/>  
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">

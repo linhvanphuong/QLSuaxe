@@ -63,7 +63,7 @@ namespace APP.CMS.Controllers
                 account.EmployeeName = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
                 ViewData["listSuplier"] = await _supplierManager.Get_List("");
                 ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
-                ViewData["createdDate"] = DateTime.Now.ToString("dd/MM/yyyy");
+                ViewData["createdDate"] = DateTime.Now;
                 ViewData["txtCreatedBy"] = account;
                 return View();
             }
@@ -121,6 +121,7 @@ namespace APP.CMS.Controllers
                     var session = _httpContextAccessor.HttpContext.Session;
                     var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
                     inputModel.CreatedBy = account.Id;
+                    inputModel.CreatedDate = DateTime.Now;
                     await _importReceiptManager.Create(inputModel);
                     return Json(new { Result = true, Message = "Thêm mới dữ liệu thành công" });
                 }

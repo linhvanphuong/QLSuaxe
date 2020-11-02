@@ -100,7 +100,7 @@ function createBill() {
             if (response.result) {
                 // datasource = response.data
                 showAlert(response.message, 2)
-                //location.href = "/don-hang-nhap/danh-sach"
+                location.href = "/don-hang-nhap/danh-sach"
 
             } else {
                 showAlert(response.message)
