@@ -1,0 +1,46 @@
+﻿@using System.Globalization;
+@model List<APP.MODELS.TemporaryBill>
+    <div class="col-md-12">
+        <div class="row">
+            @{
+                string ngay = (string)ViewData["ngay"];
+                DateTime dt = DateTime.ParseExact(ngay, "yyyy-mm-dd", CultureInfo.InvariantCulture);
+                ngay = dt.ToString("dd/mm/yyyy");
+
+            }
+            <div class="col-md-12 col-12 d-flex justify-content-center"><b>THỐNG KÊ DOANH THU NGÀY @ngay</b></div>
+            <table class="table table-bordered" style="border-collapse: collapse;border:1px;">
+                <thead>
+                    <tr>
+                        <th style="width:20%;text-align:center"><b>STT</b></th>
+                        <th style="width:20%;text-align:center"><b>Mã hóa đơn</b></th>
+                        <th style="width:30%;text-align:center"><b>Ngày xuất</b></th>
+                        <th style="width:30%;text-align:center"><b>Thành tiền</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        for (var i = 0; i < Model.Count(); i++)
+                        {
+                            var item = Model[i];
+                            <tr>
+                                <td style="width:20%;text-align:center">@(i+1)</td>
+                                <td style="width:20%;text-align:center">@item.Id</td>
+                                <td style="width:30%;text-align:center">@item.TimeOut</td>
+                                <td style="width:30%;text-align:center">@decimal.Truncate(item.tongTien)</td>
+                            </tr>
+                        }
+                    }
+                    <tr>
+                        <td style="width:10%"></td>
+                        <td style="text-align:center" colspan="2"><b>Tổng cộng</b></td>
+                        @{
+                            decimal tongcong = (decimal)ViewData["tongcong"];
+                        }
+                        <td style="width:30%;text-align:center">@decimal.Truncate(tongcong)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>

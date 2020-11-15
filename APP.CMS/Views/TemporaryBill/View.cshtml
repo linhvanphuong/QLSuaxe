@@ -13,7 +13,7 @@
     var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
 }
 <link href="~/css/Billcss.css" rel="stylesheet" />
-<div id="frmUpdate" class="form-horizontal border border-dark">
+<div id="frmView" class="form-horizontal border border-dark">
     <div class="row d-flex justify-content-center">
         <label class="mr-1">Mã phiếu: </label>
         <label id="txtId">@Model.Id</label>
@@ -42,7 +42,7 @@
         <div class="row d-flex justify-content-center">
             <div class="col-sm-6 col-md-6 col-12 pl-4">
                 <div class="row align-items-center p-2">
-                    <label required class="mr-1">Loại xe: </label>
+                    <label required class="col-md-3">Loại xe: </label>
                     @{
                         var motorType = ViewData["MotorType"] as APP.MODELS.MotorTypes;
                     }
@@ -271,79 +271,24 @@
     }
     $('#btnCreate').on('click', function () {
         updateStatus($('#txtId').text(), 4);
-        exportWord();
     })
     function updateStatus(id, status) {
         $.ajax({
             url: "/hoa-don/update-status?id=" + id + "&status=" + status,
             method: "Get",
+        }).then(function () {
+                var html = "<html>";
+                html += $('#frmView').html();
+
+                html += "</html>";
+
+                var printWin = window.open('', '', 'left=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status  =0');
+                printWin.document.write(html);
+                printWin.document.close();
+                printWin.focus();
+                printWin.print();
+                printWin.close();
         });
-    }
-    function exportWord() {
-        var html = '<div>';
-        var d = new Date();
-        var day = d.getDate();
-        var month = d.getMonth() + 1;
-        var year = d.getFullYear();
-        html += '<div style="text-align:center"> Mã phiếu' + $('#txtId').text() + '</div>'
-        html += '<div style="text-align:center"> Khách hàng' + $('#txtCustomer').text() + '</div>'
-        html += $("#frmUpdate").html();
-        html += '<div style="border:none;text-align:right">'
-        html += '<p>';
-        html += '<i>Ngày ' + day + ' tháng ' + month + ' năm ' + year + '</i><br>';
-        html += '<b>Thu ngân</b><br>';
-        html += '<i>(Ký ghi rõ họ tên)</i><br><br><br></div>';
-        @{
-    var name = Html.Raw(Json.Serialize(account.EmployeeName));
-    }
-        html += '<b>' + @name+'</b></p></div>';
-
-        $.ajax({
-            url: "/hoa-don/export-word",
-            method: "POST",
-            data: { html: html }
-            ,
-            xhrFields: {
-                responseType: 'blob' // to avoid binary data being mangled on charset conversion
-            },
-            success: function (blob, status, xhr) {
-                // check for a filename
-                var filename = "";
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    var matches = filenameRegex.exec(disposition);
-                    if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                }
-
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                    window.navigator.msSaveBlob(blob, filename);
-                } else {
-                    var URL = window.URL || window.webkitURL;
-                    var downloadUrl = URL.createObjectURL(blob);
-
-                    if (filename) {
-                        // use HTML5 a[download] attribute to specify filename
-                        var a = document.createElement("a");
-                        // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
-                            window.location.href = downloadUrl;
-                        } else {
-                            a.href = downloadUrl;
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.click();
-                        }
-                    } else {
-                        window.location.href = downloadUrl;
-                    }
-
-                    setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-                }
-            }
-        });
-
     }
 </script>
 

@@ -46,6 +46,7 @@ namespace APP.MODELS
         public List<TemporaryBill_Service> ListBill_Services { get; set; }
         [NotMapped]
         public List<TemporaryBill_Accesary> ListBill_Accessories { get; set; }
-
+        [NotMapped]
+        public decimal tongTien { get; set; }
     }
 }
