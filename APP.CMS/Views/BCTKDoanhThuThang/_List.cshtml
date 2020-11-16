@@ -4,11 +4,10 @@
         <div class="row">
             @{
                 string ngay = (string)ViewData["ngay"];
-                DateTime dt = DateTime.ParseExact(ngay, "yyyy-mm-dd", CultureInfo.InvariantCulture);
-                ngay = dt.ToString("dd/mm/yyyy");
+                
 
             }
-            <div class="col-md-12 col-12 d-flex justify-content-center"><b>THỐNG KÊ DOANH THU NGÀY @ngay</b></div>
+            <div class="col-md-12 col-12 d-flex justify-content-center"><b>THỐNG KÊ DOANH THU THÁNG @ngay</b></div>
             <table class="table table-bordered" style="border-collapse: collapse;border:1px;">
                 <thead>
                     <tr>

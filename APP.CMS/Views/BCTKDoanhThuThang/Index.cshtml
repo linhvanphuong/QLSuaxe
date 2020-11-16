@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "Báo cáo thống kê doanh thu tháng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="row" id="frmFilter">
+                        <div class="form-group col-sm-4 col-md-4 col-12">
+                            <input id="txtDate" value="@DateTime.Now.Date.ToString("yyyy-MM-dd")" type="date" class="form-control" />
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-6">
+                            <button id="btnSearch" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                        <div class="col-sm-4 col-md-4 col-6">
+                             <button id="btnExport" class="btn btn-success float-right">Xuất exel</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div id="dtTable">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/TKDoanhThu/Thang.js"></script>

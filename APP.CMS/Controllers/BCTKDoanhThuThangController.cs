@@ -11,13 +11,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace APP.CMS.Controllers
 {
-    [Route("thong-ke-doanh-thu-ngay")]
-    public class BCTKDoanhThuNgayController : Controller
+    [Route("thong-ke-doanh-thu-thang")]
+    public class BCTKDoanhThuThangController : Controller
     {
         private readonly ITemporaryBillManager _temporaryBillManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private ISession _session => _httpContextAccessor.HttpContext.Session;
-        public BCTKDoanhThuNgayController(ITemporaryBillManager temporaryBillManager, IHttpContextAccessor httpContextAccessor)
+        public BCTKDoanhThuThangController(ITemporaryBillManager temporaryBillManager, IHttpContextAccessor httpContextAccessor)
         {
             this._temporaryBillManager = temporaryBillManager;
             this._httpContextAccessor = httpContextAccessor;
@@ -30,9 +30,9 @@ namespace APP.CMS.Controllers
             {
                 if (string.IsNullOrEmpty(time))
                 {
-                    time = DateTime.Now.Date.ToString();
+                    time = DateTime.Now.Date.ToString("MM/yyyy");
                 }
-                var data = await _temporaryBillManager.Get_List_Bill_Date(time);
+                var data = await _temporaryBillManager.Get_List_Bill_Month(time);
                 if (data != null)
                 {
                     data = data.OrderBy(c => c.TimeOut).ToList();
