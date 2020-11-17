@@ -45,14 +45,32 @@ namespace APP.MANAGER
         {
             try
             {
-                var data = await _unitOfWork.ServicesRepository.Get(c => c.Id == inputModel.Id);
-                if(inputModel.Price != data.Price)
+                var data = await Find_By_Id(inputModel.Id);
+                if (inputModel.Price != data.Price)
                 {
-                    var hisPrice = new ServicePriceHistory();
-                    hisPrice.ServiceId = inputModel.Id;
-                    hisPrice.Price = inputModel.Price;
-                    hisPrice.ToDate = DateTime.Now;
-                    await _unitOfWork.ServicePriceHistoryRepository.Update(hisPrice);
+                    var price = (await _unitOfWork.ServicePriceHistoryRepository.FindBy(c => c.Id == inputModel.Id)).ToList();
+                    if (price.Count() > 1) //neu ko phai la lan update dau tien
+                    {
+                        var lastTimeprice = price.OrderByDescending(c => c.ToDate).FirstOrDefault();
+                        lastTimeprice.ToDate = DateTime.Now;
+                        await _unitOfWork.ServicePriceHistoryRepository.Update(lastTimeprice);
+                        var hisPrice = new ServicePriceHistory();
+                        hisPrice.ServiceId = inputModel.Id;
+                        hisPrice.Price = inputModel.Price;
+                        hisPrice.FromDate = DateTime.Now;
+                        await _unitOfWork.ServicePriceHistoryRepository.Add(hisPrice);
+                    }
+                    else
+                    {
+                        var lastTimeprice = price.FirstOrDefault();
+                        lastTimeprice.ToDate = DateTime.Now;
+                        await _unitOfWork.ServicePriceHistoryRepository.Update(lastTimeprice);
+                        var hisPrice = new ServicePriceHistory();
+                        hisPrice.ServiceId = inputModel.Id;
+                        hisPrice.Price = inputModel.Price;
+                        hisPrice.FromDate = DateTime.Now;
+                        await _unitOfWork.ServicePriceHistoryRepository.Add(hisPrice);
+                    }
                 }
                 await _unitOfWork.ServicesRepository.Update(inputModel);
                 await _unitOfWork.SaveChange();
@@ -83,6 +101,12 @@ namespace APP.MANAGER
                 var data = (await _unitOfWork.ServicesRepository.FindBy(x => ((string.IsNullOrEmpty(name) || x.Name.ToLower().Contains(name))
                                                                            && (status == (int)StatusEnum.All || x.Status == (byte)status)
                                                                            ))).ToList();
+                foreach (var i in data)
+                {
+                    var price = (await _unitOfWork.ServicePriceHistoryRepository.FindBy(c => c.FromDate <= DateTime.Now && (c.ToDate >= DateTime.Now
+                                                                                  || c.ToDate == null) && c.ServiceId == i.Id)).FirstOrDefault();
+                    i.Price = price == null ? 0 : price.Price;
+                }
                 return data;
             }
             catch (Exception ex)
@@ -95,9 +119,8 @@ namespace APP.MANAGER
             try
             {
                 var data = await _unitOfWork.ServicesRepository.Get(c => c.Id == id);
-                var price = (await _unitOfWork.ServicePriceHistoryRepository.FindBy(c => c.FromDate.Date <= DateTime.Now && (c.ToDate.Value.Date >= DateTime.Now
-                                                                                  || c.ToDate.Value.Date == null))).FirstOrDefault();
-                data.Price = price.Price;
+                var price = await _unitOfWork.ServicePriceHistoryRepository.Get(c => c.Id == id && c.ToDate == null);
+                data.Price = price == null ? 0 : price.Price;
                 return data;
             }
             catch (Exception ex)
