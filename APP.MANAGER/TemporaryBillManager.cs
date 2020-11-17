@@ -20,6 +20,7 @@ namespace APP.MANAGER
         Task<List<TemporaryBill_Service>> Get_List_TemporaryBill_Service(long id);
         Task<List<TemporaryBill_Accesary>> Get_List_TemporaryBill_Accesary(long id);
         Task<List<TemporaryBill>> Get_List_Bill(string time, byte status);
+        Task<List<TemporaryBill>> Get_List_Bill_KTV(string time,long ktvId);
         Task<List<TemporaryBill>> Get_List_Bill_Month(string time);
         Task<List<TemporaryBill>> Get_List_Bill_Date(string time);
     }
@@ -37,6 +38,28 @@ namespace APP.MANAGER
                 var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == status) && (x.TimeIn.Date.ToString() == time || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x=>x.TimeIn).ToList();
                 if(data != null)
+                {
+                    foreach (var i in data)
+                    {
+                        var cus = await _unitOfWork.CustomersRepository.Get(c => c.Id == i.CustomerId);
+                        i.CustomerName = cus.Name;
+                        i.CustomerPhone = cus.Phone;
+                    }
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<List<TemporaryBill>> Get_List_Bill_KTV(string time,long ktvId)
+        {
+            try
+            {
+                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.UpdatedBy == ktvId) && (x.TimeIn.Date.ToString() == time || string.IsNullOrEmpty(time))))
+                    .OrderByDescending(x => x.TimeIn).ToList();
+                if (data != null)
                 {
                     foreach (var i in data)
                     {

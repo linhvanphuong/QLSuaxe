@@ -11,47 +11,51 @@
     });
 });
 $('#drServices').on('change', function () {
-    $.ajax({
-        url: "/hoa-don" + "/service-info?id=" + this.value,
-        method: "Get",
-        success: function (response) {
-            if (response.result) {
-                var option1 = response.data;
-                var trAppend1 = '<tr><td style="width:10%;text-align:center;">' + '<a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:40%">' + option1.name + '</td>' +
-                    '<td class="serviceId" style="width:10%">' + option1.id + '</td>' + '<td class="servicePrice" style="width:20%">' + option1.price + ' VNĐ </td>' +
-                    '<td class="TongTien" style="width:20%">' + option1.price + ' VNĐ</td>';
-                $('#listService tbody').append(trAppend1);
-                $('#drServices').val('0').trigger('change');
+    if (this.value != 0) {
+        $.ajax({
+            url: "/hoa-don" + "/service-info?id=" + this.value,
+            method: "Get",
+            success: function (response) {
+                if (response.result) {
+                    var option1 = response.data;
+                    var trAppend1 = '<tr><td style="width:10%;text-align:center;">' + '<a class="SerXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:40%">' + option1.name + '</td>' +
+                        '<td class="serviceId" style="width:10%">' + option1.id + '</td>' + '<td class="servicePrice" style="width:20%">' + option1.price + ' VNĐ </td>' +
+                        '<td class="TongTien" style="width:20%">' + option1.price + ' VNĐ</td>';
+                    $('#listService tbody').append(trAppend1);
+                    $('#drServices').val('0').trigger('change');
+                }
+                else {
+                    showAlert("Lỗi", 1);
+                }
             }
-            else {
-                showAlert("Lỗi", 1);
-            }
-        }
-    }).then(function () {
-        TinhTongTien()
-    }) 
+        }).then(function () {
+            TinhTongTien()
+        }) 
+    }
 });
 $('#drAccessories').on('change', function () {
-    $.ajax({
-        url: "/hoa-don" + "/accessory-info?id=" + this.value,
-        method: "Get",
-        success: function (response) {
-            if (response.result) {
-                var option2 = response.data;
-                var trAppend2 = '<tr ><td style="width:10%;text-align:center;">' + '<a class="AccXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:30%">' + option2.name + '</td>' +
-                    '<td class="AssId" style="width:10%">' + option2.id + '</td>' + '<td class="AssPrice" style="width:10%">' + option2.price + ' VNĐ </td>' +
-                    '<td class="AssQuantity" style="width:10%">' + '<input type="number" data-max="' + option2.quantity + '" onblur="changeThanhTien(' + option2.id + ',' + option2.price + ')" min="1" step="1"  value="1" max="' + option2.quantity + '" id="row2number_' + option2.id + '">' + '</td>' + '<td style="width: 10% ">' + option2.unit + '</td>' +
-                    '<td style="width:20%"><p class="TongTien" id="TT_' + option2.id + '">' + option2.price + ' VNĐ</td>';
-                $('#listAccessories tbody').append(trAppend2);
-                $('#drAccessories').val('0').trigger('change');
+    if (this.value != 0) {
+        $.ajax({
+            url: "/hoa-don" + "/accessory-info?id=" + this.value,
+            method: "Get",
+            success: function (response) {
+                if (response.result) {
+                    var option2 = response.data;
+                    var trAppend2 = '<tr ><td style="width:10%;text-align:center;">' + '<a class="AccXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>' + '</td><td style="width:30%">' + option2.name + '</td>' +
+                        '<td class="AssId" style="width:10%">' + option2.id + '</td>' + '<td class="AssPrice" style="width:10%">' + option2.price + ' VNĐ </td>' +
+                        '<td class="AssQuantity" style="width:10%">' + '<input type="number" data-max="' + option2.quantity + '" onblur="changeThanhTien(' + option2.id + ',' + option2.price + ')" min="1" step="1"  value="1" max="' + option2.quantity + '" id="row2number_' + option2.id + '">' + '</td>' + '<td style="width: 10% ">' + option2.unit + '</td>' +
+                        '<td style="width:20%"><p class="TongTien" id="TT_' + option2.id + '">' + option2.price + ' VNĐ</td>';
+                    $('#listAccessories tbody').append(trAppend2);
+                    $('#drAccessories').val('0').trigger('change');
+                }
+                else {
+                    showAlert("Lỗi", 1);
+                }
             }
-            else {
-                showAlert("Lỗi", 1);
-            }
-        }
-    }).then(function () {
-        TinhTongTien();
-    }) 
+        }).then(function () {
+            TinhTongTien();
+        }) 
+    }
 });
 $('#frmCreate').find('#drCustomer').on('change', function () {
     var phone = $(this).find(':selected').data('phone');

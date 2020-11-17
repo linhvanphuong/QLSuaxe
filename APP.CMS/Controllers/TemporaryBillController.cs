@@ -136,7 +136,8 @@ namespace APP.CMS.Controllers
                     var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
                     if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
                     {
-                        data = data.Where(c => c.UpdatedBy == account.Id).ToList();
+                        data = await _temporaryBillManager.Get_List_Bill_KTV(time, account.Id);
+                        data = data.OrderByDescending(c => c.Status).ToList();
                     }     
                 }
                 return PartialView("_List", data);
