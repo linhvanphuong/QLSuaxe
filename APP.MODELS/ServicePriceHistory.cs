@@ -14,6 +14,6 @@ namespace APP.MODELS
         public long ServiceId { get; set; }
         public decimal Price { get; set; }
         public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTime? ToDate { get; set; }
     }
 }

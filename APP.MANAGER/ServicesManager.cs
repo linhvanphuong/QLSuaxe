@@ -28,6 +28,11 @@ namespace APP.MANAGER
             try
             {
                 await _unitOfWork.ServicesRepository.Add(inputModel);
+                var hisPrice = new ServicePriceHistory();
+                hisPrice.ServiceId = inputModel.Id;
+                hisPrice.Price = inputModel.Price;
+                hisPrice.FromDate = DateTime.Now;
+                await _unitOfWork.ServicePriceHistoryRepository.Add(hisPrice);
                 await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
@@ -40,6 +45,15 @@ namespace APP.MANAGER
         {
             try
             {
+                var data = await _unitOfWork.ServicesRepository.Get(c => c.Id == inputModel.Id);
+                if(inputModel.Price != data.Price)
+                {
+                    var hisPrice = new ServicePriceHistory();
+                    hisPrice.ServiceId = inputModel.Id;
+                    hisPrice.Price = inputModel.Price;
+                    hisPrice.ToDate = DateTime.Now;
+                    await _unitOfWork.ServicePriceHistoryRepository.Update(hisPrice);
+                }
                 await _unitOfWork.ServicesRepository.Update(inputModel);
                 await _unitOfWork.SaveChange();
             }
@@ -81,6 +95,9 @@ namespace APP.MANAGER
             try
             {
                 var data = await _unitOfWork.ServicesRepository.Get(c => c.Id == id);
+                var price = (await _unitOfWork.ServicePriceHistoryRepository.FindBy(c => c.FromDate.Date <= DateTime.Now && (c.ToDate.Value.Date >= DateTime.Now
+                                                                                  || c.ToDate.Value.Date == null))).FirstOrDefault();
+                data.Price = price.Price;
                 return data;
             }
             catch (Exception ex)

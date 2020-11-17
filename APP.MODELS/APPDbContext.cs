@@ -41,5 +41,7 @@ namespace APP.MODELS
         public DbSet<TemporaryBill_Service> TemporaryBill_Service { get; set; }
         public DbSet<ImportReceipt> ImportReceipt { get; set; }
         public DbSet<ImportReceipt_Accessory> ImportReceipt_Accessory { get; set; }
+        public DbSet<ServicePriceHistory> ServicePriceHistory { get; set; }
+        public DbSet<AccessoryPriceHistory> AccessoryPriceHistory { get; set; }
     }
 }

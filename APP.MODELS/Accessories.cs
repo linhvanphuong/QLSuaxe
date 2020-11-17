@@ -14,8 +14,8 @@ namespace APP.MODELS
         public long Id { get; set; }
         [Column("Name")]
         public string Name { get; set; }
-        [Column("Price")]
-        public decimal? Price { get; set; }
+        [NotMapped]
+        public decimal Price { get; set; }
         [Column("Quantity")]
         public int Quantity { get; set; }
         [Column("Unit")]

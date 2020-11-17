@@ -18,8 +18,8 @@ namespace APP.MODELS
         public byte? Status { get; set; }
         [Column("Note")]
         public string Note { get; set; }
-        [Column("Price")]
-        public decimal? Price { get; set; }
+        [NotMapped]
+        public decimal Price { get; set; }
         [Column("CreatedDate")]
         public DateTime? CreatedDate { get; set; }
         [Column("UpdatedDate")]
