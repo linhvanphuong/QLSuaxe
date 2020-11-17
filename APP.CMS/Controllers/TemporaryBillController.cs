@@ -137,7 +137,7 @@ namespace APP.CMS.Controllers
                     if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
                     {
                         data = await _temporaryBillManager.Get_List_Bill_KTV(time, account.Id);
-                        data = data.OrderByDescending(c => c.Status).ToList();
+                        data = data.OrderBy(c => c.Status).ToList();
                     }     
                 }
                 return PartialView("_List", data);
