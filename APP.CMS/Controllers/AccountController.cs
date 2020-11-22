@@ -160,6 +160,8 @@ namespace APP.CMS.Controllers
                 }
                 else
                 {
+                    var data = await _accountManager.Find_By_Id_Ok(inputModel.Id);
+                    inputModel.StatusActing = data.StatusActing;
                     inputModel.UpdatedDate = DateTime.Now;
                     await _accountManager.Update(inputModel);
                     return Json(new { Result = true, Message = "Cập nhật dữ liệu thành công" });
