@@ -35,7 +35,7 @@ namespace APP.MANAGER
         {
             try
             {
-                inputModel.StatusActing =
+                inputModel.StatusActing = 1;
                 await _unitOfWork.AccountsRepository.Add(inputModel);
                 await _unitOfWork.SaveChange();
                 if (inputModel.ListRole != null)
