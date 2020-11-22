@@ -77,7 +77,7 @@ namespace APP.CMS.Controllers
         {
             try
             {
-                var data = await _accessoriesManager.Find_By_Id(id);
+                var data = await _accessoriesManager.Find_By_Id_Import(id);
                 return Json(new { Result = true, Data = data });
             }
             catch (Exception ex)

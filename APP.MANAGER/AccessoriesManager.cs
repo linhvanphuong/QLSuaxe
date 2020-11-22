@@ -16,6 +16,7 @@ namespace APP.MANAGER
         Task Delete(long id);
         Task<List<Accessories>> Get_List(string name);
         Task<Accessories> Find_By_Id(long id);
+        Task<Accessories> Find_By_Id_Import(long id);
     }
     public class AccessoriesManager :IAccessoriesManager
     {
@@ -123,6 +124,18 @@ namespace APP.MANAGER
                 var data = await _unitOfWork.AccessoriesRepository.Get(c => c.Id == id);
                 var price = await _unitOfWork.AccessoryPriceHistoryRepository.Get(c => c.AccessoriesId == id && c.ToDate == null);
                 data.Price = price == null ? 0: price.Price;
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<Accessories> Find_By_Id_Import(long id)
+        {
+            try
+            {
+                var data = await _unitOfWork.AccessoriesRepository.Get(c => c.Id == id);
                 return data;
             }
             catch (Exception ex)
