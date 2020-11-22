@@ -49,7 +49,7 @@ namespace APP.MANAGER
                 var data = await Find_By_Id(inputModel.Id);
                 if (inputModel.Price != data.Price)
                 {
-                    var price = (await _unitOfWork.AccessoryPriceHistoryRepository.FindBy(c => c.Id == inputModel.Id)).ToList();
+                    var price = (await _unitOfWork.AccessoryPriceHistoryRepository.FindBy(c => c.AccessoriesId == inputModel.Id)).ToList();
                     if(price.Count() > 1) //neu ko phai la lan update dau tien
                     {
                         var lastTimeprice = price.OrderByDescending(c => c.ToDate).FirstOrDefault();
@@ -121,7 +121,7 @@ namespace APP.MANAGER
             try
             {
                 var data = await _unitOfWork.AccessoriesRepository.Get(c => c.Id == id);
-                var price = await _unitOfWork.AccessoryPriceHistoryRepository.Get(c => c.Id == id && c.ToDate == null);
+                var price = await _unitOfWork.AccessoryPriceHistoryRepository.Get(c => c.AccessoriesId == id && c.ToDate == null);
                 data.Price = price == null ? 0: price.Price;
                 return data;
             }

@@ -15,6 +15,7 @@ function setDataTable() {
         "info": false,
         "autoWidth": false,
         "responsive": true,
+        //"order": [],
         "sDom": 'lrtip',
         "aaSorting": [],
         "columnDefs": [

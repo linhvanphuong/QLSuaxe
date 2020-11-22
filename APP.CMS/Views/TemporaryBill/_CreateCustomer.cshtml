@@ -77,6 +77,9 @@
                     // datasource = response.data
                     showAlert(response.message, 2)
                     $('#frmCreate').find('#drCustomer').append($('<option>', {
+                        data :{
+                        phone: response.data.phone
+                        },
                         value: response.data.id,
                         text: response.data.name
                     }));

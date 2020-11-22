@@ -396,6 +396,60 @@ namespace APP.MANAGER
             try
             {
                 await _unitOfWork.TemporaryBillRepository.Update(inputModel);
+                if (inputModel.Status == (byte)BillStatus.TemporaryLT)
+                {
+                    var oldBill = await _unitOfWork.TemporaryBillRepository.Get(c => c.Id == inputModel.Id);
+                    if (inputModel.UpdatedBy != oldBill.UpdatedBy)
+                    {
+                        var oldktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == oldBill.UpdatedBy);
+                        oldktv.StatusActing = (byte)AccountStatusEnum.Active;
+                        await _unitOfWork.AccountsRepository.Update(oldktv);
+                    }
+                    if (inputModel.MotorLiftId != oldBill.MotorLiftId)
+                    {
+                        var oldmotorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == oldBill.MotorLiftId);
+                        oldmotorLift.Status = (byte)MotorLiftEnum.Active;
+                        await _unitOfWork.MotorLiftsRepository.Update(oldmotorLift);
+                    }
+                    var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
+                    ktv.StatusActing = (byte)AccountStatusEnum.Acting;
+                    await _unitOfWork.AccountsRepository.Update(ktv);
+                    var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
+                    motorLift.Status = (byte)MotorLiftEnum.Acting;
+                    await _unitOfWork.MotorLiftsRepository.Update(motorLift);
+                }
+                if (inputModel.Status == (byte)BillStatus.TemporaryKTV)
+                {
+                    var oldBill = await _unitOfWork.TemporaryBillRepository.Get(c => c.Id == inputModel.Id);
+                    if (inputModel.UpdatedBy != oldBill.UpdatedBy)
+                    {
+                        var oldktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == oldBill.UpdatedBy);
+                        oldktv.StatusActing = (byte)AccountStatusEnum.Active;
+                        await _unitOfWork.AccountsRepository.Update(oldktv);
+                    }
+                    if (inputModel.MotorLiftId != oldBill.MotorLiftId)
+                    {
+                        var oldmotorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == oldBill.MotorLiftId);
+                        oldmotorLift.Status = (byte)MotorLiftEnum.Active;
+                        await _unitOfWork.MotorLiftsRepository.Update(oldmotorLift);
+                    }
+                    var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
+                    ktv.StatusActing = (byte)AccountStatusEnum.Acting;
+                    await _unitOfWork.AccountsRepository.Update(ktv);
+                    var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
+                    motorLift.Status = (byte)MotorLiftEnum.Acting;
+                    await _unitOfWork.MotorLiftsRepository.Update(motorLift);
+                }
+                if (inputModel.Status == (byte)BillStatus.TemporaryTN)
+                {
+                    inputModel.UpdatedTime = DateTime.Now;
+                    var ktv = await _unitOfWork.AccountsRepository.Get(c => c.Id == inputModel.UpdatedBy);
+                    ktv.StatusActing = (byte)AccountStatusEnum.Active;
+                    await _unitOfWork.AccountsRepository.Update(ktv);
+                    var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
+                    motorLift.Status = (byte)MotorLiftEnum.Active;
+                    await _unitOfWork.MotorLiftsRepository.Update(motorLift);
+                }
                 await _unitOfWork.SaveChange();
             }
             catch (Exception ex)
