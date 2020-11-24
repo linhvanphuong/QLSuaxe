@@ -110,7 +110,7 @@ function changeThanhTien(id, price) {
         return;
     }
     thanhTien = sl * price;
-    TT = thanhTien + " VNĐ";
+    TT = thanhTien + "";
     $('#TT_' + id).text('');
     $('#TT_' + id).text(TT);
     TinhTongTien();
