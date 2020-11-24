@@ -125,11 +125,32 @@ $('#drAccessories').on('change', function () {
 //        TinhTongTien();
 //    })
 //});
-function changeThanhTien(id, price) {
-    console.log(id);
+function changeThanhTien(id, price,sender) {
     var sl = $('#row2number_' + id).val();
     var thanhTien = 0;
     var TT = "";
+    if (sl % 1 != 0) {
+        showAlert("Giá trị phải là số nguyên dương", 1);
+        $('#row2number_' + id).val('1');
+        sl = 1;
+        thanhTien = sl * price;
+        TT = thanhTien + " VNĐ";
+        $('#TT_' + id).text('');
+        $('#TT_' + id).text(TT);
+        TinhTongTien();
+        return;
+    }
+    if (sl < 0) {
+        showAlert("Giá trị phải là số nguyên dương", 1);
+        $('#row2number_' + id).val('1');
+        sl = 1;
+        thanhTien = sl * price;
+        TT = thanhTien + " VNĐ";
+        $('#TT_' + id).text('');
+        $('#TT_' + id).text(TT);
+        TinhTongTien();
+        return;
+    }
     if (sl > $('#row2number_' + id).data('max')) {
         showAlert("Vượt quá số lượng phụ tùng còn lại", 1);
         $('#row2number_' + id).val('1');

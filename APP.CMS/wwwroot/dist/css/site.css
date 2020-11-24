@@ -1,4 +1,10 @@
-﻿.error{
+﻿@media print {
+    .printPageButton {
+        display: none;
+    }
+}
+
+.error{
     border-color:red;
 }
 .fa-asterisk {
