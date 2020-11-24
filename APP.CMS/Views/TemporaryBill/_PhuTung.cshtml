@@ -1,0 +1,24 @@
+﻿@model APP.MODELS.Accessories
+<tr>
+    <td style="width:10%;text-align:center;">
+        <a class="AccXoa" href="javascript:;"><i class="fas fa-trash-alt"></i></a>
+    </td>
+    <td style="width:30%">
+        @Model.Name
+    </td>
+    <td class="AssId" style="width:10%;text-align:right;">
+        @Model.Id
+    </td>
+    <td class="AssPrice" style="width:10%;text-align:right;">
+        @decimal.Truncate(Model.Price)
+    </td>
+    <td class="AssQuantity" style="width:10%">
+        <input type="number" data-max="@Model.Quantity" onblur="changeThanhTien(@Model.Id,@Model.Price)" min="1" value="1" step="1" max="@Model.Quantity" id="row2number_@Model.Id" />
+    </td>
+    <td style="width:10%;text-align:center;">
+        @Model.Unit
+    </td>
+    <td style="width:20%;text-align:right">
+        <p class="TongTien" id="TT_@Model.Id">@decimal.Truncate(Model.Price)</p>
+    </td>
+</tr>

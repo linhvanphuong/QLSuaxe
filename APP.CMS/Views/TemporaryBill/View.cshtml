@@ -89,11 +89,11 @@
             <table id="listService" class="table table-bordered table-hover mb-0">
                 <thead>
                     <tr>
-                        <th style="text-align: center; width: 10%">STT</th>
-                        <th style="width:40%">Tên dịch vụ</th>
-                        <th style="width:10%">Mã dịch vụ</th>
-                        <th style="width:20%">Đơn giá</th>
-                        <th style="width:20%">Thành tiền</th>
+                        <th style="width:10%;text-align:center;">STT</th>
+                        <th style="width:40%;text-align:center;">Tên dịch vụ</th>
+                        <th style="width:10%;text-align:center;">Mã dịch vụ</th>
+                        <th style="width:20%;text-align:center;">Đơn giá(VNĐ)</th>
+                        <th style="width:20%;text-align:center;">Thành tiền(VNĐ)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,14 +112,14 @@
                                     <td style="width:40%">
                                         @item.ServiceName
                                     </td>
-                                    <td class="serviceId" style="width:10%">
+                                    <td class="serviceId" style="width:10%;text-align:right;">
                                         @item.ServiceId
                                     </td>
-                                    <td class="servicePrice" style="width:20%">
-                                        @decimal.Truncate(item.ServicePrice.Value) VNĐ
+                                    <td class="servicePrice" style="width:20%;text-align:right;">
+                                        @decimal.Truncate(item.ServicePrice.Value)
                                     </td>
-                                    <td class="TongTien" style="width:20%">
-                                        @decimal.Truncate(item.ServicePrice.Value) VNĐ
+                                    <td class="TongTien" style="width:20%;text-align:right;">
+                                        @decimal.Truncate(item.ServicePrice.Value)
                                     </td>
                                 </tr>
                             }
@@ -143,13 +143,13 @@
             <table id="listAccessories" class="table table-bordered table-hover mb-0">
                 <thead>
                     <tr>
-                        <th style="text-align: center; width: 10%">STT</th>
-                        <th style="width:30%">Tên phụ tùng</th>
-                        <th style="width:10%">Mã dịch vụ</th>
-                        <th style="width:10%">Đơn giá</th>
-                        <th style="width:10%">Số lượng</th>
-                        <th style="width:10%">ĐVT</th>
-                        <th style="width:20%">Thành tiền</th>
+                        <th style="width:10%;text-align:center;">STT</th>
+                        <th style="width:30%;text-align:center;">Tên phụ tùng</th>
+                        <th style="width:10%;text-align:center;">Mã phụ tùng</th>
+                        <th style="width:10%;text-align:center;">Đơn giá(VNĐ)</th>
+                        <th style="width:10%;text-align:center;">Số lượng</th>
+                        <th style="width:10%;text-align:center;">ĐVT</th>
+                        <th style="width:20%;text-align:center;">Thành tiền(VNĐ)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -167,20 +167,20 @@
                                     <td style="width:30%">
                                         @i.AccesaryName
                                     </td>
-                                    <td class="AssId" style="width:10%">
+                                    <td class="AssId" style="width:10%;text-align:right">
                                         @i.AccesaryId
                                     </td>
-                                    <td class="AssPrice" style="width:10%">
-                                        @decimal.Truncate(i.AccesaryPrice) VNĐ
+                                    <td class="AssPrice" style="width:10%;text-align:right;">
+                                        @decimal.Truncate(i.AccesaryPrice)
                                     </td>
-                                    <td class="AssQuantity" style="width:10%">
+                                    <td class="AssQuantity" style="width:10%;text-align:right">
                                         @i.Quantity
                                     </td>
-                                    <td style="width: 10% ">
+                                    <td style="width: 10%;text-align:center;">
                                         @i.Unit
                                     </td>
-                                    <td style="width:20%">
-                                        <p class="TongTien" id="TT_@i.AccesaryId">@decimal.Truncate(i.ThanhTien) VNĐ</p>
+                                    <td style="width:20%;text-align:right;">
+                                        <p class="TongTien" id="TT_@i.AccesaryId">@decimal.Truncate(i.ThanhTien)</p>
                                     </td>
                                 </tr>
                             }

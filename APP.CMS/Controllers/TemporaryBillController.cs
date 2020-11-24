@@ -186,7 +186,8 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _servicesManager.Find_By_Id(id);
-                return Json(new { Result = true, Data = data });
+                return PartialView("_DichVu",data);
+                //return Json(new { Result = true, Data = data });
             }
             catch(Exception ex)
             {
@@ -199,7 +200,8 @@ namespace APP.CMS.Controllers
             try
             {
                 var data = await _accessoriesManager.Find_By_Id(id);
-                return Json(new { Result = true, Data = data });
+                return PartialView("_PhuTung", data);
+                //return Json(new { Result = true, Data = data });
             }
             catch (Exception ex)
             {
@@ -397,6 +399,16 @@ namespace APP.CMS.Controllers
             {
                 return Json("");
             }
+        }
+        [HttpGet("dich-vu")]
+        public async Task<IActionResult> AddDichVu()
+        {
+            return PartialView("_DichVu");
+        }
+        [HttpGet("phu-tung")]
+        public async Task<IActionResult> AddPhuTung()
+        {
+            return PartialView("_PhuTung");
         }
     }
 }

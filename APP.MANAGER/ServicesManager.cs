@@ -119,6 +119,10 @@ namespace APP.MANAGER
             try
             {
                 var data = await _unitOfWork.ServicesRepository.Get(c => c.Id == id);
+                if(data == null)
+                {
+                    return data;
+                }
                 var price = await _unitOfWork.ServicePriceHistoryRepository.Get(c => c.ServiceId == id && c.ToDate == null);
                 data.Price = price == null ? 0 : price.Price;
                 return data;
