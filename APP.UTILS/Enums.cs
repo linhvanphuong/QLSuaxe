@@ -50,14 +50,18 @@ namespace Portal.Utils
         [Description("Phiếu tạm tính")]
         TemporaryTN = 3,
         [Description("Hóa đơn")]
-        Bill = 4
+        Bill = 4,
+        [Description("Đã thanh toán")]
+        AcceptedBill = 5
     }
     public enum BillStatusView
     {
         [Description("Phiếu tạm tính")]
         TemporaryTN = 3,
         [Description("Hóa đơn")]
-        Bill = 4
+        Bill = 4,
+        [Description("Đã thanh toán")]
+        AcceptedBill = 5
     }
     public enum AccountStatusEnum
     {

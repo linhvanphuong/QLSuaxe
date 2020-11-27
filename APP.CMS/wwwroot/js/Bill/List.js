@@ -40,8 +40,21 @@ function updateStatus(id, status) {
         success: function (response) {
             if (response.result) {
                 showAlert("Thành công", 2);
-                var stt = $('#txtStatushd').val();
+                var stt = 4;
                 normal.getData("",stt);
+            }
+        }
+    })
+}
+function onpenAccepted(id, status) {
+    $.ajax({
+        url: "/hoa-don/update-status?id=" + id + "&status=" + status,
+        method: "Get",
+        success: function (response) {
+            if (response.result) {
+                showAlert("Thành công", 2);
+                var stt = 5;
+                normal.getData("", stt);
             }
         }
     })

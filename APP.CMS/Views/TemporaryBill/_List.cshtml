@@ -66,8 +66,8 @@
                                 @{
                                     if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
                                     {
-                                        <a class="btn-update" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
-                                        <a class="btn-update" href="javascript:;" onclick="updateStatus(@item.Id,@((int)BillStatus.TemporaryTN))"><i class="fas fa-share-square"></i></a>
+                                        <a class="btn-update" title="Cập nhật" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                                        <a class="btn-update" title="Chuyển thu ngân" href="javascript:;" onclick="updateStatus(@item.Id,@((int)BillStatus.TemporaryTN))"><i class="fas fa-share-square"></i></a>
                                     }
                                 }
                             </td>
@@ -96,7 +96,7 @@
                                 @{
                                     if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
                                     {
-                                        <a class="btn-update" href="/hoa-don/xem?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-eye"></i></a>
+                                        <a class="btn-update" title="Xem" href="/hoa-don/xem?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-eye"></i></a>
                                     }
                                 }
                             </td>
@@ -119,6 +119,10 @@
                             {
                                 <p>@Extensions.GetEnumDescription(BillStatusView.Bill)</p>
                             }
+                            else if (item.Status == (byte)BillStatus.AcceptedBill)
+                            {
+                                <p>@Extensions.GetEnumDescription(BillStatusView.AcceptedBill)</p>
+                            }
                             else
                             {
                                 <p>@Extensions.GetEnumDescription(BillStatusView.TemporaryTN)</p>
@@ -129,15 +133,19 @@
                         @{
                             if (account.JobPositionName.ToLower().Trim().Contains("thu ngân"))
                             {
-                                <a class="btn-update" href="/hoa-don/xem?id=@item.Id"><i class="fas fa-eye"></i></a>
+                                <a class="btn-update" title="Xem" href="/hoa-don/xem?id=@item.Id"><i class="fas fa-eye"></i></a>
+                                if(item.Status == (byte)BillStatus.Bill)
+                                {
+                                    <a href="javascript:;" title="Xác nhận thanh toán" onclick="onpenAccepted(@item.Id,@((int)BillStatus.AcceptedBill))"><i class="fas fa-check-square"></i></a>
+                                }
                                 @*<a class="btn-update" href="javascript:;" onclick="print(@item.Id,@((int)BillStatus.Bill))"><i class="fas fa-print"></i></a>*@
                                 @*<a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>*@
                             }
                             if (account.JobPositionName.ToLower().Trim().Contains("lễ tân"))
                             {
-                                <a class="btn-update" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
-                                <a class="btn-update" href="javascript:;" onclick="updateStatus(@item.Id,@((int)BillStatus.TemporaryKTV))"><i class="fas fa-share-square"></i></a>
-                                <a href="javascript:;" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
+                                <a class="btn-update" title="Cập nhật" href="/hoa-don/cap-nhat?id=@item.Id" onclick="openUpdate(@item.Id)"><i class="fas fa-edit"></i></a>
+                                <a class="btn-update" title="Chuyển KTV" href="javascript:;" onclick="updateStatus(@item.Id,@((int)BillStatus.TemporaryKTV))"><i class="fas fa-share-square"></i></a>
+                                <a href="javascript:;" title="Xóa" class="btn-delete" onclick="openDelete(@item.Id)"><i class="fas fa-trash-alt"></i></a>
                             }
                             @*if (account.JobPositionName.ToLower().Trim().Contains("kỹ thuật viên"))
                             {

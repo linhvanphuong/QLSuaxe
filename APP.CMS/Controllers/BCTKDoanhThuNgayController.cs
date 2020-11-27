@@ -7,7 +7,9 @@ using APP.MANAGER;
 using Portal.Utils;
 using APP.MODELS;
 using Microsoft.AspNetCore.Http;
-
+using System.IO;
+using iText.Kernel.Pdf;
+using iText.Html2pdf;
 
 namespace APP.CMS.Controllers
 {
@@ -33,7 +35,7 @@ namespace APP.CMS.Controllers
                     time = DateTime.Now.Date.ToString();
                 }
                 var data = await _temporaryBillManager.Get_List_Bill_Date(time);
-                if (data != null)
+                if (data!=null)
                 {
                     data = data.OrderBy(c => c.TimeOut).ToList();
                     decimal tongcong = 0;
@@ -56,6 +58,41 @@ namespace APP.CMS.Controllers
                     ViewData["ngay"] = time;
                 }
                 return PartialView("_List", data);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = false, Message = ex.Message });
+            }
+        }
+        [HttpPost("export-pdf")]
+        public async Task<IActionResult> ExportPdf(ViewModel input)
+        {
+            try
+            {
+                //using (var workStream = new MemoryStream())
+                //using (var pdfWriter = new PdfWriter(workStream))
+                //{
+                //    using (var document = HtmlConverter.ConvertToDocument(html, pdfWriter))
+                //    {
+                //        Passes the document to a delegated function to perform some content, margin or page size manipulation
+                //        pdfModifier(document);
+                //    }
+
+                //    Returns the written - to MemoryStream containing the PDF.   
+                //    return workStream.ToArray();
+                //}
+
+                var workStream = new MemoryStream();
+                using (var pdfWriter = new PdfWriter(workStream))
+                { 
+                    pdfWriter.SetCloseStream(false);
+                    using (var document = HtmlConverter.ConvertToDocument(input.html, pdfWriter))
+                    {
+
+                    }
+                }
+                workStream.Position = 0;
+                return File(workStream, "application/pdf",input.filename);
             }
             catch (Exception ex)
             {
