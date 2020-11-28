@@ -4,10 +4,11 @@
         <div class="row">
             @{
                 string ngay = (string)ViewData["ngay"];
-                
+                var time1 = ngay.Split("-");
+
 
             }
-            <div class="col-md-12 col-12 d-flex justify-content-center"><b>THỐNG KÊ DOANH THU THÁNG @ngay</b></div>
+            <div class="col-md-12 col-12 d-flex justify-content-center"><b>THỐNG KÊ DOANH THU THÁNG @time1[1]/@time1[0]  </b></div>
             <table class="table table-bordered" style="border-collapse: collapse;border:1px;">
                 <thead>
                     <tr>

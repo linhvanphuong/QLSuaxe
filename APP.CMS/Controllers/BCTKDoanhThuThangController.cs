@@ -53,8 +53,9 @@ namespace APP.CMS.Controllers
                         tongcong += i.tongTien;
                     }
                     ViewData["tongcong"] = tongcong;
-                    ViewData["ngay"] = time;
+                    
                 }
+                ViewData["ngay"] = time;
                 return PartialView("_List", data);
             }
             catch (Exception ex)

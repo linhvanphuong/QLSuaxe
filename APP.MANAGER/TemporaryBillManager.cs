@@ -80,7 +80,7 @@ namespace APP.MANAGER
             try
             {
                 var time1 = time.Split("-");
-                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.Bill) 
+                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.AcceptedBill) 
                                                                             && ((x.TimeOut.Value.Month.ToString() == time1[1] && x.TimeOut.Value.Year.ToString() == time1[0])
                                                                             || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x => x.TimeIn).ToList();
@@ -104,7 +104,7 @@ namespace APP.MANAGER
         {
             try
             {
-                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.Bill) && (x.TimeOut.Value.Date.ToString() == time || string.IsNullOrEmpty(time))))
+                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.AcceptedBill) && (x.TimeOut.Value.Date.ToString() == time || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x => x.TimeIn).ToList();
                 if (data != null)
                 {

@@ -32,7 +32,7 @@ function export2Exel() {
     downloadLink = document.createElement("a");
 
     document.body.appendChild(downloadLink);
-
+    
     if (navigator.msSaveOrOpenBlob) {
         var blob = new Blob(['\ufeff', tableHTML], {
             type: dataType
