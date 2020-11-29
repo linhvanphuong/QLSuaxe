@@ -102,7 +102,7 @@ function changeThanhTien(id, price,sender) {
         $('#row2number_' + id).val('1');
         sl = 1;
         thanhTien = sl * price;
-        TT = thanhTien + " VNĐ";
+        TT = thanhTien + "";
         $('#TT_' + id).text('');
         $('#TT_' + id).text(TT);
         TinhTongTien();
@@ -113,7 +113,7 @@ function changeThanhTien(id, price,sender) {
         $('#row2number_' + id).val('1');
         sl = 1;
         thanhTien = sl * price;
-        TT = thanhTien + " VNĐ";
+        TT = thanhTien + "";
         $('#TT_' + id).text('');
         $('#TT_' + id).text(TT);
         TinhTongTien();
@@ -124,7 +124,7 @@ function changeThanhTien(id, price,sender) {
         $('#row2number_' + id).val('1');
         sl = 1;
         thanhTien = sl * price;
-        TT = thanhTien + " VNĐ";
+        TT = thanhTien + "";
         $('#TT_' + id).text('');
         $('#TT_' + id).text(TT);
         TinhTongTien();
