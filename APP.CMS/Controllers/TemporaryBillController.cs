@@ -59,7 +59,7 @@ namespace APP.CMS.Controllers
                 ViewData["listServices"] = await _servicesManager.Get_List("", (byte)StatusEnum.Active);
                 ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
                 ViewData["listKTVien"] = await _accountManager.Get_List_KTV();
-                ViewData["timeIn"] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                ViewData["timeIn"] = DateTime.Now;
                 var session = _httpContextAccessor.HttpContext.Session;
                 var account = Portal.Utils.SessionExtensions.Get<Accounts>(session, Portal.Utils.SessionExtensions.SessionAccount);
                 account.EmployeeName = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
@@ -169,7 +169,7 @@ namespace APP.CMS.Controllers
                 ViewData["listServices"] = await _servicesManager.Get_List("", (byte)StatusEnum.Active);
                 ViewData["listAccessories"] = await _accessoriesManager.Get_List("");
                 ViewData["listKTVien"] = await _accountManager.Get_List_KTV();
-                ViewData["timeIn"] = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                ViewData["timeIn"] = DateTime.Now;
                 account.EmployeeName  = (await _employeeManager.Find_By_Id(account.EmployeeId)).Name;
                 ViewData["txtCreatedBy"] = account;
                 return View();

@@ -198,12 +198,18 @@ function createBill() {
         })
         listAss.push(ass);
     });
+    var TimeInResult = "";
+    var timeIn = $('#frmCreate').find('#txtTimeIn').text();
+    var a = timeIn.split(" ");
+    var TimeInDate = a[0];
+    var b = TimeInDate.split("/");
+    TimeInResult = b[2] + "/" + b[1] + "/" + b[0] + " " + a[1];
 
     var model = {
         MotorLiftId: $('#frmCreate').find('#drMotorLift').val(),
         CustomerId: $('#frmCreate').find('#drCustomer').val(),
         MotorTypeId: $('#frmCreate').find('#drMotorType').val(),
-        TimeIn: $('#frmCreate').find('#txtTimeIn').text(),
+        TimeIn: TimeInResult,
         Status: $('#txtStatus').val(),
         Note: $('#frmCreate').find('#txtNote').val(),
         ListBill_Services: listSv,

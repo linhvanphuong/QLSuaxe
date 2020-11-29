@@ -92,9 +92,9 @@
                         <div class="row align-items-center p-2">
                             <label class="col-md-3">Giờ vào: </label>
                             @{
-                                string txtTimeIn = ViewData["timeIn"] as string;
+                                DateTime txtTimeIn = (DateTime)ViewData["timeIn"];
                             }
-                            <label id="txtTimeIn">@txtTimeIn</label>
+                            <label id="txtTimeIn">@txtTimeIn.ToString("dd/MM/yyyy HH:mm:ss")</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6 col-12 pl-4">
