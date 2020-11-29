@@ -37,20 +37,20 @@
                 <div class="row align-items-center p-2">
                     <label class="col-md-3">Phụ tùng: </label>
                     @*<select id="drAccessories" class="form-control col-md-6">
-                        @{
-                            var listAccessories = ViewData["listAccessories"] as List<APP.MODELS.Accessories>;
-                            if (listAccessories != null)
-                            {
-                                <option value="0">Chọn</option>
-                                foreach (var i in listAccessories)
+                            @{
+                                var listAccessories = ViewData["listAccessories"] as List<APP.MODELS.Accessories>;
+                                if (listAccessories != null)
                                 {
-                                    <option value="@i.Id">
-                                        @i.Name
-                                    </option>
+                                    <option value="0">Chọn</option>
+                                    foreach (var i in listAccessories)
+                                    {
+                                        <option value="@i.Id">
+                                            @i.Name
+                                        </option>
+                                    }
                                 }
                             }
-                        }
-                    </select>*@
+                        </select>*@
                 </div>
             </div>
         </div>
@@ -68,36 +68,36 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{ 
+                    @{
                         var listImport_Accessories = ViewData["listImport_Accessories"] as List<APP.MODELS.ImportReceipt_Accessory>;
-                        if(listImport_Accessories.Count() >0 )
+                        if (listImport_Accessories.Count() > 0)
                         {
-                            for(int i = 0; i < listImport_Accessories.Count(); i++)
+                            for (int i = 0; i < listImport_Accessories.Count(); i++)
                             {
                                 var item = listImport_Accessories[i];
-                                        <tr>
-                                            <td style="width:10%;text-align:center;">
-                                                @(i+1)
-                                            </td>
-                                            <td style="width:30%">
-                                                @item.AccessoryName
-                                            </td>
-                                            <td class="AssId" style="width:10%">
-                                                @item.AccesoryId
-                                            </td>
-                                            <td class="AssPrice" style="width:10%">
-                                                @decimal.Truncate(item.ImportPrice) VNĐ
-                                            </td>
-                                            <td class="AssQuantity" style="width:10%">
-                                                @item.Quantity
-                                            </td>
-                                            <td style="width: 10% ">
-                                                @item.Unit
-                                            </td>
-                                            <td style="width:20%">
-                                                <p class="TongTien" id="TT_@item.AccesoryId">@decimal.Truncate(item.Quantity*item.ImportPrice) VNĐ</p>
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <td style="width:10%;text-align:center;">
+                                        @(i+1)
+                                    </td>
+                                    <td style="width:30%">
+                                        @item.AccessoryName
+                                    </td>
+                                    <td class="AssId" style="width:10%">
+                                        @item.AccesoryId
+                                    </td>
+                                    <td class="AssPrice" style="width:10%">
+                                        @decimal.Truncate(item.ImportPrice) VNĐ
+                                    </td>
+                                    <td class="AssQuantity" style="width:10%">
+                                        @item.Quantity
+                                    </td>
+                                    <td style="width: 10% ">
+                                        @item.Unit
+                                    </td>
+                                    <td style="width:20%">
+                                        <p class="TongTien" id="TT_@item.AccesoryId">@decimal.Truncate(item.Quantity * item.ImportPrice) VNĐ</p>
+                                    </td>
+                                </tr>
                             }
 
                         }
@@ -114,7 +114,7 @@
                     @{
                         var account = ViewData["txtCreatedBy"] as APP.MODELS.Accounts;
                     }
-                <label>@account.EmployeeName</label>
+                    <label>@account.EmployeeName</label>
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
@@ -126,6 +126,7 @@
     <div class="">
         <div class="row d-flex justify-content-center">
             <div class="col-sm-6 col-md-6 col-12 pl-4 ">
+
                 <div class="row align-items-center p-2">
                     <label class="col-md-3">Ngày lập phiếu: </label>
                     @{
@@ -134,26 +135,7 @@
                     <label>@txtCreatedDate</label>
                 </div>
             </div>
-        </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
-                @*<div class="row align-items-center p-2">
-                        <label required class="mr-1">Kỹ thuật viên: </label>
-                        <select required id="drKTV" class="form-control col-md-6">
-                            @{
-                                var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
-                                if (listKTVien != null)
-                                {
-                                    <option value="0">Chọn</option>
-                                    foreach (var i in listKTVien)
-                                    {
-                                        <option value="@i.Id">
-                                            @i.EmployeeName
-                                        </option>
-                                    }
-                                }
-                            }
-                        </select>
-                    </div>*@
                 <div class="float-right">
                     <label>Tổng tiền: </label>
                     <label id="txtTongTien" class="mr-1"> 0 VNĐ </label>

@@ -107,6 +107,12 @@ function createBill() {
         showAlert("Chưa có phụ tùng nhập");
         return;
     }
+    var TimeInResult = "";
+    var timeIn = $('#frmCreate').find('#txtTimeIn').text();
+    var a = timeIn.split(" ");
+    var TimeInDate = a[0];
+    var b = TimeInDate.split("/");
+    TimeInResult = b[2] + "/" + b[1] + "/" + b[0] + " " + a[1];
     var model = {
         SupplierId: $('#frmCreate').find('#drSuplier').val(),
         CreatedDate: $('#frmCreate').find('#txtCreatedDate').text(),

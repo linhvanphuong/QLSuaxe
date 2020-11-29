@@ -103,6 +103,7 @@ namespace APP.CMS.Controllers
                 var createdBy = await _accountManager.Find_By_Id(data.CreatedBy);
                 createdBy.EmployeeName = (await _employeeManager.Find_By_Id(createdBy.EmployeeId)).Name;
                 ViewData["txtCreatedBy"] = createdBy;
+                ViewData["createdDate"] = data.CreatedDate.ToString("dd/MM/yyyy");
                 return PartialView("View", data);
             }
             catch (Exception ex)

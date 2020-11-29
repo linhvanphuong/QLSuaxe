@@ -230,6 +230,21 @@ namespace APP.CMS.Controllers
                 return Json(new { Result = false, Message = ex.Message });
             }
         }
+        [HttpGet("sent-KTV")]
+        public async Task<IActionResult> Sent_KTV(long id, byte status)
+        {
+            try
+            {
+                var data = await _temporaryBillManager.Find_By_Id(id);
+                data.Status = status;
+                await _temporaryBillManager.Sent_KTV(data);
+                return Json(new { Result = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = false, Message = ex.Message });
+            }
+        }
         [HttpGet("tao-moi-kh")]
         public async Task<IActionResult> Tao_Moi_KH()
         {

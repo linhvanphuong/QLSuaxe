@@ -110,24 +110,6 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-6 col-12 pl-4">
-                @*<div class="row align-items-center p-2">
-                    <label required class="mr-1">Kỹ thuật viên: </label>
-                    <select required id="drKTV" class="form-control col-md-6">
-                        @{
-                            var listKTVien = ViewData["listKTVien"] as List<APP.MODELS.Accounts>;
-                            if (listKTVien != null)
-                            {
-                                <option value="0">Chọn</option>
-                                foreach (var i in listKTVien)
-                                {
-                                    <option value="@i.Id">
-                                        @i.EmployeeName
-                                    </option>
-                                }
-                            }
-                        }
-                    </select>
-                </div>*@
                 <div class="float-right">
                     <label>Tổng tiền: </label>
                     <label id="txtTongTien" class="mr-1" > 0 VNĐ </label>

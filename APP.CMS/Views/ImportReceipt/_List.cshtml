@@ -5,7 +5,7 @@
         <tr>
             <th style="text-align:center;width:10%;">Mã</th>
             <th style="width:60%">Nhà cung cấp</th>
-            <th style="text-align:center;width:20%">Ngày tạo</th>
+            <th style="text-align:center;width:20%">Ngày lập</th>
             <th style="text-align:center;width:10%">Thao tác</th>
         </tr>
     </thead>
@@ -17,7 +17,7 @@
             <tr id="row_@item.Id">
                 <td style="text-align:center;width:10%;">@item.Id</td>
                 <td style="width:60%">@item.SupllierName</td>
-                <td style="text-align:center;width:20%">@item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                <td style="text-align:center;width:20%">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                 <td style="text-align:center;width:10%;">
                     @*@if (@item.Status == (byte)StatusEnum.Removed)
                         {

@@ -20,10 +20,10 @@ $('#btnCreate').on('click', function () {
 })
 function updateStatus(id, status) {
     window.print();
-    $.ajax({
-        url: "/hoa-don/update-status?id=" + id + "&status=" + status,
-        method: "Get",
-    })
+    //$.ajax({
+    //    url: "/hoa-don/update-status?id=" + id + "&status=" + status,
+    //    method: "Get",
+    //})
     //window.onafterprint = (event) => {
     //    $.ajax({
     //        url: "/hoa-don/update-status?id=" + id + "&status=" + status,

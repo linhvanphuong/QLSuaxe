@@ -251,7 +251,7 @@ function updateBill() {
         listAss.push(ass);
     });
     var TimeInResult = "";
-    var timeIn = $('#frmCreate').find('#txtTimeIn').text();
+    var timeIn = $('#frmUpdate').find('#txtTimeIn').text();
     var a = timeIn.split(" ");
     var TimeInDate = a[0];
     var b = TimeInDate.split("/");
@@ -320,12 +320,18 @@ function sentToKTV() {
         })
         listAss.push(ass);
     });
+    var TimeInResult = "";
+    var timeIn = $('#frmUpdate').find('#txtTimeIn').text();
+    var a = timeIn.split(" ");
+    var TimeInDate = a[0];
+    var b = TimeInDate.split("/");
+    TimeInResult = b[2] + "/" + b[1] + "/" + b[0] + " " + a[1];
     var model = {
         Id: $('#frmUpdate').find('#txtId').text(),
         MotorLiftId: $('#frmUpdate').find('#drMotorLift').val(),
         CustomerId: $('#frmUpdate').find('#drCustomer').val(),
         MotorTypeId: $('#frmUpdate').find('#drMotorType').val(),
-        TimeIn: $('#frmUpdate').find('#txtTimeIn').text(),
+        TimeIn: TimeInResult,
         Status: $('#btnSentToKTV').data('stt'),
         Note: $('#frmUpdate').find('#txtNote').val(),
         ListBill_Services: listSv,

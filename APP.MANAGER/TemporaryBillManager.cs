@@ -17,6 +17,7 @@ namespace APP.MANAGER
         //Task<List<TemporaryBill>> Get_List(string name);
         Task<TemporaryBill> Find_By_Id(long id);
         Task Update_Status(TemporaryBill inputModel);
+        Task Sent_KTV(TemporaryBill inputModel);
         Task<List<TemporaryBill_Service>> Get_List_TemporaryBill_Service(long id);
         Task<List<TemporaryBill_Accesary>> Get_List_TemporaryBill_Accesary(long id);
         Task<List<TemporaryBill>> Get_List_Bill(string time, byte status);
@@ -57,7 +58,7 @@ namespace APP.MANAGER
         {
             try
             {
-                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.UpdatedBy == ktvId) && (x.TimeIn.Date.ToString() == time || string.IsNullOrEmpty(time))))
+                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x =>(x.Status != (byte)BillStatus.TemporaryLT) && (x.UpdatedBy == ktvId) && (x.TimeIn.Date.ToString() == time || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x => x.TimeIn).ToList();
                 if (data != null)
                 {
@@ -80,7 +81,7 @@ namespace APP.MANAGER
             try
             {
                 var time1 = time.Split("-");
-                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.AcceptedBill) 
+                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.Bill) 
                                                                             && ((x.TimeOut.Value.Month.ToString() == time1[1] && x.TimeOut.Value.Year.ToString() == time1[0])
                                                                             || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x => x.TimeIn).ToList();
@@ -104,7 +105,7 @@ namespace APP.MANAGER
         {
             try
             {
-                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.AcceptedBill) && (x.TimeOut.Value.Date.ToString() == time || string.IsNullOrEmpty(time))))
+                var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => (x.Status == (byte)BillStatus.Bill) && (x.TimeOut.Value.Date.ToString() == time || string.IsNullOrEmpty(time))))
                     .OrderByDescending(x => x.TimeIn).ToList();
                 if (data != null)
                 {
@@ -366,19 +367,6 @@ namespace APP.MANAGER
                 throw ex;
             }
         }
-        //public async Task<List<TemporaryBill>> Get_List(string name)
-        //{
-        //    try
-        //    {
-        //        //var data = (await _unitOfWork.TemporaryBillRepository.FindBy(x => ((string.IsNullOrEmpty(name) || x.Name.ToLower().Contains(name))
-        //        //                                                           ))).ToList();
-        //        return data;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         public async Task<TemporaryBill> Find_By_Id(long id)
         {
             try
@@ -387,6 +375,31 @@ namespace APP.MANAGER
                 return data;
             }
             catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task Sent_KTV(TemporaryBill inputModel)
+        {
+            try
+            {
+                await _unitOfWork.TemporaryBillRepository.Update(inputModel);
+                var listAccessories = (await _unitOfWork.TemporaryBill_AccesaryRepository.FindBy(c => c.TemporaryBillId == inputModel.Id)).ToList();
+                if (listAccessories != null)
+                {
+                    foreach (var item in listAccessories)
+                    {
+                        if (inputModel.Status == (int)BillStatus.TemporaryKTV)
+                        {
+                            var acc = await _unitOfWork.AccessoriesRepository.Get(c => c.Id == item.AccesaryId);
+                            acc.Quantity = acc.Quantity + item.Quantity;
+                            await _unitOfWork.AccessoriesRepository.Update(acc);
+                        }
+                    }
+                }
+                await _unitOfWork.SaveChange();
+            }
+            catch(Exception ex)
             {
                 throw ex;
             }
@@ -449,6 +462,19 @@ namespace APP.MANAGER
                     var motorLift = await _unitOfWork.MotorLiftsRepository.Get(c => c.Id == inputModel.MotorLiftId);
                     motorLift.Status = (byte)MotorLiftEnum.Active;
                     await _unitOfWork.MotorLiftsRepository.Update(motorLift);
+                    var listAccessories = (await _unitOfWork.TemporaryBill_AccesaryRepository.FindBy(c => c.TemporaryBillId == inputModel.Id)).ToList();
+                    if (listAccessories != null)
+                    {
+                        foreach (var item in listAccessories)
+                        {
+                            if (inputModel.Status == (int)BillStatus.TemporaryTN)
+                            {
+                                var acc = await _unitOfWork.AccessoriesRepository.Get(c => c.Id == item.AccesaryId);
+                                acc.Quantity = acc.Quantity - item.Quantity;
+                                await _unitOfWork.AccessoriesRepository.Update(acc);
+                            }
+                        }
+                    }
                 }
                 await _unitOfWork.SaveChange();
             }

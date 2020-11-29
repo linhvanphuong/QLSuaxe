@@ -40,7 +40,7 @@ function updateStatus(id, status) {
         success: function (response) {
             if (response.result) {
                 showAlert("Thành công", 2);
-                var stt = 4;
+                var stt = $('#txtStatushd').val();
                 normal.getData("",stt);
             }
         }
@@ -53,7 +53,21 @@ function onpenAccepted(id, status) {
         success: function (response) {
             if (response.result) {
                 showAlert("Thành công", 2);
-                var stt = 5;
+                var stt = 4;
+                $('#drStatus').val(4).trigger("change");
+                normal.getData("", stt);
+            }
+        }
+    })
+}
+function openSentKTV(id, status) {
+    $.ajax({
+        url: "/hoa-don/sent-KTV?id=" + id + "&status=" + status,
+        method: "Get",
+        success: function (response) {
+            if (response.result) {
+                showAlert("Thành công", 2);
+                var stt = 3;
                 normal.getData("", stt);
             }
         }
